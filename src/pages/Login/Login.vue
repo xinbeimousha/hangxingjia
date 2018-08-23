@@ -22,18 +22,18 @@
             </div>
             <div class></div>
         </div>
-        <div class="footer"></div>
+        <div class="footer">
+            <p>©2018 广东机场白云信息科技有限公司</p>
+                <p>广东白云国际机场商旅服务有限公司</p>
+        </div>
     </div>
 </template>
 
 <script>
-export default {
-    
-}
+export default {};
 </script>
 
 <style lang="stylus" scoped>
-
 </style>
 
 
