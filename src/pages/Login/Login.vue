@@ -34,6 +34,13 @@ export default {};
 </script>
 
 <style lang="stylus" scoped>
+  @import '../../common/style/variable.styl';
+  @import '../../common/style/mixin.styl';
+  .login{
+      y-view();
+
+      background-color :$color-bg-high;
+      }
 </style>
 
 
