@@ -7,8 +7,8 @@ export function login(name, password) {
     userName: name,
     passWord: password,
   }
-  
-  axios.post(url, qs.stringify(obj), {
+
+  return axios.post(url, qs.stringify(obj), {
     header: {
       'Content-type': 'application/x-www-form-urlencoded'
     }
