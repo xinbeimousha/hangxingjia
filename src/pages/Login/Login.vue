@@ -47,7 +47,10 @@ import { setStorage,getStorage,removeStorage } from 'common/js/storage.js'
 
 export default {
   created() {
-      console.log(123)
+      // 判断是否自动填充用户名和密码
+      if(getStorage('username')){
+          this._isWriteUserInfo();
+      }
   },
   data() {
     return {
@@ -84,17 +87,21 @@ export default {
           this._isSaveUserInfo();
           this.$router.push("/main");
         }
+      })
+      .catch((res) => {
+          this.loading = false;
+          Toast('访问服务器失败!')
       });
     },
     // 判断用户是否了输入账号和密码
     _handleLoginInfo() {
       if (!this.username || !this.password) {
-        Toast("用户名和密码不正确");
+        Toast("用户名或密码不正确");
         return false;
       }
       return true;
     },
-    // 判断用户是否保存了用户名
+    // 判断用户是否选择了记住密码
     _isSaveUserInfo() {
       if (this.savedUser) {
         setStorage('username', this.username);
@@ -102,6 +109,14 @@ export default {
       } else {
         removeStorage('username','password');
       }
+    },
+    // 自动填充储存在本地的用户名和密码
+    _isWriteUserInfo(){
+        const username = getStorage('username');
+        const password = getStorage('password');
+        this.username = username;
+        this.password = password;
+        this.savedUser = true;
     }
   },
   components: {
@@ -185,6 +200,7 @@ export default {
         margin-bottom: 0.1rem;
         color: $color-white;
         text-align: center;
+        font-size:0.18rem;
     }
 
     .loading-wrapper {

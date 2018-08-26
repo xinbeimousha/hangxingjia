@@ -9,10 +9,13 @@ export function login(name, password) {
   }
 
   return axios.post(url, qs.stringify(obj), {
+    timeout: 1000,
     header: {
       'Content-type': 'application/x-www-form-urlencoded'
     }
   }).then((res) => {
     return Promise.resolve(res.data);
+  }).catch((err) => {
+    return Promise.reject(err);
   })
 }

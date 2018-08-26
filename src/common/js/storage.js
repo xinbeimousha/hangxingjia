@@ -12,7 +12,7 @@ export function setStorage(key,val){
  * @param {key}需要获取的键名
  */
 export function getStorage(key){
-    localStorage.getItem(key);
+    return localStorage.getItem(key);
 }
 /**
  * 写入本地储存的方法
