@@ -1,5 +1,6 @@
 <template>
-    <div class="login">
+    <transition name="slide">
+        <div class="login">
         <div class="logo">
             <img src="./index_logo.png" alt="">
         </div>
@@ -38,16 +39,19 @@
             </div>
         </div>
     </div>
+    </transition>    
 </template>
 
 <script>
 import { Toast, Loading } from "vant";
 import { login } from "api/login.js";
-import { setStorage,getStorage,removeStorage } from 'common/js/storage.js'
+import { setStorage,getStorage,removeStorage } from 'common/js/storage.js';
+import { mapMutations } from 'vuex';
 
 export default {
   created() {
       // 判断是否自动填充用户名和密码
+      console.log(this)
       if(getStorage('username')){
           this._isWriteUserInfo();
       }
@@ -84,8 +88,13 @@ export default {
       login(vm.username, vm.password).then(res => {
         this.loading = false;
         if (res.success) {
+          const [sessionId,ticket] = [res.obj.sessionId,res.obj.ticket];
+          this.setSessioInd(sessionId);
+          this.setTicket(ticket);
           this._isSaveUserInfo();
           this.$router.push("/main");
+        }else {
+            Toast(res.msg);
         }
       })
       .catch((res) => {
@@ -117,7 +126,11 @@ export default {
         this.username = username;
         this.password = password;
         this.savedUser = true;
-    }
+    },
+    ...mapMutations({
+        setSessioInd:'SET_SESSIONID',
+        setTicket:'SET_TICKET'
+    })
   },
   components: {
     VanLoading: Loading
@@ -131,7 +144,14 @@ export default {
 
 .login {
     y-view();
-    overflow: hidden;
+
+    position:fixed;
+    top:0;
+    left:0;
+    right:0;
+    bottom:0;
+    z-index:1;
+
     background: url('./index_footer.png') no-repeat bottom;
     background-color: $color-bg-high;
     background-size: 100%;
@@ -221,6 +241,14 @@ export default {
             transform: translate(-50%, -50%);
         }
     }  
+}
+
+.slide-enter-active, .slide-leave-active {
+    transition: all .3s;
+}
+
+.slide-enter,.slide-leave-to {
+    transform: translate3d(-100%, 0, 0);
 }
 </style>
 

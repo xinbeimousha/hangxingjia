@@ -3,7 +3,6 @@
         <HeaderTitle title="我的预订"/>
         <div class="book-content">
             <div class="banner">
-                <img src="./book_index_banner.png" alt="">
             </div>
             <div class="book-select">
                 <div class="item plane">
@@ -68,10 +67,11 @@ export default {
         y-view();
 
         .banner {
-            img {
-                width: 100%;
-                height: 2.68rem;
-            }
+            height:4rem;
+
+            background-image :url(./book_index_banner.png);
+            background-size:100% 100%;
+            background-repeat:no-repeat;
         }
 
         .book-select {

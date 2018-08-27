@@ -1,19 +1,30 @@
 <template>
-    <transition name="slider">
+    <transition name="slide">
       <div class="main">
          <keep-alive>
              <router-view/>
          </keep-alive>
          <div class="footer-tab">
-             <router-link tag="div" class="tab-item" to="/main/book" replace>预订</router-link>
-             <router-link tag="div" class="tab-item" to="/main/me" replace="">我</router-link>
+             <router-link tag="div" class="tab-item" to="/main/book" replace>
+               <div class="item">
+                   <span class="icon book"></span>
+                   <div class="content">预订</div>
+               </div>
+             </router-link>
+             <router-link tag="div" class="tab-item" to="/main/me" replace="">
+                <div class="item">
+                    <span class="icon me"></span>
+                    <div class="content">我</div>
+                </div>
+             </router-link>
          </div>
     </div>
     </transition>    
 </template>
 
 <script>
-export default {};
+export default {
+};
 </script>
 
 <style lang="stylus" scoped>
@@ -22,28 +33,62 @@ export default {};
 
 .main {
     y-view();
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
 
     .footer-tab {
         x-middle();
 
         .tab-item {
             flex: 1;
+
             padding: 0.15rem;
             text-align: center;
             color: $color-text;
 
+            .item {
+                line-height :1;
+                .icon {
+                    display: inline-block;
+                    width: 0.5rem;
+                    height: 0.5rem;
+                    background-size: cover;
+                    background-repeat: no-repeat;
+
+                    &.book {
+                        background-image: url('./main_book.png');
+                    }
+
+                    &.me {
+                        background-image: url('./main_me.png');
+                    }
+                }
+            }
+
             &.router-link-active {
                 color: $color-text-active;
+                .icon {
+                     &.book {
+                        background-image: url('./main_book_ed.png');
+                    }
+
+                    &.me {
+                        background-image: url('./main_me_ed.png');
+                    }
+                    }
             }
         }
     }
 }
 
-.slider-enter-active, .slide-leave-active {
+.slide-enter-active, .slide-leave-active {
     transition: all 0.3s;
 }
 
-.slider-enter, .slide-leave-to {
+.slide-enter, .slide-leave-to {
     transform: translate3d(100%, 0, 0);
 }
 </style>
