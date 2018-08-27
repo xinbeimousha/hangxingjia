@@ -5,12 +5,12 @@
             <div class="banner">
             </div>
             <div class="book-select">
-                <div class="item plane">
+                <router-link tag="div" to="/planeSearch"  class="item plane">
                     <div class="img">
                         <img src="./book_index_plane.png" alt="">
                     </div>
                     <span>机票预订</span>
-                </div>
+                </router-link>
                 <div class="item hotel">
                     <div class="img">
                         <img src="./book_index_hotel.png" alt="">
