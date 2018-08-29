@@ -7,7 +7,7 @@ import Apply from 'pages/Apply/Apply';
 import Book from 'pages/Book/Book';
 import Trip from 'pages/Trip/Trip';
 import Me from 'pages/Me/Me';
-import PlaneSearch from 'pages/PlaneTicketSearch/PlaneTicketSearch';
+import PlaneSearch from 'pages/PlaneSearch/PlaneSearch';
 Vue.use(Router)
 
 export default new Router({

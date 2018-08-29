@@ -2,7 +2,7 @@ import axios from 'axios';
 import { Toast } from 'vant';
 import { getSession } from 'common/js/storage.js';
 
-const [baseURL, timeout] = ['api', 60000];
+const [baseURL, timeout] = ['api', 60*1000];
 const instance = axios.create({
   baseURL,
   timeout
@@ -31,10 +31,10 @@ instance.interceptors.response.use(response => {
   }
   return response;
 }, error => {
-  if (response.config.showLoading) {
-    Toast.clear();
-  }
-  Toast('连接超时');
+  if(error.code && error.code === 'ECONNABORTED'){
+    Toast('连接超时');
+  } 
+  Toast('网络错误');
   return Promise.reject(error)
 })
 /**
