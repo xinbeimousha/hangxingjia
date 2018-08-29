@@ -5,4 +5,7 @@ export function getBudgetSpaceType(){
            .then(res => {
 
            })
+           .catch(error => {
+               console.log(error)
+           })
 }

@@ -33,35 +33,27 @@
             <p>©2018 广东机场白云信息科技有限公司</p>
             <p>广东白云国际机场商旅服务有限公司</p>
         </div>
-        <div class="loading-wrapper" v-if="loading">
-            <div class="loading">
-                <van-loading color="white" />
-            </div>
-        </div>
     </div>
     </transition>    
 </template>
 
 <script>
-import { Toast, Loading } from "vant";
+import { Toast } from "vant";
 import { login } from "api/login.js";
-import { setStorage,getStorage,removeStorage } from 'common/js/storage.js';
-import { mapMutations } from 'vuex';
+import { setLocal,getLocal,removeLocal,setSession } from 'common/js/storage.js';
 
 export default {
   created() {
       // 判断是否自动填充用户名和密码
-      console.log(this)
-      if(getStorage('username')){
-          this._isWriteUserInfo();
+      if(JSON.parse(getLocal('savedUser'))){
+          this._writeUserInfo();
       }
   },
   data() {
     return {
       username: "",
       password: "",
-      savedUser: false,
-      loading: false
+      savedUser: false
     };
   },
   methods: {
@@ -88,19 +80,13 @@ export default {
       login(vm.username, vm.password).then(res => {
         this.loading = false;
         if (res.success) {
-          const [sessionId,ticket] = [res.obj.sessionId,res.obj.ticket];
-          this.setSessioInd(sessionId);
-          this.setTicket(ticket);
-          this._isSaveUserInfo();
+          this._saveUserLoginInfo();
+          this._setInfotoSession(res.obj);
           this.$router.push("/main");
         }else {
             Toast(res.msg);
         }
       })
-      .catch((res) => {
-          this.loading = false;
-          Toast('访问服务器失败!')
-      });
     },
     // 判断用户是否了输入账号和密码
     _handleLoginInfo() {
@@ -110,30 +96,30 @@ export default {
       }
       return true;
     },
-    // 判断用户是否选择了记住密码
-    _isSaveUserInfo() {
-      if (this.savedUser) {
-        setStorage('username', this.username);
-        setStorage('password', this.password);
-      } else {
-        removeStorage('username','password');
-      }
+    // 记录用户的账号密码和是否选择记住密码
+    _saveUserLoginInfo() {
+        const obj = {
+            'username':this.username,
+            'password':this.password,
+            'savedUser':this.savedUser
+        }
+        for(const key in obj){
+            setLocal(key,obj[key])
+        }
+
     },
     // 自动填充储存在本地的用户名和密码
-    _isWriteUserInfo(){
-        const username = getStorage('username');
-        const password = getStorage('password');
+    _writeUserInfo(){
+        const username = getLocal('username');
+        const password = getLocal('password');
         this.username = username;
         this.password = password;
         this.savedUser = true;
     },
-    ...mapMutations({
-        setSessioInd:'SET_SESSIONID',
-        setTicket:'SET_TICKET'
-    })
-  },
-  components: {
-    VanLoading: Loading
+    // 所有的用户信息保存在本地的sessionStorage
+    _setInfotoSession(obj){
+        setSession('token',obj.ticket);
+    }
   }
 };
 </script>
@@ -145,12 +131,7 @@ export default {
 .login {
     y-view();
 
-    position:fixed;
-    top:0;
-    left:0;
-    right:0;
-    bottom:0;
-    z-index:1;
+    full-fixed(2);
 
     background: url('./index_footer.png') no-repeat bottom;
     background-color: $color-bg-high;
@@ -222,25 +203,6 @@ export default {
         text-align: center;
         font-size:0.18rem;
     }
-
-    .loading-wrapper {
-        position: fixed;
-        left: 0;
-        top: 0;
-        right: 0;
-        bottom: 0;
-        z-index: 999;
-
-        .loading {
-            position: absolute;
-            left: 50%;
-            top: 50%;
-            padding: 0.5rem;
-            border-radius: 5px;
-            background-color: rgba(0, 0, 0, 0.5);
-            transform: translate(-50%, -50%);
-        }
-    }  
 }
 
 .slide-enter-active, .slide-leave-active {

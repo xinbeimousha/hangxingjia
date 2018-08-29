@@ -1,15 +1,13 @@
-import axios from 'axios';
+import request from 'api/config';
 import qs from 'qs';
 
 export function login(name, password) {
-  const url = 'api/appBaseController.do?applogin';
   const obj = {
     userName: name,
     passWord: password,
   }
 
-  return axios.post(url, qs.stringify(obj), {
-    timeout: 1000,
+  return request.post('/appBaseController.do?applogin', qs.stringify(obj), {
     header: {
       'Content-type': 'application/x-www-form-urlencoded'
     }

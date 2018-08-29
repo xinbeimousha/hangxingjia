@@ -1,30 +1,37 @@
 import axios from 'axios';
-import store from '@/store';
+import { Toast } from 'vant';
+import { getSession } from 'common/js/storage.js';
 
-const [baseURL,timeout] = ['api',6000];
-const [sessionId,ticket] = [store.getters.sessionId,store.getters.ticket];
-const cookie = `JSESSIONID=${sessionId};ticket=${ticket};type=app;`
-const headers = {
-    'Accept':'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
-    'Accept-Encoding':'gzip, deflate, sdch',
-    'Accept-Language':'zh-CN,zh;q=0.8',
-    'Connection':'keep-alive',
-    'Cookie':cookie
-}
-const isntance = axios.create({
-    baseURL,
-    timeout,
-    headers,
+const [baseURL, timeout] = ['api', 60000];
+const instance = axios.create({
+  baseURL,
+  timeout
 });
-
+// 添加请求拦截器
+instance.interceptors.request.use(config => {
+  config.showLoading = true;
+  console.log(config)
+  let token = getSession('token');
+  if (token) {
+    token = `${token};app;`;
+    config.headers.Token = token
+  }
+  Toast.loading({
+    duration: 0, // 持续展示 toast
+    forbidClick: true, // 禁用背景点击
+  })
+  return config;
+}, error => {
+  return Promise.reject(error)
+})
 // 响应拦截
-isntance.interceptors.response.use(function (response) {
-    console.log(response)
-    return response;
-  }, function (error) {
-    // 对响应错误做点什么
-    console.log(error)
-    return Promise.reject(error);
-  });
-
-export default isntance;
+instance.interceptors.response.use(response => {
+  console.log(response)
+  Toast.clear();
+  return response;
+}, error => {
+  Toast.clear();
+  Toast('连接超时');
+  return Promise.reject(error)
+})
+export default instance;
