@@ -1,14 +1,19 @@
 <template>
-    <div class="apply"></div>
+  <div class="apply">
+
+  </div>
 </template>
 
 <script>
-export default {};
+export default {
+  
+}
 </script>
 
 <style lang="stylus" scoped>
-.apply {
-}
+  .apply{
+    flex:1;
+  }
 </style>
 
 

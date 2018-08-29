@@ -1,11 +1,11 @@
 <template>
-     <div class="book">
-        <HeaderTitle title="我的预订"/>
+    <div class="book">
+        <HeaderTitle title="我的预订" />
         <div class="book-content">
             <div class="banner">
             </div>
             <div class="book-select">
-                <router-link tag="div" to="/planeSearch"  class="item plane">
+                <router-link tag="div" to="/planeSearch" class="item plane">
                     <div class="img">
                         <img src="./book_index_plane.png" alt="">
                     </div>
@@ -36,12 +36,12 @@
                     <span>机场服务</span>
                 </div>
                 <div class="order">
-                   <div class="logo">
-                       <img src="./book_index_order.png" alt="">
-                   </div>
+                    <div class="logo">
+                        <img src="./book_index_order.png" alt="">
+                    </div>
                 </div>
             </div>
-        </div> 
+        </div>
     </div>
 </template>
 
@@ -67,11 +67,10 @@ export default {
         y-view();
 
         .banner {
-            height:4rem;
-
-            background-image :url(./book_index_banner.png);
-            background-size:100% 100%;
-            background-repeat:no-repeat;
+            height: 4rem;
+            background-image: url('./book_index_banner.png');
+            background-size: 100% 100%;
+            background-repeat: no-repeat;
         }
 
         .book-select {
@@ -129,22 +128,18 @@ export default {
                 top: 50%;
                 transform: translate(0, -50%);
                 z-index: 999;
-
                 text-align: center;
                 background: #89C0FA;
-
                 background: linear-gradient(top, #89C0FA, #527CCF);
                 overflow: hidden;
 
-                .logo{
-                    width:.8rem;
-
-                    position:absolute;
-                    left:50%;
-                    top:50%;
-
-                    transform:translate(-40%,-50%);
-                    }
+                .logo {
+                    width: 0.8rem;
+                    position: absolute;
+                    left: 50%;
+                    top: 50%;
+                    transform: translate(-40%, -50%);
+                }
             }
         }
     }
