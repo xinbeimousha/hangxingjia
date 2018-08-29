@@ -6,14 +6,14 @@ export function login(name, password) {
     userName: name,
     passWord: password,
   }
-
-  return request.post('/appBaseController.do?applogin', qs.stringify(obj), {
-    header: {
+  return request({
+    url:'/appBaseController.do?applogin',
+    method:'post',
+    data:qs.stringify(obj),
+    header:{
       'Content-type': 'application/x-www-form-urlencoded'
     }
-  }).then((res) => {
-    return Promise.resolve(res.data);
-  }).catch((err) => {
-    return Promise.reject(err);
+  }).then(res => {
+    return Promise.resolve(res.data)
   })
 }
