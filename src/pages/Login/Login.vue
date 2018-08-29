@@ -1,53 +1,58 @@
 <template>
     <transition name="slide">
         <div class="login">
-        <div class="logo">
-            <img src="./index_logo.png" alt="">
-        </div>
-        <div class="main">
-            <div class="username">
-                <div class="icon">
-                    <img src="./index_name.png" alt="">
+            <div class="logo">
+                <img src="./index_logo.png" alt="">
+            </div>
+            <div class="main">
+                <div class="username">
+                    <div class="icon">
+                        <img src="./index_name.png" alt="">
+                    </div>
+                    <input type="text" class="text" v-model="username">
+                    <div class="icon"></div>
                 </div>
-                <input type="text" class="text" v-model="username">
-                <div class="icon"></div>
-            </div>
-            <div class="password">
-                <div class="icon">
-                    <img src="./index_psw.png" alt="">
+                <div class="password">
+                    <div class="icon">
+                        <img src="./index_psw.png" alt="">
+                    </div>
+                    <input @click="fixAndroid($event)" type="password" class="psd" v-model="password">
+                    <div class="icon"></div>
                 </div>
-                <input @click="fixAndroid($event)" type="password" class="psd" v-model="password">
-                <div class="icon"></div>
+                <div class="save-psd">
+                    <label for="saved">
+                        <input id="saved" type="checkbox" v-model="savedUser" class="saved">
+                        <span class="content">记住密码</span>
+                    </label>
+                </div>
+                <div class="button-login" @click="handleLogin()">
+                    登录
+                </div>
             </div>
-            <div class="save-psd">
-                <label for="saved">
-                    <input id="saved" type="checkbox" v-model="savedUser" class="saved">
-                    <span class="content">记住密码</span>
-                </label>
-            </div>
-            <div class="button-login" @click="handleLogin()">
-                登录
+            <div class="footer">
+                <p>©2018 广东机场白云信息科技有限公司</p>
+                <p>广东白云国际机场商旅服务有限公司</p>
             </div>
         </div>
-        <div class="footer">
-            <p>©2018 广东机场白云信息科技有限公司</p>
-            <p>广东白云国际机场商旅服务有限公司</p>
-        </div>
-    </div>
-    </transition>    
+    </transition>
 </template>
 
 <script>
 import { Toast } from "vant";
 import { login } from "api/login.js";
-import { setLocal,getLocal,removeLocal,setSession } from 'common/js/storage.js';
+import {
+  setLocal,
+  getLocal,
+  removeLocal,
+  setSession
+} from "common/js/storage.js";
 
 export default {
   created() {
-      // 判断是否自动填充用户名和密码
-      if(JSON.parse(getLocal('savedUser'))){
-          this._writeUserInfo();
-      }
+    // 判断是否自动填充用户名和密码
+    if (JSON.parse(getLocal("savedUser"))) {
+      this._writeUserInfo();
+    }
   },
   data() {
     return {
@@ -83,10 +88,10 @@ export default {
           this._saveUserLoginInfo();
           this._setInfotoSession(res.obj);
           this.$router.push("/main");
-        }else {
-            Toast(res.msg);
+        } else {
+          Toast(res.msg);
         }
-      })
+      });
     },
     // 判断用户是否了输入账号和密码
     _handleLoginInfo() {
@@ -98,27 +103,26 @@ export default {
     },
     // 记录用户的账号密码和是否选择记住密码
     _saveUserLoginInfo() {
-        const obj = {
-            'username':this.username,
-            'password':this.password,
-            'savedUser':this.savedUser
-        }
-        for(const key in obj){
-            setLocal(key,obj[key])
-        }
-
+      const obj = {
+        username: this.username,
+        password: this.password,
+        savedUser: this.savedUser
+      };
+      for (const key in obj) {
+        setLocal(key, obj[key]);
+      }
     },
     // 自动填充储存在本地的用户名和密码
-    _writeUserInfo(){
-        const username = getLocal('username');
-        const password = getLocal('password');
-        this.username = username;
-        this.password = password;
-        this.savedUser = true;
+    _writeUserInfo() {
+      const username = getLocal("username");
+      const password = getLocal("password");
+      this.username = username;
+      this.password = password;
+      this.savedUser = true;
     },
     // 所有的用户信息保存在本地的sessionStorage
-    _setInfotoSession(obj){
-        setSession('token',obj.ticket);
+    _setInfotoSession(obj) {
+      setSession("token", obj.ticket);
     }
   }
 };
@@ -130,9 +134,7 @@ export default {
 
 .login {
     y-view();
-
     full-fixed(2);
-
     background: url('./index_footer.png') no-repeat bottom;
     background-color: $color-bg-high;
     background-size: 100%;
@@ -201,15 +203,15 @@ export default {
         margin-bottom: 0.1rem;
         color: $color-white;
         text-align: center;
-        font-size:0.18rem;
+        font-size: 0.18rem;
     }
 }
 
 .slide-enter-active, .slide-leave-active {
-    transition: all .3s;
+    transition: all 0.3s;
 }
 
-.slide-enter,.slide-leave-to {
+.slide-enter, .slide-leave-to {
     transform: translate3d(-100%, 0, 0);
 }
 </style>

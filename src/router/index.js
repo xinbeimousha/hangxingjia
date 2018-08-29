@@ -1,8 +1,11 @@
 import Vue from 'vue';
 import Router from 'vue-router';
+
 import Login from 'pages/Login/Login';
 import Main from 'pages/Main/Main';
+import Apply from 'pages/Apply/Apply';
 import Book from 'pages/Book/Book';
+import Trip from 'pages/Trip/Trip';
 import Me from 'pages/Me/Me';
 import PlaneSearch from 'pages/PlaneTicketSearch/PlaneTicketSearch';
 Vue.use(Router)
@@ -25,8 +28,16 @@ export default new Router({
       redirect:'/main/book',
       children:[
         {
+          path: 'apply',
+          component: Apply
+        },
+        {
           path: 'book',
           component: Book
+        },
+        {
+          path: 'trip',
+          component: Trip
         },
         {
           path: 'me',

@@ -43,7 +43,6 @@ instance.interceptors.response.use(response => {
  * @param {showLoading} 是否显示loading，默认显示
  */
 export default (config, showLoading = true) => {
-  console.log(showLoading)
   config = Object.assign({}, config, {
     showLoading
   })

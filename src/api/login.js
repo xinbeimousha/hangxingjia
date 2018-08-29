@@ -7,7 +7,7 @@ export function login(name, password) {
     passWord: password,
   }
   return request({
-    url:'/appBaseController.do?applogin',
+    url:'appBaseController.do?applogin',
     method:'post',
     data:qs.stringify(obj),
     header:{

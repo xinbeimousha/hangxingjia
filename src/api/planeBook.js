@@ -1,11 +1,10 @@
 import request from './config.js';
 
 export function getBudgetSpaceType(){
-    request.post('appBudgetRuleController.do?getBudgetSpaceType')
-           .then(res => {
-
-           })
-           .catch(error => {
-               console.log(error)
-           })
+     return request({
+         url:'appBudgetRuleController.do?getBudgetSpaceType',
+         method:'post'
+     }).then(res => {
+         return Promise.resolve(res.data)
+     })             
 }
