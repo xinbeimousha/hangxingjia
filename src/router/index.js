@@ -8,18 +8,20 @@ import Book from 'pages/Book/Book';
 import Trip from 'pages/Trip/Trip';
 import Me from 'pages/Me/Me';
 import PlaneSearch from 'pages/PlaneSearch/PlaneSearch';
+
 Vue.use(Router)
 
-export default new Router({
+const router = new Router({
   routes: [
     {
       path: '/',
+      name:'index',
       redirect:'/login'
     },
     {
       path: '/login',
       name: 'login',
-      component: Login
+      component: Login,
     },
     {
       path: '/main',
@@ -33,6 +35,7 @@ export default new Router({
         },
         {
           path: 'book',
+          name:'mainBook',
           component: Book
         },
         {
@@ -52,3 +55,4 @@ export default new Router({
     }
   ]
 })
+export default  router;

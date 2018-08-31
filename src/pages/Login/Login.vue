@@ -1,40 +1,38 @@
 <template>
-    <transition name="slide">
-        <div class="login">
-            <div class="logo">
-                <img src="./index_logo.png" alt="">
+    <div class="login">
+        <div class="logo">
+            <img src="./index_logo.png" alt="">
+        </div>
+        <div class="main">
+            <div class="username">
+                <div class="icon">
+                    <img src="./index_name.png" alt="">
+                </div>
+                <input type="text" class="text" v-model="username">
+                <div class="icon"></div>
             </div>
-            <div class="main">
-                <div class="username">
-                    <div class="icon">
-                        <img src="./index_name.png" alt="">
-                    </div>
-                    <input type="text" class="text" v-model="username">
-                    <div class="icon"></div>
+            <div class="password">
+                <div class="icon">
+                    <img src="./index_psw.png" alt="">
                 </div>
-                <div class="password">
-                    <div class="icon">
-                        <img src="./index_psw.png" alt="">
-                    </div>
-                    <input @click="fixAndroid($event)" type="password" class="psd" v-model="password">
-                    <div class="icon"></div>
-                </div>
-                <div class="save-psd">
-                    <label for="saved">
-                        <input id="saved" type="checkbox" v-model="savedUser" class="saved">
-                        <span class="content">记住密码</span>
-                    </label>
-                </div>
-                <div class="button-login" @click="handleLogin()">
-                    登录
-                </div>
+                <input @click="fixAndroid($event)" type="password" class="psd" v-model="password">
+                <div class="icon"></div>
             </div>
-            <div class="footer">
-                <p>©2018 广东机场白云信息科技有限公司</p>
-                <p>广东白云国际机场商旅服务有限公司</p>
+            <div class="save-psd">
+                <label for="saved">
+                    <input id="saved" type="checkbox" v-model="savedUser" class="saved">
+                    <span class="content">记住密码</span>
+                </label>
+            </div>
+            <div class="button-login" @click="handleLogin()">
+                登录
             </div>
         </div>
-    </transition>
+        <div class="footer">
+            <p>©2018 广东机场白云信息科技有限公司</p>
+            <p>广东白云国际机场商旅服务有限公司</p>
+        </div>
+    </div>
 </template>
 
 <script>
@@ -206,14 +204,6 @@ export default {
         font-size: 0.18rem;
     }
 }
-
-// .slide-enter-active, .slide-leave-active {
-//     transition: all 0.3s;
-// }
-
-// .slide-enter, .slide-leave-to {
-//     transform: translate3d(100%, 0, 0);
-// }
 </style>
 
 

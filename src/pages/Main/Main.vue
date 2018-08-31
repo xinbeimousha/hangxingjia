@@ -1,37 +1,35 @@
 <template>
-    <transition name="slide">
-        <div class="main">
-            <keep-alive>
-                <router-view/>
-            </keep-alive>
-            <div class="footer-tab">
-                <!-- <router-link tag="div" class="tab-item" to="/main/apply"  replace>
+    <div class="main">
+        <keep-alive>
+            <router-view/>
+        </keep-alive>
+        <div class="footer-tab">
+            <!-- <router-link tag="div" class="tab-item" to="/main/apply"  replace>
                <div class="item">
                    <span class="icon apply"></span>
                    <div class="content">申请</div>
                </div>
              </router-link> -->
-                <router-link tag="div" class="tab-item" to="/main/book" replace>
-                    <div class="item">
-                        <span class="icon book"></span>
-                        <div class="content">预订</div>
-                    </div>
-                </router-link>
-                <router-link tag="div" class="tab-item" to="/main/trip" replace>
-                    <div class="item">
-                        <span class="icon trip"></span>
-                        <div class="content">行程</div>
-                    </div>
-                </router-link>
-                <!-- <router-link tag="div" class="tab-item" to="/main/me" replace>
+            <router-link tag="div" class="tab-item" to="/main/book" replace>
+                <div class="item">
+                    <span class="icon book"></span>
+                    <div class="content">预订</div>
+                </div>
+            </router-link>
+            <router-link tag="div" class="tab-item" to="/main/trip" replace>
+                <div class="item">
+                    <span class="icon trip"></span>
+                    <div class="content">行程</div>
+                </div>
+            </router-link>
+            <!-- <router-link tag="div" class="tab-item" to="/main/me" replace>
                 <div class="item">
                     <span class="icon me"></span>
                     <div class="content">我</div>
                 </div>
              </router-link> -->
-            </div>
         </div>
-    </transition>
+    </div>
 </template>
 
 <script>
@@ -107,14 +105,6 @@ export default {};
         }
     }
 }
-
-// .slide-enter-active, .slide-leave-active {
-//     transition: all 0.3s;
-// }
-
-// .slide-enter, .slide-leave-to {
-//     transform: translate3d(-100%, 0, 0);
-// }
 </style>
 
 
