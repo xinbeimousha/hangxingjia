@@ -7,35 +7,55 @@
         <Icon name="arrow" />
       </div>
       <div class="flight-detail">
-        <Tabs class="reset">
-          <Tab v-for="(item,index) in tripTypes" :title="item.name" :key="index">
-            <ul class="flight-content">
-              <li class="flight-content-item">
-                <div class="flight-city border-1px">
-                  <div class="depart">
-                    广州
-                  </div>
-                  <div class="trip-type">
-                    <div class="icon">
-                      <img src="./return.png" alt="">
-                    </div>
-                  </div>
-                  <div class="arrival">
-                    上海
-                  </div>
-                </div>
-                <div class="flight-date border-1px">
-                  <div class="depart" @click="showDatePicker">
-                    {{ departDate }}
-                  </div>
-                  <div class="return">
-                    2018-09-01
-                  </div>
-                </div>
-              </li>
-            </ul>
+        <Tabs class="reset" @click="getCurrentTabIndex">
+          <Tab 
+            v-for="(item,index) in tripTypes" 
+            :title="item.name" 
+            :key="index"
+          >
           </Tab>
         </Tabs>
+        <div class="flight-content">
+          <div class="one-way" v-if="currentTabIndex === 0">
+            <div class="city border-1px">
+              <div class="from">
+                {{ fromCity }}
+              </div>
+              <div class="icon">
+                <div class="logo">
+                  <img src="./return.png" alt="">
+                </div>
+              </div>
+              <div class="to">
+                {{ toCity }}
+              </div>
+            </div>
+            <div class="date border-1px">
+              <span class="depart" @click="showDatePicker">{{ departDate }}</span>
+            </div>
+          </div>
+          <div class="two-way" v-else-if="currentTabIndex === 1">
+            <div class="city border-1px">
+              <div class="from">
+                {{ fromCity }}
+              </div>
+              <div class="icon">
+                <div class="logo">
+                  <img src="./return.png" alt="">
+                </div>
+              </div>
+              <div class="to">
+                {{ toCity }}
+              </div>
+            </div>
+            <div class="date border-1px">
+              <span class="depart"> {{ departDate }} </span>
+              <span class="pad"></span>
+              <span class="arrival"> {{ arrivalDate }}</span>
+            </div>
+          </div>
+          <div class="multi-way" v-else>其他</div>
+        </div>
       </div>
       <div class="cabin-wrapper">
         <p class="title">要求舱位</p>
@@ -50,7 +70,7 @@
         查询
       </div>
     </div>
-    <Actionsheet v-model="showTrip" :actions="tripList" @select="onSelect" />
+    <Actionsheet v-model="showTrip" :actions="tripList" @select="hideSelect" />
     <Popup 
       v-model="showDate" 
       position="bottom"
@@ -72,9 +92,11 @@ import { Actionsheet, Icon } from "vant";
 import { Tab, Tabs, DatetimePicker, Popup } from "vant";
 import { getBudgetSpaceType, getItineraryList } from "api/planeBook";
 import { getDate1, getDate2, getTime } from "common/js/day.js";
+import { mapGetters } from 'vuex';
 
 export default {
   created() {
+    console.log(this.planeSearchData)
     this._getItineraryList();
   },
 
@@ -82,6 +104,7 @@ export default {
     return {
       showTrip: false,
       showDate: false,
+      currentTabIndex:0,
       tripList: [
         {
           name: "无"
@@ -103,12 +126,32 @@ export default {
         }
       ],
       currentDate: new Date(),
-      departDate:'2018-08-31'
     };
   },
-
+  
+  computed:{
+    ...mapGetters([
+      'planeSearchData'
+    ]),
+    fromCity(){
+      const stopId = this.planeSearchData.stopsIds[0];
+      const stopN = this.planeSearchData.stops[stopId].n;
+      return stopN;
+    },
+    toCity(){
+      const stopId = this.planeSearchData.stopsIds[1];
+      const stopN = this.planeSearchData.stops[stopId].n;
+      return stopN;
+    },
+    departDate(){
+      return this.planeSearchData.date[0];
+    },
+    arrivalDate(){
+      return this.planeSearchData.date[1];
+    }
+  },
   methods: {
-    onSelect(item) {
+    hideSelect(item) {
       this.showTrip = false;
       this.tripName = item.name;
     },
@@ -116,9 +159,12 @@ export default {
     showSelet() {
       this.showTrip = true;
     },
+    
+    getCurrentTabIndex(index){
+      this.currentTabIndex = index;
+    },
 
     showDatePicker() {
-      this.currentDate = new Date(this.departDate);
       this.showDate = true;
     },
 
@@ -127,7 +173,6 @@ export default {
     },
 
     chooseDate(val) {
-      this.departDate = getDate2(val)
       this.showDate = false;
     },
     // 获取行程
@@ -198,33 +243,20 @@ export default {
         color: $color-text-active;
       }
 
-      .flight-content {
-        .flight-city {
+      .flight-content{
+        .city,.date{
           x-middle();
-          padding: 0.2rem;
+          padding:0 0.2rem;
+          line-height :3;
           border-1px(#e5e5e5);
 
-          .trip-type {
-            flex: 1;
-
-            .icon {
-              margin: 0 auto;
-              width: 0.5rem;
+          .icon,.pad{
+            flex:1;
+      
+            .logo{
+              width:0.5rem;
+              margin:0 auto;
             }
-          }
-        }
-
-        .flight-date {
-          x-middle();
-          padding: 0.2rem;
-          border-1px(#e5e5e5);
-
-          .depart, .return {
-            flex: 1;
-          }
-
-          .return {
-            text-align: right;
           }
         }
       }
