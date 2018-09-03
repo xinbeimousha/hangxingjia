@@ -14,15 +14,18 @@ import Triped from 'pages/Triped/Triped';
 
 Vue.use(Router)
 
-export default new Router({
-  routes: [{
+
+const router = new Router({
+  routes: [
+    {
       path: '/',
-      redirect: '/login'
+      name:'index',
+      redirect:'/login'
     },
     {
       path: '/login',
       name: 'login',
-      component: Login
+      component: Login,
     },
     {
       path: '/main',
@@ -35,6 +38,7 @@ export default new Router({
         },
         {
           path: 'book',
+          name:'mainBook',
           component: Book
         },
         {
@@ -71,3 +75,4 @@ export default new Router({
     }
   ]
 })
+export default  router;

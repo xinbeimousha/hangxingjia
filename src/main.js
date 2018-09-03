@@ -3,10 +3,12 @@
 import Vue from 'vue';
 import App from './App';
 import router from './router';
+import store from './store';
 import fastclick from 'fastclick';
 import './common/js/rem.js';
 import 'babel-polyfill';
 import './common/style/index.styl';
+
 Vue.config.productionTip = false;
 
 // 移动端点击300毫秒延迟
@@ -15,6 +17,7 @@ fastclick.attach(document.body);
 new Vue({
   el: '#app',
   router,
+  store,
   components: { App },
   template: '<App/>'
 })

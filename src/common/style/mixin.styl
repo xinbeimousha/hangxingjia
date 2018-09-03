@@ -19,3 +19,16 @@ full-fixed(n){
     bottom:0;
     z-index:n;
 }
+// 移动端像素1px
+border-1px($color){
+    position: relative;
+    &:after{
+        display: block;
+        position: absolute;
+        left:0;
+        bottom:0;
+        width:100%;
+        border-bottom:1px solid $color;
+        content:'';
+    }
+}
