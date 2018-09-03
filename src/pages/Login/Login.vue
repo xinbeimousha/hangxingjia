@@ -41,8 +41,7 @@ import { login } from "api/login.js";
 import {
   setLocal,
   getLocal,
-  removeLocal,
-  setSession
+  removeLocal
 } from "common/js/storage.js";
 
 export default {
@@ -84,7 +83,7 @@ export default {
         this.loading = false;
         if (res.success) {
           this._saveUserLoginInfo();
-          this._setInfotoSession(res.obj);
+          this._setInfotoLocal(res.obj);
           this.$router.push("/main");
         } else {
           Toast(res.msg);
@@ -118,9 +117,9 @@ export default {
       this.password = password;
       this.savedUser = true;
     },
-    // 所有的用户信息保存在本地的sessionStorage
-    _setInfotoSession(obj) {
-      setSession("token", obj.ticket);
+    // 所有的用户信息保存在本地
+    _setInfotoLocal(obj) {
+      setLocal("token", obj.ticket);
     }
   }
 };

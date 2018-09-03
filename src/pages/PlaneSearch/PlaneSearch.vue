@@ -31,7 +31,7 @@
               </div>
             </div>
             <div class="date border-1px">
-              <span class="depart" @click="showDatePicker">{{ departDate }}</span>
+              <span class="depart" @click="showDatePicker(currentTabIndex)">{{ departDate }}</span>
             </div>
           </div>
           <div class="two-way" v-else-if="currentTabIndex === 1">
@@ -49,9 +49,9 @@
               </div>
             </div>
             <div class="date border-1px">
-              <span class="depart"> {{ departDate }} </span>
+              <span class="depart" @click="showDatePicker(currentTabIndex-1)"> {{ departDate }} </span>
               <span class="pad"></span>
-              <span class="arrival"> {{ arrivalDate }}</span>
+              <span class="arrival" @click="showDatePicker(currentTabIndex)"> {{ arrivalDate }}</span>
             </div>
           </div>
           <div class="multi-way" v-else>其他</div>
@@ -60,10 +60,14 @@
       <div class="cabin-wrapper">
         <p class="title">要求舱位</p>
         <ul class="cabin-require">
-          <li class="item">经济舱</li>
-          <li class="item">高级经济舱</li>
-          <li class="item">公务舱</li>
-          <li class="item">头等舱</li>
+          <li 
+            class="item"
+            v-for="(cabin,index) in cabinData"
+            :class="{'active-item':cabin.value}"
+            @click="chooseSpaceType(index)"
+          >
+            {{ cabin.name }}
+          </li>
         </ul>
       </div>
       <div class="btn-query">
@@ -78,7 +82,7 @@
       <DatetimePicker 
         v-model="currentDate" 
         type="date" 
-        :min-date="new Date()" 
+        :min-date="new Date(this.departDate)" 
         @cancel="hideDatePicker" 
         @confirm="chooseDate" 
       />
@@ -88,15 +92,16 @@
 
 <script>
 import HeaderTitle from "components/HeaderTitle/HeaderTitle.vue";
+import { cabinData } from './cabinData.js';
 import { Actionsheet, Icon } from "vant";
-import { Tab, Tabs, DatetimePicker, Popup } from "vant";
+import { Tab, Tabs, DatetimePicker, Popup, Toast } from "vant";
 import { getBudgetSpaceType, getItineraryList } from "api/planeBook";
 import { getDate1, getDate2, getTime } from "common/js/day.js";
-import { mapGetters } from 'vuex';
+import { mapGetters,mapMutations } from 'vuex';
 
 export default {
   created() {
-    console.log(this.planeSearchData)
+    this._getBudgetSpaceType();
     this._getItineraryList();
   },
 
@@ -105,6 +110,7 @@ export default {
       showTrip: false,
       showDate: false,
       currentTabIndex:0,
+      currentSearchDataIndex:0,
       tripList: [
         {
           name: "无"
@@ -125,6 +131,7 @@ export default {
           tripType: 2
         }
       ],
+      cabinData:cabinData,
       currentDate: new Date(),
     };
   },
@@ -151,6 +158,9 @@ export default {
     }
   },
   methods: {
+    ...mapMutations({
+      setDate:'SET_DATE'
+    }),
     hideSelect(item) {
       this.showTrip = false;
       this.tripName = item.name;
@@ -164,8 +174,9 @@ export default {
       this.currentTabIndex = index;
     },
 
-    showDatePicker() {
+    showDatePicker(index) {
       this.showDate = true;
+      this.currentSearchDataIndex = index;
     },
 
     hideDatePicker() {
@@ -173,7 +184,21 @@ export default {
     },
 
     chooseDate(val) {
+      const index = this.currentTabIndex;
+      const newDate = getDate2(val);
+      const obj = {
+        index,
+        newDate
+      }
       this.showDate = false;
+      this.setDate(obj);
+    },
+
+    chooseSpaceType(index){
+      if(!this.cabinData.changeable){
+        Toast('根据预算规则，您无权预订该舱位!');
+        return;
+      }
     },
     // 获取行程
     _getItineraryList() {
@@ -195,6 +220,38 @@ export default {
     // 处理行程的开始和截止日期
     _handleTripDate(begin, end) {
       return getDate1(begin) + " ~ " + getDate1(end);
+    },
+    // 获取舱位等级
+    _getBudgetSpaceType() {
+      getBudgetSpaceType().then(res => {
+        if(res.success){
+          this._handleSpaceType(res.obj.spaceType);
+        }
+      })
+    },
+    _handleSpaceType(type){
+      switch(type){
+        case 'first':
+        break;
+
+        case 'business':
+        this._handleSpaceTypeVal(3);
+        break;
+
+        case 'superTourist':
+        this._handleSpaceTypeVal(3);
+        this._handleSpaceTypeVal(2);
+        break;
+        default:
+        this._handleSpaceTypeVal(3);
+        this._handleSpaceTypeVal(2);
+        this._handleSpaceTypeVal(1);
+
+      }
+    },
+    _handleSpaceTypeVal(index){
+      this.cabinData[index].value = false;
+      this.cabinData[index].changeable = false;
     }
   },
 
@@ -205,6 +262,7 @@ export default {
     Tab,
     Tabs,
     Popup,
+    Toast,
     DatetimePicker
   }
 };
@@ -273,6 +331,10 @@ export default {
       .cabin-require {
         x-middle();
         text-align: center;
+        & > .active-item {
+          color:$color-white;
+          background-color :$color-text-active;
+        }
 
         .item {
           flex: 1;

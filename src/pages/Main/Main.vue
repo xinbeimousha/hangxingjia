@@ -1,8 +1,6 @@
 <template>
     <div class="main">
-        <keep-alive>
-            <router-view/>
-        </keep-alive>
+        <router-view/>
         <div class="footer-tab">
             <!-- <router-link tag="div" class="tab-item" to="/main/apply"  replace>
                <div class="item">

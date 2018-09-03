@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { Toast } from 'vant';
-import { getSession } from 'common/js/storage.js';
+import { getLocal } from 'common/js/storage.js';
 
 const [baseURL, timeout] = ['api', 60*1000];
 const instance = axios.create({
@@ -9,7 +9,7 @@ const instance = axios.create({
 });
 // 添加请求拦截器
 instance.interceptors.request.use(config => {
-  let token = getSession('token');
+  let token = getLocal('token');
   if (token) {
     token = `${token};app;`;
     config.headers.Token = token

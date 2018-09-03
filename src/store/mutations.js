@@ -7,8 +7,9 @@ const mutations = {
     [types.SET_TICKET](state,ticket){
         state.ticket = ticket;
     },
-    [types.SET_DATE](state,index,newDate){
-        state.planeSearchData.date[index] = newDate;
+    [types.SET_DATE](state,newData){
+        const {index,newDate} = newData;
+        state.planeSearchData.date.splice(index,1,newDate);
     }
 }
 

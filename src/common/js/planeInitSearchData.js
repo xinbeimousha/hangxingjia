@@ -9,9 +9,7 @@ const data = {
   id: "",
   date:[first,second,third],
   stopsIds:['CAN','SHA','SHA'],
-  trips:{
-
-  },
+  trips:{},
   stops:{
     CAN:{
       c:'CAN',
