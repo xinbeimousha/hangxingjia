@@ -8,13 +8,16 @@ import Book from 'pages/Book/Book';
 import Trip from 'pages/Trip/Trip';
 import Me from 'pages/Me/Me';
 import PlaneSearch from 'pages/PlaneSearch/PlaneSearch';
+import Triping from 'pages/Triping/Triping';
+import TripPlan from 'pages/TripPlan/TripPlan';
+import Triped from 'pages/Triped/Triped';
+
 Vue.use(Router)
 
 export default new Router({
-  routes: [
-    {
+  routes: [{
       path: '/',
-      redirect:'/login'
+      redirect: '/login'
     },
     {
       path: '/login',
@@ -25,9 +28,8 @@ export default new Router({
       path: '/main',
       name: 'main',
       component: Main,
-      redirect:'/main/book',
-      children:[
-        {
+      redirect: '/main/book',
+      children: [{
           path: 'apply',
           component: Apply
         },
@@ -37,7 +39,24 @@ export default new Router({
         },
         {
           path: 'trip',
-          component: Trip
+          component: Trip,
+          redirect:'/main/trip/triping',
+          children: [{
+              path: '/main/trip/triping',
+              // name: 'triping',
+              component: Triping
+            },
+            {
+              path: '/main/trip/tripPlan',
+              // name: 'tripPlan',
+              component: TripPlan
+            },
+            {
+              path: '/main/trip/triped',
+              // name: 'triped',
+              component: Triped
+            },
+          ]
         },
         {
           path: 'me',
@@ -47,8 +66,8 @@ export default new Router({
     },
     {
       path: '/planeSearch',
-      name:'planeSearch',
-      component:PlaneSearch
+      name: 'planeSearch',
+      component: PlaneSearch
     }
   ]
 })
