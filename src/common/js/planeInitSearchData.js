@@ -8,8 +8,7 @@ const [first,second,third] = [getDate2(firstDay),getDate2(secondDay),getDate2(th
 const data = {
   id: "",
   date:[first,second,third],
-  stopsIds:['CAN','SHA','SHA'],
-  trips:{},
+  stopsIds:['CAN','SHA','SHA','SZX'],
   stops:{
     CAN:{
       c:'CAN',
@@ -18,6 +17,10 @@ const data = {
     SHA:{
       c:'SHA',
       n:'上海'
+    },
+    SZX:{
+      c:'SZX',
+      name:'深圳'
     }
   },
   cabinRequire:'',

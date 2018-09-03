@@ -70,7 +70,7 @@
           </li>
         </ul>
       </div>
-      <div class="btn-query">
+      <div class="btn-query" @click="query">
         查询
       </div>
     </div>
@@ -97,6 +97,7 @@ import { Actionsheet, Icon } from "vant";
 import { Tab, Tabs, DatetimePicker, Popup, Toast } from "vant";
 import { getBudgetSpaceType, getItineraryList } from "api/planeBook";
 import { getDate1, getDate2, getTime } from "common/js/day.js";
+import { setLocal } from 'common/js/storage.js';
 import { mapGetters,mapMutations } from 'vuex';
 
 export default {
@@ -131,6 +132,7 @@ export default {
           tripType: 2
         }
       ],
+      tripType:0,
       cabinData:cabinData,
       currentDate: new Date(),
     };
@@ -159,7 +161,9 @@ export default {
   },
   methods: {
     ...mapMutations({
-      setDate:'SET_DATE'
+      setDate:'SET_DATE',
+      setTripType:'SET_TRIPTYPE',
+      setCabin:'SET_CABINREQUIRE'
     }),
     hideSelect(item) {
       this.showTrip = false;
@@ -172,6 +176,8 @@ export default {
     
     getCurrentTabIndex(index){
       this.currentTabIndex = index;
+      this.tripType = index;
+      this.setTripType(index);
     },
 
     showDatePicker(index) {
@@ -195,10 +201,24 @@ export default {
     },
 
     chooseSpaceType(index){
-      if(!this.cabinData.changeable){
+      if(!this.cabinData[index].changeable){
         Toast('根据预算规则，您无权预订该舱位!');
         return;
       }
+      const record = this.cabinData.filter(item => {
+        return item.value === true;
+      })
+      if(record.length < 2){
+        Toast('请至少选择一个仓位等级');
+      }else{
+        this.cabinData[index].value = !this.cabinData[index].value;
+      }
+    },
+    // 查询
+    query(){
+      this._handleCabinRequire();
+      this._setTripIntoLocal();
+      console.log(this.planeSearchData)
     },
     // 获取行程
     _getItineraryList() {
@@ -252,7 +272,77 @@ export default {
     _handleSpaceTypeVal(index){
       this.cabinData[index].value = false;
       this.cabinData[index].changeable = false;
+    },
+    // 处理已经选择的舱位
+    _handleCabinRequire(){
+      const cabinArr = [];
+      let cabinRequire = '';
+      this.cabinData.forEach(item => {
+        if(item.value){
+          cabinArr.push(item.data);
+        }
+      })
+      cabinRequire = cabinArr.join(',');
+      this.setCabin(cabinRequire);
+    },
+    // 保存行程记录到本地
+    _setTripIntoLocal(){
+      let record = {
+        date:[],
+        tripType:this.tripType,
+        cabinRequire:this.planeSearchData.cabinRequire,
+        stops:[]
+      };
+      this._setTripInfo(record);
+      setLocal('record',JSON.stringify(record));
+    },
+    // 给行程记录填充信息
+    _setTripInfo(record){
+      const {date,stops,stopsIds} = this.planeSearchData;
+      const multiStops = [...stopsIds];
+      switch(this.tripType){
+        case 0:
+        record.date.push(date[0]);
+        record.stops.push(
+          [
+            stops[stopsIds[0]],
+            stops[stopsIds[1]],
+          ]
+        );
+        break;
+        case 1:
+        record.date.push(date[0],date[1]);
+        record.stops.push(
+         [
+            stops[stopsIds[0]],
+            stops[stopsIds[1]]
+         ]
+        );
+        break;
+        default :
+        record.date = date;
+        this._handleMultiInfo(multiStops,record,stops);
+      }
+    },
+    // 处理多程的行程信息
+    _handleMultiInfo(ids,record,stops){
+      const tripLength = ids.length / 2;
+      const newArr = [];
+      for(let i = 0;i < tripLength;i++){
+        newArr.push(
+          ids.splice(0,2)
+        )
+      }
+      newArr.forEach(item => {
+        record.stops.push(
+         [
+            stops[item[0]],
+            stops[item[1]]
+         ]
+        );
+      })
     }
+
   },
 
   components: {
