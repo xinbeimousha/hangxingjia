@@ -64,6 +64,7 @@
             class="item"
             v-for="(cabin,index) in cabinData"
             :class="{'active-item':cabin.value}"
+            :key="index"
             @click="chooseSpaceType(index)"
           >
             {{ cabin.name }}
