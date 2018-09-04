@@ -46,17 +46,17 @@ const router = new Router({
           component: Trip,
           redirect:'/main/trip/triping',
           children: [{
-              path: '/main/trip/triping',
+              path: 'triping',
               // name: 'triping',
               component: Triping
             },
             {
-              path: '/main/trip/tripPlan',
+              path: 'tripPlan',
               // name: 'tripPlan',
               component: TripPlan
             },
             {
-              path: '/main/trip/triped',
+              path: 'triped',
               // name: 'triped',
               component: Triped
             },
