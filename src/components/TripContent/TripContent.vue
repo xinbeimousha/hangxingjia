@@ -30,6 +30,9 @@
 <script>
 export default {
   props: {
+    item:{
+        
+    },
     head: {},
     startAddress: {},
     startTime: {},

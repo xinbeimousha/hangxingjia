@@ -16,13 +16,8 @@ export default {
         item:[],
     };
   },
-  mounted:{
-      
-  },
   methods:{
-      getData(){
-        alert(1);
-      },
+
   },
   components: {
     TripContent
