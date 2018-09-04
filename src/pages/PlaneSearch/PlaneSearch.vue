@@ -102,6 +102,7 @@ import { setLocal } from 'common/js/storage.js';
 import { mapGetters,mapMutations } from 'vuex';
 
 export default {
+  name:'search',
   created() {
     this._getBudgetSpaceType();
     this._getItineraryList();
@@ -219,7 +220,7 @@ export default {
     query(){
       this._handleCabinRequire();
       this._setTripIntoLocal();
-      console.log(this.planeSearchData)
+      this.$router.push('/planeSearch/result')
     },
     // 获取行程
     _getItineraryList() {

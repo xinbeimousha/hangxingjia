@@ -31,10 +31,20 @@ instance.interceptors.response.use(response => {
   }
   return response;
 }, error => {
-  if(error.code && error.code === 'ECONNABORTED'){
-    Toast('连接超时');
-  } 
-  Toast('网络错误');
+  if(error.response){
+    const status = error.response.status;
+    switch(status){
+      case 400 :
+      Toast('错误的请求');
+      break;
+      case 500 :
+      Toast('请检查网络');
+    }
+  }else{
+    if(error.message.indexOf('timeout') > -1){
+      Toast('连接超时');
+    }
+  }
   return Promise.reject(error)
 })
 /**
