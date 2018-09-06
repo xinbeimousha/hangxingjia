@@ -43,10 +43,11 @@ export default {
 
 .trip {
   flex 1;
-  height 100%
+  y-view();
 
   .tripcontent {
-    height: 100%;
+    flex 1;
+    y-view();
 
     .banner_title {
       x-middle();

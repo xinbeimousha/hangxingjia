@@ -44,9 +44,8 @@ export default {
 
 <style lang="stylus" scoped>
 .trip-plan{
-  height 100%;
-  overflow hidden;
-  overflow-y: scroll;
+  flex 1;
+  overflow-y scroll
 }
 </style>
 
