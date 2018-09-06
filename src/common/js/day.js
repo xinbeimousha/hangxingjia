@@ -17,3 +17,10 @@ export function getDate2(time){
 export function getTime(time){
   return day(time).format('hh:mm');
 }
+/**
+ * @description 获取日期,格式mm/ss
+ */
+export function getDate3(time){
+  return day(time).format('MM-DD');
+  
+}

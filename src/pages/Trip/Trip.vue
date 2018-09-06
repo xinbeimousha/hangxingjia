@@ -1,10 +1,9 @@
 <template>
-
   <div class="trip">
     <HeaderTitle title="我的行程"/>
     <div class="tripcontent">
       <div class="banner_title">
-        <router-link to="triping" tag="div" class="title .border-1px">
+        <router-link to="triping" tag="div" class="title border-1px">
           <div class="content">
             <span class="icon triping"></span>
             <div class="test">进行中</div>
@@ -23,9 +22,7 @@
           </div>
         </router-link>
       </div>
-      <keep-alive>
-          <router-view/>
-      </keep-alive>
+      <router-view/>
     </div>
   </div>
 </template>
@@ -45,62 +42,64 @@ export default {
 @import '~common/style/base.styl';
 
 .trip {
-  flex: 1;
+  flex 1;
   y-view();
-  .tripcontent{
-    flex:1;
+
+  .tripcontent {
+    flex 1;
     y-view();
-    }
-  .banner_title {
-    x-middle();
 
-    .title {
-      flex: 1;
-      text-align: center;
-      color: $color-text;
+    .banner_title {
+      x-middle();
 
-      .content {
-        x-middle();
-        line-height: 1;
-        margin: 0.8em 20%;
+      .title {
+        flex: 1;
+        text-align: center;
+        color: $color-text;
 
-        .icon {
-          display: inline-block;
-          width: 0.5rem;
-          height: 0.5rem;
-          margin-right: 0.15em;
-          background-size: cover;
-          background-repeat: no-repeat;
+        .content {
+          x-middle();
+          line-height: 1;
+          margin: 0.8em 20%;
 
-          &.triping {
-            background-image: url('./travel_index_tab1_ing.png');
-          }
+          .icon {
+            display: inline-block;
+            width: 0.5rem;
+            height: 0.5rem;
+            margin-right: 0.15em;
+            background-size: cover;
+            background-repeat: no-repeat;
 
-          &.tripPlan {
-            background-image: url('./travel_index_tab2_ing.png');
-          }
+            &.triping {
+              background-image: url('./travel_index_tab1_ing.png');
+            }
 
-          &.triped {
-            background-image: url('./travel_index_tab3_ing.png');
+            &.tripPlan {
+              background-image: url('./travel_index_tab2_ing.png');
+            }
+
+            &.triped {
+              background-image: url('./travel_index_tab3_ing.png');
+            }
           }
         }
-      }
 
-      &.router-link-active {
-        color: $color-text-active;
-        border-1px($color-text-active);
+        &.router-link-active {
+          color: $color-text-active;
+          border-1px($color-text-active);
 
-        .icon {
-          &.triping {
-            background-image: url('./travel_index_tab1_ed.png');
-          }
+          .icon {
+            &.triping {
+              background-image: url('./travel_index_tab1_ed.png');
+            }
 
-          &.tripPlan {
-            background-image: url('./travel_index_tab2_ed.png');
-          }
+            &.tripPlan {
+              background-image: url('./travel_index_tab2_ed.png');
+            }
 
-          &.triped {
-            background-image: url('./travel_index_tab3_ed.png');
+            &.triped {
+              background-image: url('./travel_index_tab3_ed.png');
+            }
           }
         }
       }

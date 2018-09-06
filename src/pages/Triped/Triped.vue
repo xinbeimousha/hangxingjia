@@ -43,10 +43,10 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
- .trip-plan{
-   flex:1;
-    overflow :scroll;
- }
+.trip-plan{
+  flex 1;
+  overflow-y scroll
+}
 </style>
 
 
