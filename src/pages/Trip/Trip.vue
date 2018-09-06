@@ -1,29 +1,32 @@
 <template>
+
   <div class="trip">
     <HeaderTitle title="我的行程"/>
-    <div class="banner_title">
-    <router-link to="triping" tag="div" class="title">
-      <div class="content">
-        <span class="icon triping"></span>
-        <div class="test">进行中</div>
+    <div class="tripcontent">
+      <div class="banner_title">
+        <router-link to="triping" tag="div" class="title .border-1px">
+          <div class="content">
+            <span class="icon triping"></span>
+            <div class="test">进行中</div>
+          </div>
+        </router-link>
+        <router-link to="tripPlan" tag="div" class="title border-1px">
+          <div class="content">
+            <span class="icon tripPlan"></span>
+            <div class="test">计划中</div>
+          </div>
+        </router-link>
+        <router-link to="triped" tag="div" class="title .border-1px">
+          <div class="content">
+            <span class="icon triped"></span>
+            <div class="test">已完成</div>
+          </div>
+        </router-link>
       </div>
-    </router-link>
-    <router-link to="tripPlan" tag="div" class="title">
-      <div class="content">
-        <span class="icon tripPlan"></span>
-        <div class="test">计划中</div>
-      </div>
-    </router-link>
-    <router-link to="triped" tag="div" class="title">
-      <div class="content">
-        <span class="icon triped"></span>
-        <div class="test">已完成</div>
-      </div>
-    </router-link>
-</div>
-<keep-alive>
-        <router-view/>
-    </keep-alive>
+      <keep-alive>
+          <router-view/>
+      </keep-alive>
+    </div>
   </div>
 </template>
 
@@ -39,10 +42,12 @@ export default {
 <style lang="stylus" scoped>
 @import '~common/style/variable.styl';
 @import '~common/style/mixin.styl';
+@import '~common/style/base.styl';
 
 .trip {
   flex: 1;
-
+  overflow: hidden;
+  overflow-y: scroll;
   .banner_title {
     x-middle();
 
@@ -54,7 +59,7 @@ export default {
       .content {
         x-middle();
         line-height: 1;
-        margin: 0.15em 20%;
+        margin: 0.8em 20%;
 
         .icon {
           display: inline-block;
@@ -80,6 +85,7 @@ export default {
 
       &.router-link-active {
         color: $color-text-active;
+        border-1px($color-text-active);
 
         .icon {
           &.triping {

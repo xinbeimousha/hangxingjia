@@ -8,6 +8,7 @@ import fastclick from 'fastclick';
 import './common/js/rem.js';
 import 'babel-polyfill';
 import './common/style/index.styl';
+import 'font-awesome/css/font-awesome.min.css';
 
 Vue.config.productionTip = false;
 

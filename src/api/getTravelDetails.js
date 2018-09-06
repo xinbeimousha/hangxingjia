@@ -1,10 +1,16 @@
 import request from './config.js';
-import axios from 'axios';
-export function getTravelDetails(){
-    return  request({
-        url:'appTmcItineraryController.do?getTravelDetails',
-        methods:'POST'
-    }).then(res=>{
-        return Promise.resolve(res.data)
-    })
+import qs from 'qs';
+export function getTravelDetails(page) {
+  const Page ={
+    state:page.state,
+    page: page.page,
+		pageSize: page.pageSize
+  }
+  return request({
+    url: 'appTmcItineraryController.do?getTravelDetails',
+    method: 'POST',
+    data:qs.stringify(Page),
+  }).then(res => {
+    return Promise.resolve(res.data)
+  })
 }

@@ -1,7 +1,7 @@
 <template>
 <div class="trip-plan">
-    <div>
-        <TripContent v-bind:item="item" head="呵呵" startAddress="河北" startTime="2018-01-01" endAddress="广州" endTime="2091-29-12" :isdetail='true' :src='1' />
+    <div v-for="(item,index) in item" :key="index">
+        <TripContent v-bind:item="item" v-bind:isdetail="isdetail" />
     </div>
 </div>
 
@@ -10,14 +10,31 @@
 
 <script>
 import TripContent from "components/TripContent/TripContent.vue";
+import { getTravelDetails } from "api/getTravelDetails";
 export default {
-  data(){
+  created() {
+    this._getdata();
+  },
+  data() {
     return {
-        item:[],
+      item: [],
+      isdetail: false
     };
   },
-  methods:{
-
+  methods: {
+    _getdata() {
+      var page = {
+        state: 1,
+        page: 1,
+        pageSize: 10
+      };
+      getTravelDetails(page).then(res => {
+        if (res.success) {
+          this.item = res.obj;
+          console.log(this.item);
+        }
+      });
+    }
   },
   components: {
     TripContent
