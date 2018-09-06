@@ -43,6 +43,11 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
+.trip-plan{
+  height 100%;
+  overflow hidden;
+  overflow-y: scroll;
+}
 </style>
 
 
