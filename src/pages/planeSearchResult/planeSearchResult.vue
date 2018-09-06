@@ -14,8 +14,24 @@
 <script>
 import HeaderTitle from 'components/HeaderTitle/HeaderTitle';
 import FlightList from 'components/FlightList/FlightList';
+import { getLocal } from 'common/js/storage.js';
+import { _searchPlaneList } from 'api/planeBook.js';
 
 export default {
+  created(){
+    this.searchData = JSON.parse(getLocal('record'));
+    console.log(this.searchData)
+  },
+  data(){
+    return {
+      searchData:null
+    }
+  },
+  methods:{
+    _searchPlaneList(){
+
+    }
+  },
   components:{
     HeaderTitle,
     FlightList
@@ -30,12 +46,13 @@ export default {
   .search-result{
     full-fixed(100);
     y-view();
-    background-color :$color-white;
+    background-color :$color-body;
 
     .choose-sort{
       x-middle();
       padding:0.2rem 0;
       border-1px(#BABABA);
+      background-color :$color-white;
       .sort{
         flex:1;
         text-align:center;

@@ -46,8 +46,11 @@ export default {
 
 .trip {
   flex: 1;
-  overflow: hidden;
-  overflow-y: scroll;
+  y-view();
+  .tripcontent{
+    flex:1;
+    y-view();
+    }
   .banner_title {
     x-middle();
 
