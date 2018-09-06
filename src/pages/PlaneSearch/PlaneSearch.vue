@@ -88,6 +88,7 @@
         @confirm="chooseDate" 
       />
     </Popup>
+    <router-view></router-view>
   </div>
 </template>
 
