@@ -9,6 +9,7 @@
       <FlightList 
         v-if="showList"
         :flightData="flightData"
+        :showSeat="showSeat"
       />
       <div class="fail-tips" v-if="showTips"> 
         <icon 
@@ -45,7 +46,8 @@ export default {
       showList:false,
       showTips:false,
       flightData:[],
-      seatData:[]
+      seatData:[],
+      showSeat:false
     };
   },
   computed: {

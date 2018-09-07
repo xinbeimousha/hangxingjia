@@ -1,7 +1,7 @@
 <template>
   <div class="flight-list">
     <ul class="flight-list-container" v-if="flightData.length > 0">
-      <li v-for="(flight,index) in flightData" class="flight-list-item">
+      <li v-for="(flight,index) in flightData" @click="clickShowSeat(index)" class="flight-list-item">
         <div class="flight-detail border-1px">
           <div class="flight-content">
             <div class="time">
@@ -29,7 +29,7 @@
             ¥ {{ flight.lowPrice }}起
           </div>
         </div>
-        <ul class="seat-detail">
+        <ul class="seat-detail" v-if="currentIndex === index">
           <li class="seat-item border-1px">
             <div class="seat-cabin">
               <span class="shipping">经济舱</span>
@@ -74,8 +74,15 @@ export default {
       }
     }
   },
-  mounted(){
-    console.log(this.flightData)
+  data(){
+    return {
+      currentIndex:-1
+    }
+  },
+  methods:{
+    clickShowSeat(index){
+      this.currentIndex = index;
+    }
   }
 };
 </script>
