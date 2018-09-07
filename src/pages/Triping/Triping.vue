@@ -103,5 +103,8 @@
 </script>
 
 <style lang="stylus" scoped>
-
+.trip-plan{
+  flex 1;
+  overflow-y scroll
+}
 </style>
