@@ -221,7 +221,7 @@ export default {
     query(){
       this._handleCabinRequire();
       this._setTripIntoLocal();
-      this.$router.push('/planeSearch/result')
+      this.$router.push('/planeSearchResult/0')
     },
     // 获取行程
     _getItineraryList() {
