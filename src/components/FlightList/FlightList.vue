@@ -1,28 +1,32 @@
 <template>
   <div class="flight-list">
-    <ul class="flight-list-container">
-      <li class="flight-list-item">
+    <ul class="flight-list-container" v-if="flightData.length > 0">
+      <li v-for="(flight,index) in flightData" class="flight-list-item">
         <div class="flight-detail border-1px">
           <div class="flight-content">
             <div class="time">
-              <span class="depart">10:05</span>
+              <span class="depart">{{ flight.depTime }}</span>
               <span class="line"></span>
-              <span class="arrival">11:05</span>
+              <span class="arrival">{{ flight.arrTime }}</span>
             </div>
             <div class="name">
-              <span class="depart">广州白云机场T2</span>
+              <span class="depart">{{ flight.depAirportName }}</span>
               <span></span>
-              <span class="arrival">揭阳潮汕机场国际</span>
+              <span class="arrival">{{ flight.arrAirPortName }}</span>
             </div>
             <div class="flight">
-              <img class="icon" src="./logo/2Z.png" alt="">
-              <span class="num">MU3685</span>
-              <span class="aircraft">机型：738</span>
-              <span class="share">共享 CZ3892</span>
+              <img class="icon" :src="require(`./logo/${flight.airlineCode}.png`)" alt="">
+              <span class="num">{{ flight.flightName }}</span>
+              <span class="aircraft">机型：{{ flight.flightType}}</span>
+              <span class="share" 
+                v-if="flight.shareFlightNo"
+              >
+                共享 {{flight.shareFlightNo}}
+              </span>
             </div>
           </div>
           <div class="flight-price global-blue">
-            ¥ 710起
+            ¥ {{ flight.lowPrice }}起
           </div>
         </div>
         <ul class="seat-detail">
@@ -58,13 +62,20 @@
 export default {
   props:{
     flightData:{
-      type:Object,
-      default:null
+      type:Array,
+      default(){
+        return [];
+      }
     },
     seatData:{
-      type:Object,
-      default:null
+      type:Array,
+      default(){
+        return [];
+      }
     }
+  },
+  mounted(){
+    console.log(this.flightData)
   }
 };
 </script>

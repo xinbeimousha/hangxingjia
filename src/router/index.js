@@ -75,12 +75,12 @@ const router = new Router({
       path: '/planeSearch',
       name: 'planeSearch',
       component: PlaneSearch,
-      children:[
-        {
-          path:'result',
-          component:PlaneSearchResult
-        }
-      ]
+    },
+    {
+      path: '/planeSearchResult/:id',
+      name:'planeSearchResult',
+      component:PlaneSearchResult,
+      props:true
     },
     {
       path: '/airportServer',

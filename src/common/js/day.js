@@ -15,7 +15,7 @@ export function getDate2(time){
  * @description 获取时间,格式hh:mm
  */
 export function getTime(time){
-  return day(time).format('hh:mm');
+  return day(time).format('HH:mm');
 }
 /**
  * @description 获取日期,格式mm/ss
