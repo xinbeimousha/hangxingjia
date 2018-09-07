@@ -12,6 +12,8 @@ import PlaneSearchResult from 'pages/PlaneSearchResult/PlaneSearchResult';
 import Triping from 'pages/Triping/Triping';
 import TripPlan from 'pages/TripPlan/TripPlan';
 import Triped from 'pages/Triped/Triped';
+import airportServer from 'pages/airportServer/airportServer'
+import airportActive from 'pages/airportActive/airportActive'
 
 Vue.use(Router)
 
@@ -79,6 +81,17 @@ const router = new Router({
       name:'planeSearchResult',
       component:PlaneSearchResult,
       props:true
+    },
+    {
+      path: '/airportServer',
+      name: 'airportServer',
+      component: airportServer,
+      children:[
+        {
+          path:'airportActive',
+          component:airportActive
+        }
+      ]
     }
   ]
 })
