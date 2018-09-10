@@ -35,11 +35,11 @@
                     </div>
                     <span>机场服务</span>
                 </router-link>
-                <div class="order">
+                <router-link tag="div" to="/order" class="order">
                     <div class="logo">
                         <img src="./book_index_order.png" alt="">
                     </div>
-                </div>
+                </router-link>
             </div>
         </div>
     </div>

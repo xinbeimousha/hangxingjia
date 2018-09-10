@@ -9,6 +9,7 @@ import Trip from 'pages/Trip/Trip';
 import Me from 'pages/Me/Me';
 import PlaneSearch from 'pages/PlaneSearch/PlaneSearch';
 import PlaneSearchResult from 'pages/PlaneSearchResult/PlaneSearchResult';
+import OrderList from 'pages/OrderList/OrderList';
 import Triping from 'pages/Triping/Triping';
 import TripPlan from 'pages/TripPlan/TripPlan';
 import Triped from 'pages/Triped/Triped';
@@ -81,6 +82,11 @@ const router = new Router({
       name:'planeSearchResult',
       component:PlaneSearchResult,
       props:true
+    },
+    {
+      path:'/order',
+      name:'order',
+      component:OrderList
     },
     {
       path: '/airportServer',
