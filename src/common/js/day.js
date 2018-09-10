@@ -1,6 +1,6 @@
 import day from 'dayjs';
 /**
- * @description  获取日期，格式yyyy/mm/ss
+ * @description  获取日期，格式yyyy/mm/dd
  */
 export function getDate1(time){
   return day(time).format('YYYY/MM/DD');
@@ -23,4 +23,28 @@ export function getTime(time){
 export function getDate3(time){
   return day(time).format('MM-DD');
   
+}
+/**
+ * @description 获取详细的日期，格式 yy/mm/dd hh:mm
+ */
+
+export function getDetailDate1(time){
+  return day(time).format('YY/MM/DD HH:mm')
+}
+/**
+ * @description 获取详细的日期，格式 mm月dd日 week HH:mm
+ */
+
+export function getDetailDate2(time){
+  const week = {
+    'Monday':'星期一',
+    'Tuesday':'星期二',
+    'Wednesday':'星期三',
+    'Thursday':'星期四',
+    'Friday':'星期五',
+    'Saturday':'星期六',
+    'Sunday':'星期日',
+  }
+  const daycn = week[day(time).format('dddd')];
+  return day(time).format('MM月DD日 ') + daycn + day(time).format(' HH:mm');
 }

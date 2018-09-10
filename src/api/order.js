@@ -4,10 +4,10 @@ import qs from 'qs';
 /**
  * @description 获取国内机票订单列表接口
  */
-export function getFlightOrders(page){
+export function getFlightOrders(page,showLoading){
   const url = 'flightController.do?getFlightOrders';
   const obj = {
-    page:1,
+    page:page,
     rows:10
   };
 
@@ -15,7 +15,7 @@ export function getFlightOrders(page){
     url,
     method:'post',
     data:qs.stringify(obj)
-  }).then(res => {
-    console.log(res)
+  },showLoading).then(res => {
+    return Promise.resolve(res.data)
   })
 }

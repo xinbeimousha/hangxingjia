@@ -1,38 +1,66 @@
 <template>
   <div class="list-item">
     <div class="item-title border-1px">
-      <div class="title">国内机票</div>
-      <div class="date">09月08日 星期六 12:36</div>
+      <div class="title">{{ title }}</div>
+      <div class="date">{{ createDate }}</div>
     </div>
     <div class="item-content border-1px">
       <div class="destination">
-        <div class="from">广州</div>
+        <div class="from">{{orderData.fromCity}}</div>
         <div class="line"></div>
-        <div class="to">北京</div>
-        <div class="price">¥ 2160</div>
+        <div class="to">{{orderData.toCity}}</div>
+        <div class="price">¥ {{orderData.totalAmount}}</div>
       </div>
       <div class="date">
-        <span class="dep">18/12/27 07:00</span>
-        <span class="arr">18/12/27 07:00</span>
+        <span class="dep">{{ depDate }}</span>
+        <span class="arr">{{ arrDate }}</span>
       </div>
       <div class="desc">
         <span class="airlineName">
-          航班号：CZ3115
+          航班号：{{orderData.flightNo}}
         </span>
         <span class="cabin">
-          舱位：经济舱(Y)
+          舱位：{{orderData.flightSpaceName}}({{orderData.flightSpace}})
         </span>
       </div>
     </div>
     <div class="item-status">
-      <span class="status">订单取消</span>
+      <span class="status">{{statusText}}</span>
       <span class="detail">查看详情</span>
     </div>
   </div>
 </template>
 
 <script>
-export default {};
+import statusText from 'common/js/orderStatus.js';
+import { getDetailDate1,getDetailDate2 } from 'common/js/day.js';
+
+export default {
+  props:{
+    orderData:{
+      type:Object,
+      default:null
+    },
+    title:{
+     type:String,
+     default:''
+    }
+  },
+  computed:{
+    statusText(){
+      return statusText[this.orderData.status];
+    },
+    depDate(){
+      return getDetailDate1(this.orderData.depTime);
+    },
+    arrDate(){
+      return getDetailDate1(this.orderData.arrTime);
+    },
+    createDate(){
+      return getDetailDate2(this.orderData.createTime);
+    }
+  }
+};
 </script>
 
 <style lang="stylus" scoped>
