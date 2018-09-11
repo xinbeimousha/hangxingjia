@@ -14,6 +14,8 @@ import TripPlan from 'pages/TripPlan/TripPlan';
 import Triped from 'pages/Triped/Triped';
 import airportServer from 'pages/airportServer/airportServer'
 import airportActive from 'pages/airportActive/airportActive'
+import commonPage from 'pages/commonPage/commonPage'
+import airportCustomer from 'pages/airportCustomer/airportCustomer'
 
 Vue.use(Router)
 
@@ -84,14 +86,22 @@ const router = new Router({
     },
     {
       path: '/airportServer',
-      name: 'airportServer',
-      component: airportServer,
-      children:[
-        {
-          path:'airportActive',
-          component:airportActive
-        }
-      ]
+      // name: 'airportServer',
+      component: airportServer
+    },
+    {
+      path:'/airportActive',
+      component:airportActive
+    },
+    {
+      path:'/commonPage',
+      name:'commonPage',
+      component:commonPage
+    },
+    {
+      path:'/airportCustomer',
+      // name:'aitportCustomer',
+      component:airportCustomer
     }
   ]
 })

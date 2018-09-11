@@ -14,7 +14,7 @@
             </div>
             <ul class="myul">
                 <li class="myli" >
-                    <router-link tag="div" class="box" to="/airportServer/airportActive">
+                    <router-link tag="div" class="box" to="/airportActive">
                         <div class="top">
                             <img src="./book_index_plane.png"/>
                         </div>
@@ -25,31 +25,31 @@
                             <span>出行变得更简单</span>
                         </div>
                     </router-link>
-                        <div class="box">
-                            <div class="top">
-                                <img src="./airport_service_print.png"/>
-                            </div>
-                            <div class="center">
-                                <span>在线值机</span>
-                            </div>
-                            <div class="bottom">
-                                <span>排队长龙说拜拜</span>
-                            </div>
-                        </div> 
-                        <div class="box">
-                            <div class="top">
-                                <img src="./airport_service.png"/>
-                            </div>
-                            <div class="center">
-                                <span>在线客服</span>
-                            </div>
-                            <div class="bottom">
-                                <span>找不到警察找客服</span>
-                            </div>
-                        </div> 
+                    <div  class="box"  @click="routerTo('在线值机','1')">
+                        <div class="top">
+                            <img src="./airport_service_print.png"/>
+                        </div>
+                        <div class="center">
+                            <span>在线值机</span>
+                        </div>
+                        <div class="bottom">
+                            <span>排队长龙说拜拜</span>
+                        </div>
+                    </div> 
+                    <router-link tag="div" class="box" to="/airportCustomer">
+                        <div class="top">
+                            <img src="./airport_service.png"/>
+                        </div>
+                        <div class="center">
+                            <span>在线客服</span>
+                        </div>
+                        <div class="bottom">
+                            <span>找不到警察找客服</span>
+                        </div>
+                    </router-link> 
                 </li>
                 <li class="myli">
-                   <div class="box">
+                   <div class="box" @click="routerTo('地图导航','2')">
                             <div class="top">
                                 <img src="./airport_service_map.png"/>
                             </div>
@@ -190,7 +190,20 @@ import HeaderTitle from "components/HeaderTitle/HeaderTitle.vue";
 import { Swipe, SwipeItem } from "vant";
 export default {
   data() {
-    return {};
+    return {
+      
+    };
+  },
+  methods: {
+    routerTo(name, type) {
+      this.$router.push({
+        name: `commonPage`,
+        query: {
+          name: name,
+          type: type
+        }
+      });
+    }
   },
   components: {
     HeaderTitle,
