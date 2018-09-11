@@ -39,6 +39,8 @@ instance.interceptors.response.use(response => {
       break;
       case 500 :
       Toast('请检查网络');
+      default:
+      Toast('未知的错误');
     }
   }else{
     if(error.message.indexOf('timeout') > -1){
