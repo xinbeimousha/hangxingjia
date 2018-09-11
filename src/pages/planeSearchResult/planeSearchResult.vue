@@ -9,7 +9,7 @@
       <FlightList 
         v-if="showList"
         :flightData="flightData"
-        :showSeat="showSeat"
+        @show="showSeat"
       />
       <div class="fail-tips" v-if="showTips"> 
         <icon 
@@ -26,6 +26,7 @@
 <script>
 import HeaderTitle from "components/HeaderTitle/HeaderTitle";
 import FlightList from "components/FlightList/FlightList";
+import classCode from 'common/js/classCode.js';
 import { getLocal } from "common/js/storage.js";
 import { searchPlaneList } from "api/planeSearchResult.js";
 import { getTime } from 'common/js/day.js';
@@ -46,8 +47,6 @@ export default {
       showList:false,
       showTips:false,
       flightData:[],
-      seatData:[],
-      showSeat:false
     };
   },
   computed: {
@@ -61,6 +60,14 @@ export default {
     this._searchPlaneList();
   },
   methods: {
+    // 控制座位显示选项
+    showSeat(index,lastIndex){
+      this.flightData[index].showSeat = !this.flightData[index].showSeat;
+      // 如果点击了不同的选项，需要把上一项的showSeat设为false
+      if(index!==lastIndex && lastIndex > -1){
+        this.flightData[lastIndex].showSeat = false;
+      }
+    },
     // 查询机票列表
    async _searchPlaneList() {
       const searchData = this._handleSearchPlaneData();
@@ -121,7 +128,8 @@ export default {
           flightNo,
           shareFlightNo,
           flightType,
-          lowPrice
+          lowPrice,
+          seats
         ] = [
           item.departureDate.time,
           item.arrivalDate.time,
@@ -133,9 +141,15 @@ export default {
           item.flightNo,
           item.shareFlightNo,
           item.aircraft,
-          item.price
+          item.price,
+          item.seats
         ]
+        // 给seat添加className
+        seats.forEach(seat => {
+          seat.className = this._getClassName(seat.code);
+        })
         flightList.push({
+          showSeat:false,
           depDate,
           arrDate,
           depTime:getTime(depDate),
@@ -149,10 +163,10 @@ export default {
           flightName:airlineCode + flightNo,
           shareFlightNo,
           flightType,
-          lowPrice
+          lowPrice,
+          seats
         })
       });
-
       return flightList;
     },
     // 获取机场的名称
@@ -160,6 +174,10 @@ export default {
       let airportName = '';
       airportName = airPortInfos[code].airPortName + iterm;
       return airportName;
+    },
+    // 获取舱位等级的名称
+    _getClassName(code){
+      return classCode[code]?classCode[code]:'其他舱位'
     }
 
   },

@@ -29,22 +29,11 @@
             ¥ {{ flight.lowPrice }}起
           </div>
         </div>
-        <ul class="seat-detail" v-if="currentIndex === index">
-          <li class="seat-item border-1px">
+        <ul class="seat-detail" v-if="currentIndex === index && flight.showSeat">
+          <li class="seat-item border-1px" v-for="(seat,index) in flight.seats">
             <div class="seat-cabin">
-              <span class="shipping">经济舱</span>
-              <span class="sales global-blue">65折</span>
-              <span class="ticket global-blue">余量充足</span>
-            </div>
-            <div class="seat-book">
-              <span class="price global-blue">¥1000</span>
-              <div class="book">预订</div>
-            </div>
-          </li>
-          <li class="seat-item border-1px">
-            <div class="seat-cabin">
-              <span class="shipping">经济舱</span>
-              <span class="sales global-blue">65折</span>
+              <span class="shipping">{{seat.className}}</span>
+              <span class="sales global-blue"></span>
               <span class="ticket global-blue">余量充足</span>
             </div>
             <div class="seat-book">
@@ -66,12 +55,6 @@ export default {
       default(){
         return [];
       }
-    },
-    seatData:{
-      type:Array,
-      default(){
-        return [];
-      }
     }
   },
   data(){
@@ -81,6 +64,7 @@ export default {
   },
   methods:{
     clickShowSeat(index){
+      this.$emit('show',index,this.currentIndex)
       this.currentIndex = index;
     }
   }
