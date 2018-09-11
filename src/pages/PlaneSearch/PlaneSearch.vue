@@ -7,12 +7,10 @@
         <Icon name="arrow" />
       </div>
       <div class="flight-detail">
-        <Tabs class="reset" @click="getCurrentTabIndex">
+        <Tabs class="reset" @click="handleTripType">
           <Tab v-for="(item,index) in tripTypes" :title="item.name" :key="index">
-          </Tab>
-        </Tabs>
-        <div class="flight-content">
-          <div class="one-way" v-if="currentTabIndex === 0">
+            <div class="flight-content">
+          <div class="one-way" v-if="index === 0">
             <div class="city border-1px">
               <div class="from">
                 {{ fromCity }}
@@ -27,10 +25,10 @@
               </div>
             </div>
             <div class="date border-1px">
-              <span class="depart" @click="showDatePicker(currentTabIndex)">{{ departDate }}</span>
+              <span class="depart" @click="showDatePicker(0)">{{ departDate }}</span>
             </div>
           </div>
-          <div class="two-way" v-else-if="currentTabIndex === 1">
+          <div class="two-way" v-else-if="index === 1">
             <div class="city border-1px">
               <div class="from">
                 {{ fromCity }}
@@ -45,18 +43,25 @@
               </div>
             </div>
             <div class="date border-1px">
-              <span class="depart" @click="showDatePicker(currentTabIndex-1)"> {{ departDate }} </span>
+              <span class="depart" @click="showDatePicker(0)"> {{ departDate }} </span>
               <span class="pad"></span>
-              <span class="arrival" @click="showDatePicker(currentTabIndex)"> {{ arrivalDate }}</span>
+              <span class="arrival" @click="showDatePicker(1)"> {{ arrivalDate }}</span>
             </div>
           </div>
           <div class="multi-way" v-else>其他</div>
         </div>
+          </Tab>
+        </Tabs>
       </div>
       <div class="cabin-wrapper">
         <p class="title">要求舱位</p>
         <ul class="cabin-require">
-          <li class="item" v-for="(cabin,index) in cabinData" :class="{'active-item':cabin.value}" :key="index" @click="chooseSpaceType(index)">
+          <li class="item" 
+            v-for="(cabin,index) in cabinData" 
+            :class="{'active-item':cabin.value}" 
+            :key="index" 
+            @click="chooseSpaceType(index)"
+          >
             {{ cabin.name }}
           </li>
         </ul>
@@ -67,7 +72,13 @@
     </div>
     <Actionsheet v-model="showTrip" :actions="tripList" @select="hideSelect" />
     <Popup v-model="showDate" position="bottom">
-      <DatetimePicker v-model="currentDate" type="date" :min-date="new Date(this.departDate)" @cancel="hideDatePicker" @confirm="chooseDate" />
+      <DatetimePicker 
+        v-model="currentDate" 
+        type="date" 
+        :min-date="new Date(this.departDate)" 
+        @cancel="hideDatePicker" 
+        @confirm="chooseDate" 
+      />
     </Popup>
     <router-view></router-view>
   </div>
@@ -104,7 +115,6 @@ export default {
     return {
       showTrip: false,
       showDate: false,
-      currentTabIndex: 0,
       currentSearchDataIndex: 0,
       tripList: [
         {
@@ -166,8 +176,7 @@ export default {
       this.showTrip = true;
     },
 
-    getCurrentTabIndex(index) {
-      this.currentTabIndex = index;
+    handleTripType(index) {
       this.tripType = index;
       this.setTripType(index);
     },
@@ -182,7 +191,7 @@ export default {
     },
 
     chooseDate(val) {
-      const index = this.currentTabIndex;
+      const index = this.currentSearchDataIndex;
       const newDate = getDate2(val);
       const obj = {
         index,
