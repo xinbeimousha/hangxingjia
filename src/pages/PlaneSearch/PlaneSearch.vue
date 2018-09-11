@@ -115,7 +115,7 @@ export default {
     return {
       showTrip: false,
       showDate: false,
-      currentSearchDataIndex: 0,
+      currentSearchDateIndex: 0,
       tripList: [
         {
           name: "无"
@@ -183,7 +183,7 @@ export default {
 
     showDatePicker(index) {
       this.showDate = true;
-      this.currentSearchDataIndex = index;
+      this.currentSearchDateIndex = index;
     },
 
     hideDatePicker() {
@@ -191,7 +191,7 @@ export default {
     },
 
     chooseDate(val) {
-      const index = this.currentSearchDataIndex;
+      const index = this.currentSearchDateIndex;
       const newDate = getDate2(val);
       const obj = {
         index,
