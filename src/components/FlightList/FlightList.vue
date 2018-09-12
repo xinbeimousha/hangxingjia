@@ -15,7 +15,7 @@
               <span class="arrival">{{ flight.arrAirPortName }}</span>
             </div>
             <div class="flight">
-              <img class="icon" :src="require(`./logo/${flight.airlineCode}.png`)" alt="">
+              <img class="icon" :src="require(`common/img/logo/${flight.airlineCode}.png`)" alt="">
               <span class="num">{{ flight.flightName }}</span>
               <span class="aircraft">机型：{{ flight.flightType}}</span>
               <span class="share" 

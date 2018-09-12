@@ -9,6 +9,7 @@ import Trip from 'pages/Trip/Trip';
 import Me from 'pages/Me/Me';
 import PlaneSearch from 'pages/PlaneSearch/PlaneSearch';
 import DomeSearchResult from 'pages/DomeSearchResult/DomeSearchResult';
+import DomeOrder from 'pages/DomeOrder/DomeOrder';
 import OrderList from 'pages/OrderList/OrderList';
 import Triping from 'pages/Triping/Triping';
 import TripPlan from 'pages/TripPlan/TripPlan';
@@ -82,6 +83,11 @@ const router = new Router({
       name:'domeSearchResult',
       component:DomeSearchResult,
       props:true
+    },
+    {
+      path:'/domeOrder',
+      name:'domeOrder',
+      component:DomeOrder
     },
     {
       path:'/order',

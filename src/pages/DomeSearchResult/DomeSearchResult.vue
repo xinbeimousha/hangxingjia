@@ -117,6 +117,7 @@ export default {
           flightCheckPriceDTOList
         }
         setLocal('airlines',JSON.stringify(airlines));
+        this.$router.push('/domeOrder');
       }else{
         Dialog.alert({
           title:'提示',
