@@ -33,8 +33,9 @@
           <li class="seat-item border-1px" v-for="(seat,index) in flight.seats">
             <div class="seat-cabin">
               <span class="shipping">{{seat.className}}</span>
-              <span class="sales global-blue"></span>
-              <span class="ticket global-blue">余量充足</span>
+              <span class="sales global-blue" v-if="seat.fareBase!==100">{{seat.fareBase}}折</span>
+              <span class="ticket global-blue" v-if="seat.seatRemain < 9">剩余 <span class="num">{{seat.seatRemain}}</span> 张</span>
+              <span class="ticket global-blue" v-else>余量充足</span>
             </div>
             <div class="seat-book">
               <span class="price global-blue">¥1000</span>
@@ -195,13 +196,19 @@ export default {
           .seat-cabin {
             flex: 1;
             font-size: 0.24rem;
-
             .shipping {
               font-size: 0.3rem;
+
             }
 
             .sales {
               padding: 0 0.1rem;
+            }
+            .ticket{
+
+              .num {
+                color:red;
+              }
             }
           }
 

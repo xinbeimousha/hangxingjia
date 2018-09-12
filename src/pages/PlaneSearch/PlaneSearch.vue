@@ -10,46 +10,46 @@
         <Tabs class="reset" @click="handleTripType">
           <Tab v-for="(item,index) in tripTypes" :title="item.name" :key="index">
             <div class="flight-content">
-          <div class="one-way" v-if="index === 0">
-            <div class="city border-1px">
-              <div class="from">
-                {{ fromCity }}
-              </div>
-              <div class="icon">
-                <div class="logo">
-                  <img src="./return.png" alt="">
+              <div class="one-way" v-if="index === 0">
+                <div class="city border-1px">
+                  <div class="from">
+                    {{ fromCity }}
+                  </div>
+                  <div class="icon">
+                    <div class="logo">
+                      <img src="./return.png" alt="">
+                    </div>
+                  </div>
+                  <div class="to">
+                    {{ toCity }}
+                  </div>
+                </div>
+                <div class="date border-1px">
+                  <span class="depart" @click="showDatePicker(0)">{{ departDate }}</span>
                 </div>
               </div>
-              <div class="to">
-                {{ toCity }}
-              </div>
-            </div>
-            <div class="date border-1px">
-              <span class="depart" @click="showDatePicker(0)">{{ departDate }}</span>
-            </div>
-          </div>
-          <div class="two-way" v-else-if="index === 1">
-            <div class="city border-1px">
-              <div class="from">
-                {{ fromCity }}
-              </div>
-              <div class="icon">
-                <div class="logo">
-                  <img src="./return.png" alt="">
+              <div class="two-way" v-else-if="index === 1">
+                <div class="city border-1px">
+                  <div class="from">
+                    {{ fromCity }}
+                  </div>
+                  <div class="icon">
+                    <div class="logo">
+                      <img src="./return.png" alt="">
+                    </div>
+                  </div>
+                  <div class="to">
+                    {{ toCity }}
+                  </div>
+                </div>
+                <div class="date border-1px">
+                  <span class="depart" @click="showDatePicker(0)"> {{ departDate }} </span>
+                  <span class="pad"></span>
+                  <span class="arrival" @click="showDatePicker(1)"> {{ arrivalDate }}</span>
                 </div>
               </div>
-              <div class="to">
-                {{ toCity }}
-              </div>
+              <div class="multi-way" v-else>其他</div>
             </div>
-            <div class="date border-1px">
-              <span class="depart" @click="showDatePicker(0)"> {{ departDate }} </span>
-              <span class="pad"></span>
-              <span class="arrival" @click="showDatePicker(1)"> {{ arrivalDate }}</span>
-            </div>
-          </div>
-          <div class="multi-way" v-else>其他</div>
-        </div>
           </Tab>
         </Tabs>
       </div>
@@ -70,7 +70,11 @@
         查询
       </div>
     </div>
-    <Actionsheet v-model="showTrip" :actions="tripList" @select="hideSelect" />
+    <Actionsheet 
+      v-model="showTrip" 
+      :actions="tripList" 
+      @select="hideSelect" 
+    />
     <Popup v-model="showDate" position="bottom">
       <DatetimePicker 
         v-model="currentDate" 
