@@ -38,8 +38,8 @@
               <span class="ticket global-blue" v-else>余量充足</span>
             </div>
             <div class="seat-book">
-              <span class="price global-blue">¥1000</span>
-              <div class="book">预订</div>
+              <span class="price global-blue">¥{{seat.price}}</span>
+              <div class="book" @click.stop="book(flight,seat)">预订</div>
             </div>
           </li>
         </ul>
@@ -67,6 +67,9 @@ export default {
     clickShowSeat(index){
       this.$emit('show',index,this.currentIndex)
       this.currentIndex = index;
+    },
+    book(flight,seat){
+      this.$emit('book',flight,seat);
     }
   }
 };
