@@ -6,7 +6,11 @@
     />
     <div class="dome-order-content">
       <div class="airline-wrapper" v-if="airlineData.length > 0">
-        <AirLine />
+        <AirLine 
+          v-for="(airline,index) in airlineData"
+          :airline="airline"
+          :key="index"
+        />
       </div>
       <div class="passenger">
         <div class="people">
@@ -17,7 +21,7 @@
             <span class="name">唐文</span>
           </div>
           <div class="add">
-            添加乘机人
+            修改乘机人
           </div>
         </div>
         <div class="phone">
@@ -29,9 +33,11 @@
           </div>
         </div>
       </div>
-      <div class="retreating">
+      <div class="retreating" v-if="airlineData.length > 0">
         <p class="title">退改声明</p>
-        <p class="content">航班预计离站时间前2小时航班预计离站时间前2小时航班预计离站时间前2小时航班预计离站时间前2小时航班预计离站时间前2小时</p>
+        <p class="content" v-for="(airline,index) in airlineData">
+          {{airline.seat.cmt}}
+        </p>
       </div>
     </div>
     <div class="dome-order-footer">
@@ -61,18 +67,26 @@ export default {
   data(){
     return {
       telephone:18675961249,
-      airlineData:[]
+      airlineData:[],
+      passengers:[],
+      singlePrice:0,
+      peopleNum:1
+    }
+  },
+  computed:{
+    totalPrice(){
+      return this.singlePrice * this.peopleNum
     }
   },
   methods:{
+    // 获得航段数据
     _getAirlineData(){
       const airlineData = JSON.parse(getLocal('airlines'));
       if(airlineData.length){
         this.airlineData = airlineData;
       }
-      console.log(this.airlineData)
-
     }
+    // 获得
   }
 }
 </script>

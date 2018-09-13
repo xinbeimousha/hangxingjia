@@ -2,30 +2,51 @@
   <div class="airline">
     <div class="content">
       <div class="time">
-        <div class="depart">08:00</div>
+        <div class="depart">{{flight.depTime}}</div>
         <div class="line"></div>
-        <div class="arrival">11:10</div>
+        <div class="arrival">{{flight.arrTime}}</div>
       </div>
       <div class="airport">
-        <div class="from">广州白云机场T2</div>
-        <div class="to">北京首都国际机场T2</div>
+        <div class="from">{{flight.depAirportName}}</div>
+        <div class="to">{{flight.arrAirPortName}}</div>
       </div>
       <div class="air-info">
-        <img :src="require(`common/img/logo/2Z.png`)" class="icon">
-        <span class="carrier">CZ2301</span>
-        <span class="date">2018/08/28</span>
-        <span class="share">共享 CZ2001</span>
+        <img :src="require(`common/img/logo/${flight.airlineCode}.png`)" class="icon">
+        <span class="carrier">{{flight.flightName}}</span>
+        <span class="date">{{departDate}}</span>
+        <span class="share" v-if="flight.shareFlightNo">共享 {{flight.shareFlightNo}}</span>
       </div>
     </div>
     <div class="price">
-      ¥1130
+      ¥{{seat.price}}
     </div>
   </div>
 </template>
 
 <script>
+import { getDate1 } from 'common/js/day.js'
 export default {
-  
+  props:{
+    airline:{
+      type:Object,
+      default:null
+    }
+  },
+  computed:{
+    flight(){
+      return this.airline.flight
+    },
+    seat(){
+      return this.airline.seat
+    },
+    departDate(){
+      return getDate1(this.flight.depDate)
+    }
+  },
+  created(){
+    console.log(this.flight)
+    console.log(this.seat)
+  }
 };
 </script>
 
