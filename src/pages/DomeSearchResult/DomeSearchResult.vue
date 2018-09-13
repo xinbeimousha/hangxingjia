@@ -109,13 +109,12 @@ export default {
         const flightCheckPriceDTOList = checkResult.obj
         seat.price = flightCheckPriceDTOList.salesPrice;
         seat.totalPrice = flightCheckPriceDTOList.totalPrice;
+
+        flight.seat = seat;
+        flight.flightCheckPriceDTOList = flightCheckPriceDTOList;
         
         const airlines = this._getAirlines();
-        airlines[this.page] = {
-          flight,
-          seat,
-          flightCheckPriceDTOList
-        }
+        airlines[this.page] = flight;
         setLocal('airlines',JSON.stringify(airlines));
         this.$router.push('/domeOrder');
       }else{

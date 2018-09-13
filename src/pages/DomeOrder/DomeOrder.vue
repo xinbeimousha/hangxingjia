@@ -8,7 +8,8 @@
       <div class="airline-wrapper" v-if="airlineData.length > 0">
         <AirLine 
           v-for="(airline,index) in airlineData"
-          :airline="airline"
+          :showlow="false"
+          :flight="airline"
           :key="index"
         />
       </div>
@@ -18,7 +19,9 @@
             乘机人
           </div>
           <div class="names">
-            <span class="name">唐文</span>
+            <div class="name" v-for="(item,index) in passengers">
+              <span v-if="item.select">{{item.uname}}</span>
+            </div>
           </div>
           <div class="add">
             修改乘机人
@@ -29,7 +32,7 @@
             手机
           </div>
           <div class="num">
-            <input type="text" v-model="telephone" placeholder="输入电话号码" name="" id="">
+            <input type="text" v-model="telephone" placeholder="输入电话号码">
           </div>
         </div>
       </div>
@@ -55,6 +58,7 @@
 import HeaderTitle from 'components/HeaderTitle/HeaderTitle';
 import AirLine from 'components/AirlineItem/AirlineItem';
 import { getLocal } from 'common/js/storage.js';
+import { getOthersInItinerary } from 'api/getOthersInItinerary.js';
 
 export default {
   components:{
@@ -62,6 +66,7 @@ export default {
     AirLine
   },
   created(){
+    this._getOthersInItinerary();
     this._getAirlineData();
   },
   data(){
@@ -85,8 +90,20 @@ export default {
       if(airlineData.length){
         this.airlineData = airlineData;
       }
+    },
+    // 获取同行人
+    async _getOthersInItinerary(){
+      const data = await  getOthersInItinerary('8a9b2f0f5f5896b5015f58afa2f40004');
+      if(data.success){
+        this.passengers = data.obj;
+        this.passengers.forEach(item => {
+          item.select = true;
+          if(item.defaultUser){
+            this.telephone = item.mobile;
+          }
+        })
+      }
     }
-    // 获得
   }
 }
 </script>

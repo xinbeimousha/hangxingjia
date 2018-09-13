@@ -18,7 +18,8 @@
       </div>
     </div>
     <div class="price">
-      ¥{{seat.price}}
+      <span v-if="showlow">¥{{flight.lowPrice}}起</span>
+      <span v-else>¥{{seat.price}}</span>
     </div>
   </div>
 </template>
@@ -27,25 +28,25 @@
 import { getDate1 } from 'common/js/day.js'
 export default {
   props:{
-    airline:{
+    flight:{
       type:Object,
       default:null
+    },
+    showlow:{
+      type:Boolean,
+      default:true
     }
   },
   computed:{
-    flight(){
-      return this.airline.flight
-    },
     seat(){
-      return this.airline.seat
+      return this.flight.seat&&this.flight.seat
     },
     departDate(){
       return getDate1(this.flight.depDate)
     }
   },
   created(){
-    console.log(this.flight)
-    console.log(this.seat)
+
   }
 };
 </script>
