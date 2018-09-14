@@ -31,8 +31,8 @@ export default {
       isLoading: false, //是否处于下拉刷新状态
       loading: false, //是否处于加载状态
       finished: false, //是否已加载完所有数据
-      hasNoOrder: false,
-      hasNoMore: false
+      hasNoOrder: false, // 是否有数据
+      hasNoMore: false // 是否有更多数据
     };
   },
   methods: {
