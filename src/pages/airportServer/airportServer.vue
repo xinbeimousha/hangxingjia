@@ -60,8 +60,8 @@
                                 <span>再也不用问人了</span>
                             </div>
                         </div> 
-                        <div class="box">
-                            <div class="top">
+                        <div class="box" @click="alertMsg()">
+                            <div class="top" >
                                 <img src="./book_index_food.png"/>
                             </div>
                             <div class="center">
@@ -71,7 +71,7 @@
                                 <span>机场美食指南针</span>
                             </div>
                         </div> 
-                        <div class="box">
+                        <div class="box" @click="alertMsg()">
                             <div class="top">
                                 <img src="./airport_service_rest.png"/>
                             </div>
@@ -84,7 +84,7 @@
                         </div> 
                 </li>
                 <li class="myli">
-                    <div class="box">
+                    <div class="box"  @click="routerTo('失物招领','3')">
                             <div class="top">
                                 <img src="./airport_service_lost.png"/>
                             </div>
@@ -95,7 +95,7 @@
                                 <span>是我的就是我的</span>
                             </div>
                         </div> 
-                   <div class="box">
+                   <div class="box" @click="alertMsg()">
                             <div class="top">
                                 <img src="./airport_service_bus.png"/>
                             </div>
@@ -106,7 +106,7 @@
                                 <span>我的路线我做主</span>
                             </div>
                         </div> 
-                   <div class="box">
+                   <div class="box" @click="routerTo('机票&行程单验真','4')">
                             <div class="top">
                                 <img src="./airport_service_safe.png"/>
                             </div>
@@ -125,24 +125,24 @@
                     <span>快速导航</span>
                 </div>
                 <ul class="ul1">
-                    <li class="li1">
+                    <li class="li1" @click="routerTo('广州地铁','5')" >
                         <img src="./airport_service_s.png">
                         <span>广州地铁</span>
                     </li>
-                    <li class="li1">
+                    <li class="li1" @click="routerTo('城际大巴','6')">
                         <span>城际大巴</span>
                     </li>
                 </ul>
                 <ul class="ul1">
-                    <li class="li1">
+                    <li class="li1" @click="routerTo('城市候机楼','7')">
                         <span>城市候机楼</span>
                     </li>
-                    <li class="li1">
+                    <li class="li1" @click="alertMsg()">
                         <span>市区大巴</span>
                     </li>
                 </ul>
                 <ul class="ul1">
-                    <li class="li1">
+                    <li class="li1"  @click="routerTo('出租车','8')">
                         <span>出租车</span>
                     </li>
                     <li class="li1 error"></li>
@@ -188,11 +188,10 @@
 <script>
 import HeaderTitle from "components/HeaderTitle/HeaderTitle.vue";
 import { Swipe, SwipeItem } from "vant";
+import { Toast } from "vant";
 export default {
   data() {
-    return {
-      
-    };
+    return {};
   },
   methods: {
     routerTo(name, type) {
@@ -202,6 +201,12 @@ export default {
           name: name,
           type: type
         }
+      });
+    },
+    alertMsg() {
+      Toast({
+        duration: 800,
+        message: "该板块尚未开放，敬请期待"
       });
     }
   },

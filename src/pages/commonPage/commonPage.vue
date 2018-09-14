@@ -28,15 +28,35 @@ export default {
         oIframe.src = "http://baiyun.dragonpass.com.cn/gbiamu.html";
         break;
       case 2:
-        oIframe.src ="http://maps.rtmap.com/guangzhouwebmap/index.html?key=QCM3oiDv0g&buildid=863200010050100001&floor=f3&labelstyle=circle-point&openid=oikd5juSX08G4RZ0HCPjuCfDLHAM";
+        oIframe.src =
+          "http://maps.rtmap.com/guangzhouwebmap/index.html?key=QCM3oiDv0g&buildid=863200010050100001&floor=f3&labelstyle=circle-point&openid=oikd5juSX08G4RZ0HCPjuCfDLHAM";
+        break;
+      case 3:
+        oIframe.src =
+          "http://swzl.baiyunport.com.cn/jeezz-consumer/webpage/thelost/index.html";
+        break;
+      case 4:
+        oIframe.src = "http://www.travelsky.com/tsky/mobile/validate";
+        break;
+      case 5:
+        oIframe.src =
+          "https://mobile.baiyunairport.com.cn/?code=001KOddx17OpSa0oFXdx1gxUcx1KOddg&state=CAN#/underground";
+        break;
+      case 6:
+        oIframe.src =
+          "https://mobile.baiyunairport.com.cn/?code=001KOddx17OpSa0oFXdx1gxUcx1KOddg&state=CAN#/intercityBus";
+        break;
+      case 7:
+        oIframe.src =
+          "https://mobile.baiyunairport.com.cn/?code=001KOddx17OpSa0oFXdx1gxUcx1KOddg&state=CAN#/cityTerminal";
+        break;
+      case 8:
+        oIframe.src =
+          "https://mobile.baiyunairport.com.cn/?code=001KOddx17OpSa0oFXdx1gxUcx1KOddg&state=CAN#/taxi";
         break;
       default:
         break;
     }
-    const deviceWidth = document.body.clientWidth ;
-    const deviceHeight = document.body.clientHeight - document.getElementsByClassName("header-title").height;
-    oIframe.style.width = deviceWidth + "px";
-    oIframe.style.height = deviceHeight + "px";
   },
   methods: {
     getRouterData() {
@@ -54,8 +74,17 @@ export default {
 @import '~common/style/variable.styl';
 
 .common {
-    .pageconent {
-        flex: 1;
+  y-view();
+
+  .pageconent {
+    y-view();
+    flex: 1;
+    overflow: hidden;
+    overflow-y :scroll
+
+    #show-iframe {
+      flex: 1;
     }
+  }
 }
 </style>
