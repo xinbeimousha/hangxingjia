@@ -1,7 +1,7 @@
 <template>
   <div class="flight-list">
     <ul class="flight-list-container" v-if="flightData.length > 0">
-      <li v-for="(flight,index) in flightData" @click="clickShowSeat(index)" class="flight-list-item">
+      <li v-for="(flight,index) in flightData" @click="clickShowSeat(index)" class="flight-list-item" :key="index">
         <div class="flight-detail border-1px">
           <AirLine :flight="flight" />
         </div>
