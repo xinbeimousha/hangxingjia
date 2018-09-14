@@ -19,8 +19,11 @@
             乘机人
           </div>
           <div class="names">
-            <div class="name" v-for="(item,index) in passengers">
-              <span v-if="item.select">{{item.uname}}</span>
+            <div class="name" 
+              v-for="(item,index) in passengers"
+              v-if="item.select"
+            >
+              {{item.uname}}
             </div>
           </div>
           <div class="add">
@@ -97,8 +100,9 @@ export default {
       if(data.success){
         this.passengers = data.obj;
         this.passengers.forEach(item => {
-          item.select = true;
+          item.select = false;
           if(item.defaultUser){
+            item.select = true;
             this.telephone = item.mobile;
           }
         })

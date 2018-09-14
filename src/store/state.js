@@ -1,4 +1,4 @@
-import planeInitSearchData from 'common/js/planeInitSearchData';
+import planeInitSearchData from './planeInitSearchData';
 const state = {
     planeSearchData:planeInitSearchData
 }

@@ -3,3 +3,4 @@ export const SET_TICKET = 'SET_TICKET';
 export const SET_DATE = 'SET_DATE';
 export const SET_TRIPTYPE = 'SET_TRIPTYPE';
 export const SET_CABINREQUIRE = 'SET_CABINREQUIRE';
+export const SET_TRIPID = 'SET_TRIPID'

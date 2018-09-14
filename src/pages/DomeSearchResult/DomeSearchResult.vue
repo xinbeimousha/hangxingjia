@@ -1,6 +1,10 @@
 <template>
   <div class="search-result">
-    <HeaderTitle title="我的机票" :btnLeft="true" />
+    <HeaderTitle 
+      title="我的机票" 
+      :btnLeft="true" 
+      @back="back"
+    />
     <div class="choose-sort border-1px">
       <span class="sort time-sort" @click="sortbyTime()">时间排序</span>
       <span class="sort price-sort" @click="sortbyPrice()">价格排序</span>
@@ -44,12 +48,8 @@ export default {
       showList: false,
       showTips: false,
       flightData: [],
-      currIndex: -1
-    };
-  },
-  computed: {
-    page() {
-      return Number.parseInt(this.id);
+      currIndex: -1,
+      page:Number.parseInt(this.id)
     }
   },
   created() {
@@ -58,6 +58,9 @@ export default {
     this._searchPlaneList();
   },
   methods: {
+    back(){
+      this.page -- ;
+    },
     // 时间排序
     sortbyTime() {
       if (!this.flightData.length) {
@@ -116,7 +119,18 @@ export default {
         const airlines = this._getAirlines();
         airlines[this.page] = flight;
         setLocal('airlines',JSON.stringify(airlines));
-        this.$router.push('/domeOrder');
+
+        // 判断单程，往返，多程
+        switch(this.tripType){
+          case 0:
+          this.$router.push('/domeOrder');
+          break;
+          case 1:
+          this._twoWayLinkto();
+          break;
+          case 2:
+          break;
+        }
       }else{
         Dialog.alert({
           title:'提示',
@@ -246,15 +260,27 @@ export default {
     },
     // 获取存储在本地airlines
     _getAirlines(){
-      // 获取保存在本地airlines;
       let airlines = getLocal('airlines');
       airlines?airlines = JSON.parse(airlines):airlines = [];
       
       return airlines;
-    }
+    },
+    // 往返的跳转
+    _twoWayLinkto(){
+      if(this.page < 1){
+        this.page++ ;
+        this.$router.push(`/domeSearchResult/${this.page}`);
+      }else{
+        this.$router.push(`/domeOrder`);
+      }
+    },
+    // 多程的跳转
+    _multiLinkto(){}
   },
   watch: {
     $route(to, from) {
+      this.flightData = [];
+      console.log(this.page)
       this._searchPlaneList();
     }
   }

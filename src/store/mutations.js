@@ -16,6 +16,9 @@ const mutations = {
     },
     [types.SET_CABINREQUIRE](state,cabinrequire){
         state.planeSearchData.cabinRequire = cabinrequire;
+    },
+    [types.SET_TRIPID](state,tripId){
+        state.planeSearchData.tripId = tripId;
     }
 }
 

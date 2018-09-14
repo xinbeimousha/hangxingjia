@@ -7,10 +7,18 @@
         <Icon name="arrow" />
       </div>
       <div class="flight-detail">
-        <Tabs class="reset" @click="handleTripType">
-          <Tab v-for="(item,index) in tripTypes" :title="item.name" :key="index">
+        <Tabs class="reset" 
+          @click="handleTripType"
+          v-model="tripType"
+        >
+          <Tab 
+            v-for="(item,index) in tripTypes" 
+            :title="item.name" 
+            :key="index"
+            :disabled="index === 2 && defaulType!==2"
+          >
             <div class="flight-content">
-              <div class="one-way" v-if="index === 0">
+              <div class="one-way" v-if="tripType === 0">
                 <div class="city border-1px">
                   <div class="from">
                     {{ fromCity }}
@@ -28,7 +36,7 @@
                   <span class="depart" @click="showDatePicker(0)">{{ departDate }}</span>
                 </div>
               </div>
-              <div class="two-way" v-else-if="index === 1">
+              <div class="two-way" v-else-if="tripType === 1">
                 <div class="city border-1px">
                   <div class="from">
                     {{ fromCity }}
@@ -73,18 +81,18 @@
     <Actionsheet 
       v-model="showTrip" 
       :actions="tripList" 
-      @select="hideSelect" 
+      @select="chooseTrip" 
     />
     <Popup v-model="showDate" position="bottom">
       <DatetimePicker 
         v-model="currentDate" 
         type="date" 
-        :min-date="new Date(this.departDate)" 
+        :min-date="mimDate"
+        :max-date="maxDate"
         @cancel="hideDatePicker" 
         @confirm="chooseDate" 
       />
     </Popup>
-    <router-view></router-view>
   </div>
 </template>
 
@@ -92,9 +100,10 @@
 import HeaderTitle from "components/HeaderTitle/HeaderTitle.vue";
 import { cabinData } from "./cabinData.js";
 import { Actionsheet, Icon } from "vant";
-import { Tab, Tabs, DatetimePicker, Popup, Toast } from "vant";
+import { Tab, Tabs, DatetimePicker, Popup, Toast,Dialog } from "vant";
 import { getBudgetSpaceType, getItineraryList } from "api/planeBook";
 import { getDate1, getDate2, getTime } from "common/js/day.js";
+import day from 'dayjs';
 import { setLocal } from "common/js/storage.js";
 import { mapGetters, mapMutations } from "vuex";
 
@@ -141,8 +150,11 @@ export default {
         }
       ],
       tripType: 0,
+      defaulType:0,
       cabinData: cabinData,
-      currentDate: new Date()
+      currentDate: new Date(),
+      mimDate:new Date(),
+      maxDate:new Date(day().add(10,'years'))
     };
   },
 
@@ -169,11 +181,25 @@ export default {
     ...mapMutations({
       setDate: "SET_DATE",
       setTripType: "SET_TRIPTYPE",
-      setCabin: "SET_CABINREQUIRE"
+      setCabin: "SET_CABINREQUIRE",
+      setTripId:"SET_TRIPID"
     }),
-    hideSelect(item) {
-      this.showTrip = false;
+    chooseTrip(item) {
+      let trip = item.trip ? item.trip : null;
+      let tripId = trip ? trip.id : '';
+      this.setTripId(tripId);
       this.tripName = item.name;
+      // 如果选择了行程
+      if(trip){
+          this.defaulType = trip.tripType;
+          this.tripType = this.defaulType;
+          this.setTripType(this.tripType);
+          this._getTripDate(trip)
+      }else{
+        this.mimDate = new Date();
+        this.maxDate = new Date(day().add(10,'years'));
+      }
+      this.showTrip = false;
     },
 
     showSelet() {
@@ -188,6 +214,7 @@ export default {
     showDatePicker(index) {
       this.showDate = true;
       this.currentSearchDateIndex = index;
+      this.currentDate = new Date(this.planeSearchData.date[index]);
     },
 
     hideDatePicker() {
@@ -221,6 +248,17 @@ export default {
     },
     // 查询
     query() {
+      // 如果没有选择行程,让用户选择行程
+      if(!this.planeSearchData.tripId){
+        Dialog.alert({
+          title:'提示',
+          message:'请先选择行程',
+          className:'check-tips'
+        }).then(() => {
+          this.showTrip = true;
+        })
+        return;
+      }
       this._handleCabinRequire();
       this._setTripIntoLocal();
       this.$router.push('/domeSearchResult/0');
@@ -237,8 +275,9 @@ export default {
     _normalizeTripList(obj) {
       obj.forEach((item, i) => {
         this.tripList.push({
-          name: i + "." + item.itinerWorkType,
-          subname: this._handleTripDate(item.itinerBegin, item.itinerEnd)
+          trip:item,
+          name: (i+1) + "." + item.itinerWorkType,
+          subname: this._handleTripDate(item.itinerBegin, item.itinerEnd),
         });
       });
     },
@@ -295,7 +334,8 @@ export default {
         date: [],
         tripType: this.tripType,
         cabinRequire: this.planeSearchData.cabinRequire,
-        stops: []
+        stops: [],
+        tripId:this.planeSearchData.tripId
       };
       this._setTripInfo(record);
       setLocal("record", JSON.stringify(record));
@@ -328,7 +368,21 @@ export default {
       newArr.forEach(item => {
         record.stops.push([stops[item[0]], stops[item[1]]]);
       });
-    }
+    },
+    // 选择行程后，重新设置日历时间
+    _getTripDate(trip){
+      // 如果不是多程
+      if(trip.tripType !== 2){
+        let [nowTime,depTime] =[new Date().getTime(),new Date(trip.itinerBegin).getTime()];
+        let depDate = nowTime > depTime ? nowTime:depTime;
+        let backDate = trip.itinerEnd;
+        this.mimDate = new Date(depDate);
+        this.maxDate = new Date(backDate);
+        console.log(this.maxDate)
+        this.setDate({index:0,newDate:getDate2(depDate)});
+        this.setDate({index:1,newDate:getDate2(backDate)});
+      }
+    },
   }
 };
 </script>

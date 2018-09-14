@@ -6,7 +6,7 @@ const thirdDay = new Date().setDate(firstDay.getDate() + 2);
 const [first,second,third] = [getDate2(firstDay),getDate2(secondDay),getDate2(thirdDay)];
 
 const data = {
-  id: "",
+  tripId: "",
   date:[first,second,third],
   stopsIds:['CAN','SHA','SHA','SZX'],
   stops:{
