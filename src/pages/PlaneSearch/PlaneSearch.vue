@@ -8,7 +8,7 @@
       </div>
       <div class="flight-detail">
         <Tabs class="reset" 
-          @click="handleTripType"
+          @click="chooseTripType"
           v-model="tripType"
         >
           <Tab 
@@ -99,14 +99,12 @@
 <script>
 import HeaderTitle from "components/HeaderTitle/HeaderTitle.vue";
 import { cabinData } from "./cabinData.js";
-import { Actionsheet, Icon } from "vant";
-import { Tab, Tabs, DatetimePicker, Popup, Toast,Dialog } from "vant";
+import { Tab, Tabs, DatetimePicker, Popup, Toast,Dialog ,Actionsheet, Icon} from "vant";
 import { getBudgetSpaceType, getItineraryList } from "api/planeBook";
 import { getDate1, getDate2, getTime } from "common/js/day.js";
 import day from 'dayjs';
 import { setLocal } from "common/js/storage.js";
 import { mapGetters, mapMutations } from "vuex";
-
 export default {
   components: {
     HeaderTitle,
@@ -129,6 +127,7 @@ export default {
       showTrip: false,
       showDate: false,
       currentSearchDateIndex: 0,
+      airlines:[],
       tripList: [
         {
           name: "无"
@@ -194,7 +193,8 @@ export default {
           this.defaulType = trip.tripType;
           this.tripType = this.defaulType;
           this.setTripType(this.tripType);
-          this._getTripDate(trip)
+          this._getTripDate(trip);
+          setLocal('fareOrgCode',trip.applyUserOrgCode);
       }else{
         this.mimDate = new Date();
         this.maxDate = new Date(day().add(10,'years'));
@@ -206,9 +206,20 @@ export default {
       this.showTrip = true;
     },
 
-    handleTripType(index) {
+    chooseTripType(index) {
       this.tripType = index;
       this.setTripType(index);
+      // 选择航线airlines的数量
+      switch(this.tripType){
+        case 0 :
+        this.airlines = new Array(1);
+        break;
+        case 1 :
+        this.airlines = new Array(2);
+        break;
+        default :
+        this.airlines = new Array();
+      }
     },
 
     showDatePicker(index) {
@@ -339,6 +350,7 @@ export default {
       };
       this._setTripInfo(record);
       setLocal("record", JSON.stringify(record));
+      setLocal('airlines',JSON.stringify(this.airlines));
     },
     // 给行程记录填充信息
     _setTripInfo(record) {

@@ -2,8 +2,11 @@
   <div class="list-dome">
     <List class="list" v-model="loading" :finished="finished" @load="onload">
       <PullRefresh v-model="isLoading" @refresh="onRefresh">
-        <div class="list-item" v-for="orderData in orderDatas">
-          <OrderListItem title="国内机票" :orderData="orderData" />
+        <div class="list-item" 
+          v-for="orderData in orderDatas"
+          @click="orderDetail(orderData.detailId)"
+        >
+          <OrderListPlaneItem title="国内机票" :orderData="orderData" />
         </div>
         <p class="no-result" v-if="hasNoOrder">还没有订单哦</p>
         <p class="no-more" v-if="hasNoMore">没有更多数据了</p>
@@ -13,13 +16,13 @@
 </template>
 
 <script>
-import OrderListItem from "components/OrderListItem/OrderListItem";
+import OrderListPlaneItem from "./OrderListPlaneItem";
 import { getFlightOrders } from "api/order.js";
 import { List, PullRefresh } from "vant";
 
 export default {
   components: {
-    OrderListItem,
+    OrderListPlaneItem,
     List,
     PullRefresh
   },
@@ -73,6 +76,9 @@ export default {
         this.page = 1;
         this._getFlightOrders(false);
       }, 500);
+    },
+    orderDetail(detailId){
+      this.$router.push(`/order/orderDetailDome/${detailId}`)
     }
   }
 };

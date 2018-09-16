@@ -12,6 +12,8 @@ import PlaneSearch from 'pages/PlaneSearch/PlaneSearch';
 import DomeSearchResult from 'pages/DomeSearchResult/DomeSearchResult';
 import DomeOrder from 'pages/DomeOrder/DomeOrder';
 import OrderList from 'pages/OrderList/OrderList';
+import OrderDetailDome from 'pages/OrderDetail/OrderDetailDome';
+import OrderDetailInter from 'pages/OrderDetail/OrderDetailInter';
 import Triping from 'pages/Triping/Triping';
 import TripPlan from 'pages/TripPlan/TripPlan';
 import Triped from 'pages/Triped/Triped';
@@ -25,11 +27,10 @@ Vue.use(Router)
 
 
 const router = new Router({
-  routes: [
-    {
+  routes: [{
       path: '/',
-      name:'index',
-      redirect:'/login'
+      name: 'index',
+      redirect: '/login'
     },
     {
       path: '/login',
@@ -47,7 +48,7 @@ const router = new Router({
         },
         {
           path: 'book',
-          name:'mainBook',
+          name: 'mainBook',
           component: Book
         },
         {
@@ -84,19 +85,33 @@ const router = new Router({
     },
     {
       path: '/domeSearchResult/:id',
-      name:'domeSearchResult',
-      component:DomeSearchResult,
-      props:true
+      name: 'domeSearchResult',
+      component: DomeSearchResult,
+      props: true
     },
     {
-      path:'/domeOrder',
-      name:'domeOrder',
-      component:DomeOrder
+      path: '/domeOrder',
+      name: 'domeOrder',
+      component: DomeOrder
     },
     {
-      path:'/order',
-      name:'order',
-      component:OrderList
+      path: '/order',
+      name: 'order',
+      component: OrderList,
+      children: [
+        {
+        path: 'orderDetailDome/:detailId',
+        name: 'orderDetailDome',
+        component: OrderDetailDome,
+        props: true
+      },
+      {
+        path: 'orderDetailInter/:detailId/:orderId',
+        name: 'orderDetailInter',
+        component: OrderDetailInter,
+        props: true
+      }
+    ]
     },
     {
       path: '/airportServer',
@@ -104,29 +119,29 @@ const router = new Router({
       component: airportServer
     },
     {
-      path:'/airportActive',
-      component:airportActive
+      path: '/airportActive',
+      component: airportActive
     },
     {
-      path:'/commonPage',
-      name:'commonPage',
-      component:commonPage
+      path: '/commonPage',
+      name: 'commonPage',
+      component: commonPage
     },
     {
-      path:'/airportCustomer',
+      path: '/airportCustomer',
       // name:'aitportCustomer',
-      component:airportCustomer
+      component: airportCustomer
     },
     {
-      path:'/airportSearchResult',
-      name:'airportSearchResult',
-      component:airportSearchResult
+      path: '/airportSearchResult',
+      name: 'airportSearchResult',
+      component: airportSearchResult
     },
     {
-      path:'/airportSearchDetail',
-      name:'airportSearchDetail',
-      component:airportSearchDetail
+      path: '/airportSearchDetail',
+      name: 'airportSearchDetail',
+      component: airportSearchDetail
     },
   ]
 })
-export default  router;
+export default router;

@@ -9,6 +9,7 @@
         <component :is="currentComponent" />
       </keep-alive>
     </div>
+    <router-view></router-view>
   </div>
 </template>
 
@@ -18,6 +19,7 @@ import OrderListDome from "./OrderListDome";
 import OrderListInter from "./OrderListInter";
 import { Tab, Tabs } from "vant";
 export default {
+  name:'order',
   components: {
     HeaderTitle,
     Tab,
