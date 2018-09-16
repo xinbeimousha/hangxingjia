@@ -379,16 +379,15 @@ export default {
     },
     // 选择行程后，重新设置日历时间
     _getTripDate(trip){
+      let [nowTime,beginTime] =[new Date().getTime(),new Date(trip.itinerBegin).getTime()];
+      let beginDate = nowTime > beginTime ? nowTime:beginTime;
+      let endDate = trip.itinerEnd;
+      this.mimDate = new Date(beginDate);
+      this.maxDate = new Date(endDate);
       // 如果不是多程
       if(trip.tripType !== 2){
-        let [nowTime,depTime] =[new Date().getTime(),new Date(trip.itinerBegin).getTime()];
-        let depDate = nowTime > depTime ? nowTime:depTime;
-        let backDate = trip.itinerEnd;
-        this.mimDate = new Date(depDate);
-        this.maxDate = new Date(backDate);
-        console.log(this.maxDate)
-        this._setDate({index:0,newDate:getDate2(depDate)});
-        this._setDate({index:1,newDate:getDate2(backDate)});
+        this._setDate({index:0,newDate:getDate2(beginDate)});
+        this._setDate({index:1,newDate:getDate2(endDate)});
       }
     },
     _setDate(newData){

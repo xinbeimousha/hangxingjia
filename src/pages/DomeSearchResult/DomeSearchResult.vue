@@ -1,21 +1,12 @@
 <template>
   <div class="search-result">
-    <HeaderTitle 
-      title="我的机票" 
-      :btnLeft="true" 
-      @back="back"
-    />
+    <HeaderTitle :title="title" :btnLeft="true" @back="back" />
     <div class="choose-sort border-1px">
       <span class="sort time-sort" @click="sortbyTime()">时间排序</span>
       <span class="sort price-sort" @click="sortbyPrice()">价格排序</span>
     </div>
     <div class="flight-list-wrapper">
-      <FlightList 
-        v-if="showList" 
-        :flightData="flightData" 
-        @show="showSeat"
-        @book="planebook" 
-      />
+      <FlightList v-if="showList" :flightData="flightData" @show="showSeat" @book="planebook" />
       <div class="fail-tips" v-if="showTips">
         <icon name="warn" size="1.5rem" color="#c8c8c8" />
         <p class="text">抱歉，查询不到满足条件的航班</p>
@@ -28,11 +19,11 @@
 import HeaderTitle from "components/HeaderTitle/HeaderTitle";
 import FlightList from "components/FlightList/FlightList";
 import classCode from "common/js/classCode.js";
-import { getLocal,setLocal } from "common/js/storage.js";
-import { searchPlaneList,checkPrice } from "api/planeSearchResult.js";
+import { getLocal, setLocal } from "common/js/storage.js";
+import { searchPlaneList, checkPrice } from "api/planeSearchResult.js";
 import { getTime } from "common/js/day.js";
 import { airPortInfos } from "common/js/newairport.js";
-import { Icon,Dialog  } from "vant";
+import { Icon, Dialog } from "vant";
 let flag = true;
 export default {
   components: {
@@ -40,26 +31,41 @@ export default {
     FlightList,
     Icon
   },
-
   props: ["id"],
+  created() {
+    this.tripType = this.record.tripType;
+    this._searchPlaneList();
+  },
   data() {
     return {
-      record: null,
+      record: JSON.parse(getLocal("record")),
       showList: false,
       showTips: false,
       flightData: [],
       currIndex: -1,
-      page:Number.parseInt(this.id)
+      page: Number.parseInt(this.id)
+    };
+  },
+  computed: {
+    title() {
+      let [title, fromCity, toCity, index] = ["", "", "", 0];
+      if (this.tripType === 2) {
+        index = this.page;
+      }
+      fromCity = this.record.stops[index][0].n;
+      toCity = this.record.stops[index][1].n;
+
+      if (this.tripType === 1 && this.page === 1) {
+        fromCity = this.record.stops[index][1].n;
+        toCity = this.record.stops[index][0].n;
+      }
+      title = fromCity + " —— —— " + toCity;
+      return title;
     }
   },
-  created() {
-    this.record = JSON.parse(getLocal("record"));
-    this.tripType = this.record.tripType;
-    this._searchPlaneList();
-  },
   methods: {
-    back(){
-      this.page -- ;
+    back() {
+      this.page--;
     },
     // 时间排序
     sortbyTime() {
@@ -105,42 +111,41 @@ export default {
       }
     },
     // 预订
-    async planebook(flight,seat){
-      const checkResult =  await this._checkPrice(flight,seat);
-      if(checkResult.success){
+    async planebook(flight, seat) {
+      const checkResult = await this._checkPrice(flight, seat);
+      if (checkResult.success) {
         // 验价后显示最新的价格
-        const flightCheckPriceDTOList = checkResult.obj
+        const flightCheckPriceDTOList = checkResult.obj;
         seat.price = flightCheckPriceDTOList.salesPrice;
         seat.totalPrice = flightCheckPriceDTOList.totalPrice;
 
         flight.seat = seat;
         flight.flightCheckPriceDTOList = flightCheckPriceDTOList;
-        
+
         const airlines = this._getAirlines();
         airlines[this.page] = flight;
-        setLocal('airlines',JSON.stringify(airlines));
+        setLocal("airlines", JSON.stringify(airlines));
 
         // 判断单程，往返，多程
-        switch(this.tripType){
+        switch (this.tripType) {
           case 0:
-          this.$router.push('/domeOrder');
-          break;
+            this.$router.push("/domeOrder");
+            break;
           case 1:
-          this._twoWayLinkto();
-          break;
+            this._twoWayLinkto();
+            break;
           case 2:
-          break;
+            break;
         }
-      }else{
+      } else {
         Dialog.alert({
-          title:'提示',
-          message:checkResult.msg,
-          className:'check-tips'
+          title: "提示",
+          message: checkResult.msg,
+          className: "check-tips"
         }).then(() => {
           // dosomething
-        })
+        });
       }
-      
     },
     // 查询机票列表
     async _searchPlaneList() {
@@ -165,8 +170,8 @@ export default {
       }
     },
     // 验价
-    async _checkPrice(flight,seat){
-      return await checkPrice(flight,seat);
+    async _checkPrice(flight, seat) {
+      return await checkPrice(flight, seat);
     },
     /**
      * @description 处理查询机票所需要的数据
@@ -259,28 +264,27 @@ export default {
       return classCode[code] ? classCode[code] : "其他舱位";
     },
     // 获取存储在本地airlines
-    _getAirlines(){
-      let airlines = getLocal('airlines');
-      airlines?airlines = JSON.parse(airlines):airlines = [];
-      
+    _getAirlines() {
+      let airlines = getLocal("airlines");
+      airlines ? (airlines = JSON.parse(airlines)) : (airlines = []);
+
       return airlines;
     },
     // 往返的跳转
-    _twoWayLinkto(){
-      if(this.page < 1){
-        this.page++ ;
+    _twoWayLinkto() {
+      if (this.page < 1) {
+        this.page++;
         this.$router.push(`/domeSearchResult/${this.page}`);
-      }else{
+      } else {
         this.$router.push(`/domeOrder`);
       }
     },
     // 多程的跳转
-    _multiLinkto(){}
+    _multiLinkto() {}
   },
   watch: {
     $route(to, from) {
       this.flightData = [];
-      console.log(this.page)
       this._searchPlaneList();
     }
   }
