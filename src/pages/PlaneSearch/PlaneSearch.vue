@@ -104,6 +104,7 @@ import { getBudgetSpaceType, getItineraryList } from "api/planeBook";
 import { getDate1, getDate2, getTime } from "common/js/day.js";
 import day from 'dayjs';
 import { setLocal } from "common/js/storage.js";
+import planeInitSearchData from './planeInitSearchData.js';
 import { mapGetters, mapMutations } from "vuex";
 export default {
   components: {
@@ -148,6 +149,7 @@ export default {
           tripType: 2
         }
       ],
+      planeSearchData:planeInitSearchData,
       tripType: 0,
       defaulType:0,
       cabinData: cabinData,
@@ -158,7 +160,7 @@ export default {
   },
 
   computed: {
-    ...mapGetters(["planeSearchData"]),
+    // ...mapGetters(["planeSearchData"]),
     fromCity() {
       const stopId = this.planeSearchData.stopsIds[0];
       const stopN = this.planeSearchData.stops[stopId].n;
@@ -177,22 +179,16 @@ export default {
     }
   },
   methods: {
-    ...mapMutations({
-      setDate: "SET_DATE",
-      setTripType: "SET_TRIPTYPE",
-      setCabin: "SET_CABINREQUIRE",
-      setTripId:"SET_TRIPID"
-    }),
     chooseTrip(item) {
       let trip = item.trip ? item.trip : null;
       let tripId = trip ? trip.id : '';
-      this.setTripId(tripId);
+      this._setTripId(tripId);
       this.tripName = item.name;
       // 如果选择了行程
       if(trip){
           this.defaulType = trip.tripType;
           this.tripType = this.defaulType;
-          this.setTripType(this.tripType);
+          this._setTripType(this.tripType);
           this._getTripDate(trip);
           setLocal('fareOrgCode',trip.applyUserOrgCode);
       }else{
@@ -208,7 +204,7 @@ export default {
 
     chooseTripType(index) {
       this.tripType = index;
-      this.setTripType(index);
+      this._setTripType(index);
       // 选择航线airlines的数量
       switch(this.tripType){
         case 0 :
@@ -240,7 +236,7 @@ export default {
         newDate
       };
       this.showDate = false;
-      this.setDate(obj);
+      this._setDate(obj);
     },
 
     chooseSpaceType(index) {
@@ -337,7 +333,7 @@ export default {
         }
       });
       cabinRequire = cabinArr.join(",");
-      this.setCabin(cabinRequire);
+      this._setCabin(cabinRequire);
     },
     // 保存行程记录到本地
     _setTripIntoLocal() {
@@ -391,10 +387,23 @@ export default {
         this.mimDate = new Date(depDate);
         this.maxDate = new Date(backDate);
         console.log(this.maxDate)
-        this.setDate({index:0,newDate:getDate2(depDate)});
-        this.setDate({index:1,newDate:getDate2(backDate)});
+        this._setDate({index:0,newDate:getDate2(depDate)});
+        this._setDate({index:1,newDate:getDate2(backDate)});
       }
     },
+    _setDate(newData){
+      const {index,newDate} = newData;
+      this.planeSearchData.date.splice(index,1,newDate);
+    },
+    _setTripType(newTripType){
+      this.planeSearchData.tripType = newTripType;
+    },
+    _setCabin(cabinrequire){
+      this.planeSearchData.cabinRequire = cabinrequire;
+    },
+    _setTripId(tripId){
+      this.planeSearchData.tripId = tripId;
+    }
   }
 };
 </script>
