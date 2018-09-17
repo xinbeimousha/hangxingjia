@@ -1,19 +1,19 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 
-import Login from 'pages/Login/Login';
-const Main = (resolve) => { import('pages/Main/Main').then(module => resolve(module))};
-import Apply from 'pages/Apply/Apply';
-import Book from 'pages/Book/Book';
+const Login = () => import('pages/Login/Login');
+const Main = () => import('pages/Main/Main');
+const Apply =() => import('pages/Apply/Apply');
+const Book = () =>import('pages/Book/Book') ;
 import Trip from 'pages/Trip/Trip';
 import Trip1 from 'pages/Trip/Trip1';
-import Me from 'pages/Me/Me';
-import PlaneSearch from 'pages/PlaneSearch/PlaneSearch';
-import DomeSearchResult from 'pages/DomeSearchResult/DomeSearchResult';
-import DomeOrder from 'pages/DomeOrder/DomeOrder';
-import OrderList from 'pages/OrderList/OrderList';
-import OrderDetailDome from 'pages/OrderDetail/OrderDetailDome';
-import OrderDetailInter from 'pages/OrderDetail/OrderDetailInter';
+const Me = () => import('pages/Me/Me') ;
+const PlaneSearch = () => import('pages/PlaneSearch/PlaneSearch');
+const DomeSearchResult = () => import('pages/DomeSearchResult/DomeSearchResult');
+const DomeOrder = () => import('pages/DomeOrder/DomeOrder');
+const OrderList = () => import('pages/OrderList/OrderList');
+const OrderDetailDome = () => import('pages/OrderDetail/OrderDetailDome');
+const OrderDetailInter = () => import('pages/OrderDetail/OrderDetailInter');
 import Triping from 'pages/Triping/Triping';
 import TripPlan from 'pages/TripPlan/TripPlan';
 import Triped from 'pages/Triped/Triped';
@@ -23,7 +23,7 @@ import commonPage from 'pages/commonPage/commonPage'
 import airportCustomer from 'pages/airportCustomer/airportCustomer'
 import airportSearchResult from 'pages/airportSearchResult/airportSearchResult'
 import airportSearchDetail from 'pages/airportSearchDetail/airportSearchDetail'
-import NotFound from 'pages/NotFound/NotFound';
+const NotFound = () => import('pages/NotFound/NotFound');
 Vue.use(Router)
 
 

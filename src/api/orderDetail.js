@@ -19,6 +19,23 @@ export function getDomeFlightorderDetail(orderId){
 
 }
 /**
+ * @description 取消国内机票订单
+ */
+export function cancelFlight(detailId){
+  const url = 'flightController.do?cancelFlight';
+  const method = 'post';
+  const obj = {
+    detailId
+  }
+  return request({
+    url,
+    method,
+    data:obj
+  }).then(res => {
+    return Promise.resolve(res.data);
+  })
+}
+/**
  * @description 获取国际机票订单详情
  */
 export function getInterFlightorderDetail(detailId,orderId){

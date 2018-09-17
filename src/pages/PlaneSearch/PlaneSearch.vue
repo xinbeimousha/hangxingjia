@@ -1,6 +1,10 @@
 <template>
   <div class="plane-search">
-    <HeaderTitle title="机票预订" :btnLeft="true" />
+    <HeaderTitle 
+      title="机票预订" 
+      :btnLeft="true"
+      @back="goback" 
+    />
     <div class="search-container">
       <div class="trip-choosed" @click="showSelet">
         <span class="trip-title">{{ tripName }}</span>
@@ -106,6 +110,7 @@ import day from 'dayjs';
 import { setLocal } from "common/js/storage.js";
 import planeInitSearchData from './planeInitSearchData.js';
 import { mapGetters, mapMutations } from "vuex";
+import { gobackMixin } from 'common/js/mixins.js';
 export default {
   components: {
     HeaderTitle,
@@ -117,6 +122,7 @@ export default {
     Toast,
     DatetimePicker
   },
+  mixins:[gobackMixin],
   name: "search",
   created() {
     this._getBudgetSpaceType();

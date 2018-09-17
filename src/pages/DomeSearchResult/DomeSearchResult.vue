@@ -5,7 +5,7 @@
       :btnLeft="true"
       :btnRight="true"
       :className="'fa-calendar'" 
-      @back="back" 
+      @back="goback" 
     />
     <div class="choose-sort border-1px">
       <span class="sort time-sort" @click="sortbyTime()">时间排序</span>
@@ -30,6 +30,7 @@ import { searchPlaneList, checkPrice } from "api/planeSearchResult.js";
 import { getTime } from "common/js/day.js";
 import { airPortInfos } from "common/js/newairport.js";
 import { Icon, Dialog } from "vant";
+import { gobackMixin } from 'common/js/mixins.js';
 let flag = true;
 export default {
   components: {
@@ -37,6 +38,7 @@ export default {
     FlightList,
     Icon
   },
+  mixins:[gobackMixin],
   props: ["id"],
   created() {
     this.tripType = this.record.tripType;
@@ -70,9 +72,6 @@ export default {
     }
   },
   methods: {
-    back() {
-      this.page--;
-    },
     // 时间排序
     sortbyTime() {
       if (!this.flightData.length) {

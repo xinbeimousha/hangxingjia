@@ -1,6 +1,10 @@
 <template>
   <div class="dome-order">
-    <HeaderTitle title="机票订单" :btnLeft="true" />
+    <HeaderTitle 
+      title="机票订单" 
+      :btnLeft="true" 
+      @back="goback"
+    />
     <div class="dome-order-content">
       <div class="airline-wrapper" v-if="airlineData.length > 0">
         <AirLine v-for="(airline,index) in airlineData" :showlow="false" :flight="airline" :key="index" />
@@ -54,12 +58,14 @@ import { getDate2 } from "common/js/day.js";
 import { getOthersInItinerary } from "api/getOthersInItinerary.js";
 import { checkFlightRule,planeBook } from "api/planeOrder.js";
 import { Dialog } from "vant";
+import { gobackMixin } from 'common/js/mixins.js';
 
 export default {
   components: {
     HeaderTitle,
     AirLine
   },
+  mixins:[gobackMixin],
   created() {
     this._getOthersInItinerary();
     this._getAirlineData();
@@ -84,13 +90,31 @@ export default {
       const orderData = this._handleOrderdata();
       const checkRule = await this._checkFlightRule(orderData);
       if (checkRule.success) {
-        this._planeBook(orderData)
+        const orderResult = await this._planeBook(orderData);
+        
+        if(orderResult.success){
+          Dialog.alert({
+            title:'预订成功',
+            message:orderResult.msg,
+            className:'check-tips',
+            confirmButtonTexT:'查看订单',
+          }).then(() => {
+            this.$router.push('/order')
+          })
+        }else{
+          Dialog.alert({
+            title:'预订失败',
+            message:orderResult.msg,
+            className:'check-tips'
+          }).then(() => {
+          })
+        }
       } else {
       }
     },
     // 提交订单
     async _planeBook(orderData) {
-      planeBook(orderData)
+    return await planeBook(orderData);
     },
     // 校验规则
     async _checkFlightRule(orderData) {
