@@ -5,7 +5,7 @@ const Login = () => import('pages/Login/Login');
 const Main = () => import('pages/Main/Main');
 const Apply =() => import('pages/Apply/Apply');
 const Book = () =>import('pages/Book/Book') ;
-import Trip from 'pages/Trip/Trip';
+const Trip = () => import('pages/Trip/Trip');
 const Me = () => import('pages/Me/Me') ;
 const PlaneSearch = () => import('pages/PlaneSearch/PlaneSearch');
 const DomeSearchResult = () => import('pages/DomeSearchResult/DomeSearchResult');
@@ -13,12 +13,12 @@ const DomeOrder = () => import('pages/DomeOrder/DomeOrder');
 const OrderList = () => import('pages/OrderList/OrderList');
 const OrderDetailDome = () => import('pages/OrderDetail/OrderDetailDome');
 const OrderDetailInter = () => import('pages/OrderDetail/OrderDetailInter');
-import airportServer from 'pages/airportServer/airportServer'
-import airportActive from 'pages/airportActive/airportActive'
-import commonPage from 'pages/commonPage/commonPage'
-import airportCustomer from 'pages/airportCustomer/airportCustomer'
-import airportSearchResult from 'pages/airportSearchResult/airportSearchResult'
-import airportSearchDetail from 'pages/airportSearchDetail/airportSearchDetail'
+const airportServer = () => import('pages/airportServer/airportServer');
+const airportActive = () => import('pages/airportActive/airportActive');
+const commonPage = () => import('pages/commonPage/commonPage');
+const airportCustomer = () => import('pages/airportCustomer/airportCustomer');
+const airportSearchResult = () => import('pages/airportSearchResult/airportSearchResult');
+const airportSearchDetail = () => import('pages/airportSearchDetail/airportSearchDetail');
 const NotFound = () => import('pages/NotFound/NotFound');
 Vue.use(Router)
 
