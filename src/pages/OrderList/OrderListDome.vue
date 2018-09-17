@@ -3,7 +3,7 @@
     <List class="list" v-model="loading" :finished="finished" @load="onload">
       <PullRefresh v-model="isLoading" @refresh="onRefresh">
         <div class="list-item" 
-          v-for="orderData in orderDatas"
+          v-for="orderData in orderDatas" 
           @click="orderDetail(orderData.detailId)"
         >
           <OrderListPlaneItem title="国内机票" :orderData="orderData" />
@@ -41,29 +41,28 @@ export default {
   methods: {
     async _getFlightOrders(showLoading) {
       const result = await getFlightOrders(this.page, showLoading);
-      if (result.success) {
-        this.loading = false;
-        if (result.obj.length < 1 && this.page === 1) {
-          this.hasNoOrder = true;
-          this.finished = true;
-          return;
-        }
-        if (this.isPull) {
-          this.orderDatas = [];
-          this.isPull = false;
-          this.isLoading = false;
-          this.finished = false;
-          this.hasNoMore = false;
-        }
-        if (result.obj.length < 10) {
-          this.finished = true;
-          this.hasNoMore = true;
-        }
-        result.obj.forEach(item => {
-          this.orderDatas.push(item);
-        });
-        this.page++;
+      const obj = result.obj;
+      this.loading = false;
+      if ((!result.success || !obj || obj.length < 1) &&this.page === 1){
+        this.hasNoOrder = true;
+        this.finished = true;
+        return;
       }
+      if (this.isPull) {
+        this.orderDatas = [];
+        this.isPull = false;
+        this.isLoading = false;
+        this.finished = false;
+        this.hasNoMore = false;
+      }
+      if (obj.length < 10) {
+        this.finished = true;
+        this.hasNoMore = true;
+      }
+      obj.forEach(item => {
+        this.orderDatas.push(item);
+      });
+      this.page++;
     },
     onload() {
       setTimeout(() => {
@@ -77,8 +76,8 @@ export default {
         this._getFlightOrders(false);
       }, 500);
     },
-    orderDetail(detailId){
-      this.$router.push(`/order/orderDetailDome/${detailId}`)
+    orderDetail(detailId) {
+      this.$router.push(`/order/orderDetailDome/${detailId}`);
     }
   }
 };

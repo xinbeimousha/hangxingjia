@@ -18,7 +18,7 @@
 <script>
 import OrderListPlaneItem from "./OrderListPlaneItem";
 import { getFlightOrders, getInterFlightOrders } from "api/order.js";
-import { setLocal } from 'common/js/storage.js';
+import { setLocal } from "common/js/storage.js";
 import { List, PullRefresh } from "vant";
 
 export default {
@@ -42,29 +42,28 @@ export default {
   methods: {
     async _getInterFlightOrders(showLoading) {
       const result = await getInterFlightOrders(this.page, showLoading);
-      if (result.success) {
-        this.loading = false;
-        if (result.obj.results.length < 1 && this.page === 1) {
-          this.hasNoOrder = true;
-          this.finished = true;
-          return;
-        }
-        if (this.isPull) {
-          this.orderDatas = [];
-          this.isPull = false;
-          this.isLoading = false;
-          this.finished = false;
-          this.hasNoMore = false;
-        }
-        if (result.obj.results.length < 10) {
-          this.finished = true;
-          this.hasNoMore = true;
-        }
-        result.obj.results.forEach(item => {
-          this.orderDatas.push(item);
-        });
-        this.page++;
+      const obj = result.obj;
+      this.loading = false;
+      if ((!result.success||!obj.results ||obj.results.length < 1 )&& this.page === 1) {
+        this.hasNoOrder = true;
+        this.finished = true;
+        return;
       }
+      if (this.isPull) {
+        this.orderDatas = [];
+        this.isPull = false;
+        this.isLoading = false;
+        this.finished = false;
+        this.hasNoMore = false;
+      }
+      if (obj.results.length < 10) {
+        this.finished = true;
+        this.hasNoMore = true;
+      }
+      obj.results.forEach(item => {
+        this.orderDatas.push(item);
+      });
+      this.page++;
     },
     onload() {
       setTimeout(() => {
@@ -78,7 +77,7 @@ export default {
         this._getInterFlightOrders(false);
       }, 500);
     },
-    orderDetail(detailId,orderId) {    
+    orderDetail(detailId, orderId) {
       this.$router.push(`/order/orderDetailInter/${detailId}/${orderId}`);
     }
   }

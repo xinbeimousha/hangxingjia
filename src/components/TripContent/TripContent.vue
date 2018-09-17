@@ -135,6 +135,7 @@ export default {
                 color: #333;
                 font-weight: bold;
                 border-bottom: 1px dashed $color-dashed;
+                text-over();
             }
 
             .content {

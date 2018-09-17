@@ -1,6 +1,6 @@
 <template>
   <div class="order-list">
-    <HeaderTitle title="我的行程" :btnLeft="true" />
+    <HeaderTitle title="我的行程" />
     <Tabs class="reset" @click="getCurrentComponent">
       <Tab>
         <div slot="title">
@@ -34,6 +34,7 @@ import Triped from "./Triped";
 
 import { Tab, Tabs } from "vant";
 export default {
+  name:'trip',
   components: {
     HeaderTitle,
     Tab,
