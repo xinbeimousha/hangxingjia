@@ -1,6 +1,10 @@
 <template>
   <div class="order-list">
-    <HeaderTitle title="订单列表" :btnLeft="true" />
+    <HeaderTitle 
+      title="订单列表" 
+      :btnLeft="true" 
+      @back="goback"
+    />
     <Tabs class="reset" @click="getCurrentComponent">
       <Tab v-for="tab in orderTabs" :title="tab.title" :key="tab.title" />
     </Tabs>
@@ -9,6 +13,7 @@
         <component :is="currentComponent" />
       </keep-alive>
     </div>
+    <router-view></router-view>
   </div>
 </template>
 
@@ -17,7 +22,9 @@ import HeaderTitle from "components/HeaderTitle/HeaderTitle";
 import OrderListDome from "./OrderListDome";
 import OrderListInter from "./OrderListInter";
 import { Tab, Tabs } from "vant";
+import { gobackMixin } from 'common/js/mixins.js';
 export default {
+  name:'order',
   components: {
     HeaderTitle,
     Tab,
@@ -25,6 +32,7 @@ export default {
     OrderListDome,
     OrderListInter
   },
+  mixins:[gobackMixin],
   data() {
     return {
       orderTabs: [
@@ -41,6 +49,9 @@ export default {
     };
   },
   methods: {
+    goback(){
+      this.$router.push('/main');
+    },
     getCurrentComponent(index) {
       this.currentComponent = this.orderTabs[index].content;
     }

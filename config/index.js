@@ -11,11 +11,18 @@ module.exports = {
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {
+<<<<<<< HEAD
       '/api/**': {
         target: 'http://120.77.4.10:8082/',
         // target: 'http://192.168.2.19:8888/',//本地力泉
+=======
+      '/api': {
+       // target: 'http://120.77.4.10:8082/',
+        target: 'http://10.10.12.76:8082/', //测试环境
+        // target: 'http://10.10.11.122:8888/',//本地力泉
+>>>>>>> 64d2ee7d1881bdf3ac0feafa648e76d8767fdc42
         pathRewrite:{
-            '^/api':'/'
+            '^/api':''
         }
     },
     },

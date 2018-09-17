@@ -1,32 +1,33 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 
-import Login from 'pages/Login/Login';
-import Main from 'pages/Main/Main';
-import Apply from 'pages/Apply/Apply';
-import Book from 'pages/Book/Book';
+const Login = () => import('pages/Login/Login');
+const Main = () => import('pages/Main/Main');
+const Apply =() => import('pages/Apply/Apply');
+const Book = () =>import('pages/Book/Book') ;
 import Trip from 'pages/Trip/Trip';
-
-import Me from 'pages/Me/Me';
-import PlaneSearch from 'pages/PlaneSearch/PlaneSearch';
-import DomeSearchResult from 'pages/DomeSearchResult/DomeSearchResult';
-import DomeOrder from 'pages/DomeOrder/DomeOrder';
-import OrderList from 'pages/OrderList/OrderList';
+const Me = () => import('pages/Me/Me') ;
+const PlaneSearch = () => import('pages/PlaneSearch/PlaneSearch');
+const DomeSearchResult = () => import('pages/DomeSearchResult/DomeSearchResult');
+const DomeOrder = () => import('pages/DomeOrder/DomeOrder');
+const OrderList = () => import('pages/OrderList/OrderList');
+const OrderDetailDome = () => import('pages/OrderDetail/OrderDetailDome');
+const OrderDetailInter = () => import('pages/OrderDetail/OrderDetailInter');
 import airportServer from 'pages/airportServer/airportServer'
 import airportActive from 'pages/airportActive/airportActive'
 import commonPage from 'pages/commonPage/commonPage'
 import airportCustomer from 'pages/airportCustomer/airportCustomer'
 import airportSearchResult from 'pages/airportSearchResult/airportSearchResult'
 import airportSearchDetail from 'pages/airportSearchDetail/airportSearchDetail'
+const NotFound = () => import('pages/NotFound/NotFound');
 Vue.use(Router)
 
 
 const router = new Router({
-  routes: [
-    {
+  routes: [{
       path: '/',
-      name:'index',
-      redirect:'/login'
+      name: 'index',
+      redirect: '/login'
     },
     {
       path: '/login',
@@ -44,7 +45,7 @@ const router = new Router({
         },
         {
           path: 'book',
-          name:'mainBook',
+          name: 'mainBook',
           component: Book
         },
         {
@@ -64,19 +65,33 @@ const router = new Router({
     },
     {
       path: '/domeSearchResult/:id',
-      name:'domeSearchResult',
-      component:DomeSearchResult,
-      props:true
+      name: 'domeSearchResult',
+      component: DomeSearchResult,
+      props: true
     },
     {
-      path:'/domeOrder',
-      name:'domeOrder',
-      component:DomeOrder
+      path: '/domeOrder',
+      name: 'domeOrder',
+      component: DomeOrder
     },
     {
-      path:'/order',
-      name:'order',
-      component:OrderList
+      path: '/order',
+      name: 'order',
+      component: OrderList,
+      children: [
+        {
+        path: 'orderDetailDome/:detailId',
+        name: 'orderDetailDome',
+        component: OrderDetailDome,
+        props: true
+      },
+      {
+        path: 'orderDetailInter/:detailId/:orderId',
+        name: 'orderDetailInter',
+        component: OrderDetailInter,
+        props: true
+      }
+    ]
     },
     {
       path: '/airportServer',
@@ -84,29 +99,38 @@ const router = new Router({
       component: airportServer
     },
     {
-      path:'/airportActive',
-      component:airportActive
+      path: '/airportActive',
+      component: airportActive
     },
     {
-      path:'/commonPage',
-      name:'commonPage',
-      component:commonPage
+      path: '/commonPage',
+      name: 'commonPage',
+      component: commonPage
     },
     {
-      path:'/airportCustomer',
+      path: '/airportCustomer',
       // name:'aitportCustomer',
-      component:airportCustomer
+      component: airportCustomer
     },
     {
-      path:'/airportSearchResult',
-      name:'airportSearchResult',
-      component:airportSearchResult
+      path: '/airportSearchResult',
+      name: 'airportSearchResult',
+      component: airportSearchResult
     },
     {
-      path:'/airportSearchDetail',
-      name:'airportSearchDetail',
-      component:airportSearchDetail
+      path: '/airportSearchDetail',
+      name: 'airportSearchDetail',
+      component: airportSearchDetail
     },
+    {
+      path:'/error',
+      name:'error',
+      component:NotFound
+    },
+    {
+      path: '*',
+      redirect:'/error',
+    }
   ]
 })
-export default  router;
+export default router;

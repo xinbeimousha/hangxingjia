@@ -83,7 +83,8 @@ export default {
         this.loading = false;
         if (res.success) {
           this._saveUserLoginInfo();
-          this._setInfotoLocal(res.obj);
+          this._setTokentoLocal(res.obj);
+          setLocal('userInfo',JSON.stringify(res.obj))
           this.$router.push("/main");
         } else {
           Toast(res.msg);
@@ -118,7 +119,7 @@ export default {
       this.savedUser = true;
     },
     // 所有的用户信息保存在本地
-    _setInfotoLocal(obj) {
+    _setTokentoLocal(obj) {
       setLocal("token", obj.ticket);
     }
   }

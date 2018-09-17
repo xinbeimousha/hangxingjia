@@ -4,31 +4,6 @@
       <li v-for="(flight,index) in flightData" @click="clickShowSeat(index)" class="flight-list-item" :key="index">
         <div class="flight-detail border-1px">
           <AirLine :flight="flight" />
-          <!-- <div class="flight-content">
-            <div class="time">
-              <span class="depart">{{ flight.depTime }}</span>
-              <span class="line"></span>
-              <span class="arrival">{{ flight.arrTime }}</span>
-            </div>
-            <div class="name">
-              <span class="depart">{{ flight.depAirportName }}</span>
-              <span></span>
-              <span class="arrival">{{ flight.arrAirPortName }}</span>
-            </div>
-            <div class="flight">
-              <img class="icon" :src="require(`common/img/logo/${flight.airlineCode}.png`)" alt="">
-              <span class="num">{{ flight.flightName }}</span>
-              <span class="aircraft">机型：{{ flight.flightType}}</span>
-              <span class="share" 
-                v-if="flight.shareFlightNo"
-              >
-                共享 {{flight.shareFlightNo}}
-              </span>
-            </div>
-          </div>
-          <div class="flight-price global-blue">
-            ¥ {{ flight.lowPrice }}起
-          </div> -->
         </div>
         <ul class="seat-detail" v-if="currentIndex === index && flight.showSeat">
           <li class="seat-item border-1px" v-for="(seat,index) in flight.seats">

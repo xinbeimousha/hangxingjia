@@ -19,3 +19,22 @@ export function getFlightOrders(page,showLoading){
     return Promise.resolve(res.data)
   })
 }
+/**
+ * @description 获取国内机票订单列表接口
+ */
+export function getInterFlightOrders(page,showLoading){
+  const url = 'interFlightController.do?getInterFlightOrderList';
+  const method = 'post';
+  const obj = {
+    page:page,
+    rows:10
+  };
+
+  return request({
+    url,
+    method,
+    data:qs.stringify(obj)
+  },showLoading).then(res => {
+    return Promise.resolve(res.data)
+  })
+}

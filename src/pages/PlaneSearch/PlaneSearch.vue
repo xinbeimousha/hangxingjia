@@ -1,16 +1,28 @@
 <template>
   <div class="plane-search">
-    <HeaderTitle title="机票预订" :btnLeft="true" />
+    <HeaderTitle 
+      title="机票预订" 
+      :btnLeft="true"
+      @back="goback" 
+    />
     <div class="search-container">
       <div class="trip-choosed" @click="showSelet">
         <span class="trip-title">{{ tripName }}</span>
         <Icon name="arrow" />
       </div>
       <div class="flight-detail">
-        <Tabs class="reset" @click="handleTripType">
-          <Tab v-for="(item,index) in tripTypes" :title="item.name" :key="index">
+        <Tabs class="reset" 
+          @click="chooseTripType"
+          v-model="tripType"
+        >
+          <Tab 
+            v-for="(item,index) in tripTypes" 
+            :title="item.name" 
+            :key="index"
+            :disabled="index === 2 && defaulType!==2"
+          >
             <div class="flight-content">
-              <div class="one-way" v-if="index === 0">
+              <div class="one-way" v-if="tripType === 0">
                 <div class="city border-1px">
                   <div class="from">
                     {{ fromCity }}
@@ -28,7 +40,7 @@
                   <span class="depart" @click="showDatePicker(0)">{{ departDate }}</span>
                 </div>
               </div>
-              <div class="two-way" v-else-if="index === 1">
+              <div class="two-way" v-else-if="tripType === 1">
                 <div class="city border-1px">
                   <div class="from">
                     {{ fromCity }}
@@ -73,31 +85,32 @@
     <Actionsheet 
       v-model="showTrip" 
       :actions="tripList" 
-      @select="hideSelect" 
+      @select="chooseTrip" 
     />
     <Popup v-model="showDate" position="bottom">
       <DatetimePicker 
         v-model="currentDate" 
         type="date" 
-        :min-date="new Date(this.departDate)" 
+        :min-date="mimDate"
+        :max-date="maxDate"
         @cancel="hideDatePicker" 
         @confirm="chooseDate" 
       />
     </Popup>
-    <router-view></router-view>
   </div>
 </template>
 
 <script>
 import HeaderTitle from "components/HeaderTitle/HeaderTitle.vue";
 import { cabinData } from "./cabinData.js";
-import { Actionsheet, Icon } from "vant";
-import { Tab, Tabs, DatetimePicker, Popup, Toast } from "vant";
+import { Tab, Tabs, DatetimePicker, Popup, Toast,Dialog ,Actionsheet, Icon} from "vant";
 import { getBudgetSpaceType, getItineraryList } from "api/planeBook";
 import { getDate1, getDate2, getTime } from "common/js/day.js";
+import day from 'dayjs';
 import { setLocal } from "common/js/storage.js";
+import planeInitSearchData from './planeInitSearchData.js';
 import { mapGetters, mapMutations } from "vuex";
-
+import { gobackMixin } from 'common/js/mixins.js';
 export default {
   components: {
     HeaderTitle,
@@ -109,6 +122,7 @@ export default {
     Toast,
     DatetimePicker
   },
+  mixins:[gobackMixin],
   name: "search",
   created() {
     this._getBudgetSpaceType();
@@ -120,6 +134,7 @@ export default {
       showTrip: false,
       showDate: false,
       currentSearchDateIndex: 0,
+      airlines:[],
       tripList: [
         {
           name: "无"
@@ -140,14 +155,18 @@ export default {
           tripType: 2
         }
       ],
+      planeSearchData:planeInitSearchData,
       tripType: 0,
+      defaulType:0,
       cabinData: cabinData,
-      currentDate: new Date()
+      currentDate: new Date(),
+      mimDate:new Date(),
+      maxDate:new Date(day().add(10,'years'))
     };
   },
 
   computed: {
-    ...mapGetters(["planeSearchData"]),
+    // ...mapGetters(["planeSearchData"]),
     fromCity() {
       const stopId = this.planeSearchData.stopsIds[0];
       const stopN = this.planeSearchData.stops[stopId].n;
@@ -166,28 +185,49 @@ export default {
     }
   },
   methods: {
-    ...mapMutations({
-      setDate: "SET_DATE",
-      setTripType: "SET_TRIPTYPE",
-      setCabin: "SET_CABINREQUIRE"
-    }),
-    hideSelect(item) {
-      this.showTrip = false;
+    chooseTrip(item) {
+      let trip = item.trip ? item.trip : null;
+      let tripId = trip ? trip.id : '';
+      this._setTripId(tripId);
       this.tripName = item.name;
+      // 如果选择了行程
+      if(trip){
+          this.defaulType = trip.tripType;
+          this.tripType = this.defaulType;
+          this._setTripType(this.tripType);
+          this._getTripDate(trip);
+          setLocal('fareOrgCode',trip.applyUserOrgCode);
+      }else{
+        this.mimDate = new Date();
+        this.maxDate = new Date(day().add(10,'years'));
+      }
+      this.showTrip = false;
     },
 
     showSelet() {
       this.showTrip = true;
     },
 
-    handleTripType(index) {
+    chooseTripType(index) {
       this.tripType = index;
-      this.setTripType(index);
+      this._setTripType(index);
+      // 选择航线airlines的数量
+      switch(this.tripType){
+        case 0 :
+        this.airlines = new Array(1);
+        break;
+        case 1 :
+        this.airlines = new Array(2);
+        break;
+        default :
+        this.airlines = new Array();
+      }
     },
 
     showDatePicker(index) {
       this.showDate = true;
       this.currentSearchDateIndex = index;
+      this.currentDate = new Date(this.planeSearchData.date[index]);
     },
 
     hideDatePicker() {
@@ -202,7 +242,7 @@ export default {
         newDate
       };
       this.showDate = false;
-      this.setDate(obj);
+      this._setDate(obj);
     },
 
     chooseSpaceType(index) {
@@ -221,6 +261,17 @@ export default {
     },
     // 查询
     query() {
+      // 如果没有选择行程,让用户选择行程
+      if(!this.planeSearchData.tripId){
+        Dialog.alert({
+          title:'提示',
+          message:'请先选择行程',
+          className:'check-tips'
+        }).then(() => {
+          this.showTrip = true;
+        })
+        return;
+      }
       this._handleCabinRequire();
       this._setTripIntoLocal();
       this.$router.push('/domeSearchResult/0');
@@ -237,8 +288,9 @@ export default {
     _normalizeTripList(obj) {
       obj.forEach((item, i) => {
         this.tripList.push({
-          name: i + "." + item.itinerWorkType,
-          subname: this._handleTripDate(item.itinerBegin, item.itinerEnd)
+          trip:item,
+          name: (i+1) + "." + item.itinerWorkType,
+          subname: this._handleTripDate(item.itinerBegin, item.itinerEnd),
         });
       });
     },
@@ -287,7 +339,7 @@ export default {
         }
       });
       cabinRequire = cabinArr.join(",");
-      this.setCabin(cabinRequire);
+      this._setCabin(cabinRequire);
     },
     // 保存行程记录到本地
     _setTripIntoLocal() {
@@ -295,10 +347,12 @@ export default {
         date: [],
         tripType: this.tripType,
         cabinRequire: this.planeSearchData.cabinRequire,
-        stops: []
+        stops: [],
+        tripId:this.planeSearchData.tripId
       };
       this._setTripInfo(record);
       setLocal("record", JSON.stringify(record));
+      setLocal('airlines',JSON.stringify(this.airlines));
     },
     // 给行程记录填充信息
     _setTripInfo(record) {
@@ -328,6 +382,32 @@ export default {
       newArr.forEach(item => {
         record.stops.push([stops[item[0]], stops[item[1]]]);
       });
+    },
+    // 选择行程后，重新设置日历时间
+    _getTripDate(trip){
+      let [nowTime,beginTime] =[new Date().getTime(),new Date(trip.itinerBegin).getTime()];
+      let beginDate = nowTime > beginTime ? nowTime:beginTime;
+      let endDate = trip.itinerEnd;
+      this.mimDate = new Date(beginDate);
+      this.maxDate = new Date(endDate);
+      // 如果不是多程
+      if(trip.tripType !== 2){
+        this._setDate({index:0,newDate:getDate2(beginDate)});
+        this._setDate({index:1,newDate:getDate2(endDate)});
+      }
+    },
+    _setDate(newData){
+      const {index,newDate} = newData;
+      this.planeSearchData.date.splice(index,1,newDate);
+    },
+    _setTripType(newTripType){
+      this.planeSearchData.tripType = newTripType;
+    },
+    _setCabin(cabinrequire){
+      this.planeSearchData.cabinRequire = cabinrequire;
+    },
+    _setTripId(tripId){
+      this.planeSearchData.tripId = tripId;
     }
   }
 };

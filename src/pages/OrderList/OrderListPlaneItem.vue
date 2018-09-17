@@ -9,7 +9,7 @@
         <div class="from">{{orderData.fromCity}}</div>
         <div class="line"></div>
         <div class="to">{{orderData.toCity}}</div>
-        <div class="price">¥ {{orderData.totalAmount}}</div>
+        <div class="price">¥ {{orderData.amount}}</div>
       </div>
       <div class="date">
         <span class="dep">{{ depDate }}</span>
