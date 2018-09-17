@@ -6,15 +6,12 @@ import Main from 'pages/Main/Main';
 import Apply from 'pages/Apply/Apply';
 import Book from 'pages/Book/Book';
 import Trip from 'pages/Trip/Trip';
-import Trip1 from 'pages/Trip/Trip1';
+
 import Me from 'pages/Me/Me';
 import PlaneSearch from 'pages/PlaneSearch/PlaneSearch';
 import DomeSearchResult from 'pages/DomeSearchResult/DomeSearchResult';
 import DomeOrder from 'pages/DomeOrder/DomeOrder';
 import OrderList from 'pages/OrderList/OrderList';
-import Triping from 'pages/Triping/Triping';
-import TripPlan from 'pages/TripPlan/TripPlan';
-import Triped from 'pages/Triped/Triped';
 import airportServer from 'pages/airportServer/airportServer'
 import airportActive from 'pages/airportActive/airportActive'
 import commonPage from 'pages/commonPage/commonPage'
@@ -52,24 +49,7 @@ const router = new Router({
         },
         {
           path: 'trip',
-          component: Trip1,
-          // redirect:'/main/trip/triping',
-          // children: [{
-          //     path: 'triping',
-          //     // name: 'triping',
-          //     component: Triping
-          //   },
-          //   {
-          //     path: 'tripPlan',
-          //     // name: 'tripPlan',
-          //     component: TripPlan
-          //   },
-          //   {
-          //     path: 'triped',
-          //     // name: 'triped',
-          //     component: Triped
-          //   },
-          // ]
+          component: Trip,
         },
         {
           path: 'me',

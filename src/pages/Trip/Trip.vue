@@ -1,37 +1,71 @@
 <template>
-  <div class="trip">
-    <HeaderTitle title="我的行程"/>
-    <div class="tripcontent">
-      <div class="banner_title">
-        <router-link to="triping" tag="div" class="title border-1px">
-          <div class="content">
-            <span class="icon triping"></span>
-            <div class="test">进行中</div>
-          </div>
-        </router-link>
-        <router-link to="tripPlan" tag="div" class="title border-1px">
-          <div class="content">
-            <span class="icon tripPlan"></span>
-            <div class="test">计划中</div>
-          </div>
-        </router-link>
-        <router-link to="triped" tag="div" class="title .border-1px">
-          <div class="content">
-            <span class="icon triped"></span>
-            <div class="test">已完成</div>
-          </div>
-        </router-link>
-      </div>
-      <router-view/>
+  <div class="order-list">
+    <HeaderTitle title="我的行程" :btnLeft="true" />
+    <Tabs class="reset" @click="getCurrentComponent">
+      <Tab>
+        <div slot="title">
+          <span class="triping"></span>进行中
+        </div>
+      </Tab>
+      <Tab>
+        <div slot="title">
+          <span class="tripPlan"></span>计划中
+        </div>
+      </Tab>
+      <Tab>
+        <div slot="title">
+          <span class="triped"></span>已完成
+        </div>
+      </Tab>
+    </Tabs>
+    <div class="list-view">
+      <keep-alive>
+        <component :is="currentComponent" />
+      </keep-alive>
     </div>
   </div>
 </template>
 
 <script>
-import HeaderTitle from "components/HeaderTitle/HeaderTitle.vue";
+import HeaderTitle from "components/HeaderTitle/HeaderTitle";
+import Triping from "./Triping";
+import TripPlan from "./TripPlan";
+import Triped from "./Triped";
+
+import { Tab, Tabs } from "vant";
 export default {
   components: {
-    HeaderTitle
+    HeaderTitle,
+    Tab,
+    Tabs,
+    Triping,
+    TripPlan,
+    Triped
+  },
+  data() {
+    return {
+      orderTabs: [
+        {
+          title: "进行中",
+          content: "Triping"
+        },
+        {
+          title: "计划中",
+          content: "TripPlan"
+        },
+        {
+          title: "已完成",
+          content: "Triped"
+        }
+      ],
+      currentComponent: "Triping"
+    };
+  },
+  methods: {
+    getCurrentComponent(index) {
+      this.currentComponent = this.orderTabs[index].content;
+
+    }
   }
 };
 </script>
@@ -41,69 +75,58 @@ export default {
 @import '~common/style/mixin.styl';
 @import '~common/style/base.styl';
 
-.trip {
-  flex 1;
+.order-list {
   y-view();
 
-  .tripcontent {
-    flex 1;
-    y-view();
-
-    .banner_title {
-      x-middle();
-
-      .title {
-        flex: 1;
-        text-align: center;
-        color: $color-text;
-
-        .content {
-          x-middle();
-          line-height: 1;
-          margin: 0.8em 20%;
-
-          .icon {
-            display: inline-block;
-            width: 0.5rem;
-            height: 0.5rem;
-            margin-right: 0.15em;
-            background-size: cover;
-            background-repeat: no-repeat;
-
-            &.triping {
-              background-image: url('./travel_index_tab1_ing.png');
-            }
-
-            &.tripPlan {
-              background-image: url('./travel_index_tab2_ing.png');
-            }
-
-            &.triped {
-              background-image: url('./travel_index_tab3_ing.png');
-            }
-          }
-        }
-
-        &.router-link-active {
-          color: $color-text-active;
-          border-1px($color-text-active);
-
-          .icon {
-            &.triping {
-              background-image: url('./travel_index_tab1_ed.png');
-            }
-
-            &.tripPlan {
-              background-image: url('./travel_index_tab2_ed.png');
-            }
-
-            &.triped {
-              background-image: url('./travel_index_tab3_ed.png');
-            }
-          }
-        }
-      }
+  .reset {
+    .on{
+      
     }
+    .triping {
+      display inline-block
+      width: 1.25em;
+      height: 1.25em;
+      vertical-align middle
+      background-repeat: no-repeat;
+      background-size: cover;
+      margin-right: 0.4em;
+      background-image: url('./travel_index_tab1_ing.png');
+    }
+
+    .tripPlan {
+      display inline-block
+      width: 1.25em;
+      height: 1.25em;
+      vertical-align middle
+      background-repeat: no-repeat;
+      background-size: cover;
+      margin-right: 0.4em;
+      background-image: url('./travel_index_tab2_ing.png');
+    }
+
+    .triped {
+      display inline-block
+      width: 1.25em;
+      height: 1.25em;
+      vertical-align middle
+      background-repeat: no-repeat;
+      background-size: cover;
+      margin-right: 0.4em;
+      background-image: url('./travel_index_tab3_ing.png');
+    }
+  }
+
+  .reset >>> .van-tabs__line {
+    background-color: $color-text-active;
+  }
+
+  .reset >>> .van-tab--active {
+    color: $color-text-active;
+  }
+
+  .list-view {
+    flex: 1;
+    y-view();
   }
 }
 </style>

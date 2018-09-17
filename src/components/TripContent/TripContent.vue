@@ -83,6 +83,13 @@ export default {
       isShow: false
     };
   },
+  watch: {
+    isdetail: function(newVal, oldVal) {
+      if(!newVal){
+          this.isShow=false
+      }
+    }
+  },
   props: {
     item: {
       type: Object,
@@ -90,7 +97,7 @@ export default {
     },
     isdetail: {
       type: Boolean,
-      default: false
+      default: true
     }
   },
   methods: {
