@@ -1,10 +1,6 @@
 <template>
   <div class="dome-order">
-    <HeaderTitle 
-      title="机票订单" 
-      :btnLeft="true" 
-      @back="goback"
-    />
+    <HeaderTitle title="机票订单" :btnLeft="true" @back="goback" />
     <div class="dome-order-content">
       <div class="airline-wrapper" v-if="airlineData.length > 0">
         <AirLine v-for="(airline,index) in airlineData" :showlow="false" :flight="airline" :key="index" />
@@ -19,8 +15,8 @@
               {{item.uname}}
             </div>
           </div>
-          <div class="add">
-            修改乘机人
+          <div class="add" @click="isShowPepole">
+            添加乘机人
           </div>
         </div>
         <div class="phone">
@@ -47,6 +43,33 @@
         提交订单
       </span>
     </div>
+    <Popup v-model="showPeople" position="bottom">
+      <div class="add-passenger">
+        <CellGroup class="add">
+          <Cell class="add-pepole" title="新增乘机人" value="添加" />
+          <Field label="姓名" placeholder="请与证件保持一致" />
+          <Field label="证件号码" placeholder="请与证件保持一致" />
+        </CellGroup>
+        <CheckboxGroup  v-model="result">
+          <CellGroup class="select">
+            <Cell title="选择乘机人" />
+            <Cell 
+              class="passenger-select"
+              v-for="(item,index) in passengers" 
+              clickable 
+              :key="index" 
+              :title="`${item.uname} (${item.unum})`" 
+              @click="toggle(index)"
+            >
+              <Checkbox 
+                ref="checkboxes" 
+                v-model="item.select"
+              />
+            </Cell>
+          </CellGroup>
+        </CheckboxGroup>
+      </div>
+    </Popup>
   </div>
 </template>
 
@@ -56,16 +79,30 @@ import AirLine from "components/AirlineItem/AirlineItem";
 import { getLocal } from "common/js/storage.js";
 import { getDate2 } from "common/js/day.js";
 import { getOthersInItinerary } from "api/getOthersInItinerary.js";
-import { checkFlightRule,planeBook } from "api/planeOrder.js";
-import { Dialog } from "vant";
-import { gobackMixin } from 'common/js/mixins.js';
+import { checkFlightRule, planeBook } from "api/planeOrder.js";
+import {
+  Dialog,
+  Popup,
+  Cell,
+  CellGroup,
+  Field,
+  Checkbox,
+  CheckboxGroup
+} from "vant";
+import { gobackMixin } from "common/js/mixins.js";
 
 export default {
   components: {
     HeaderTitle,
-    AirLine
+    AirLine,
+    Popup,
+    Cell,
+    CellGroup,
+    Field,
+    Checkbox,
+    CheckboxGroup
   },
-  mixins:[gobackMixin],
+  mixins: [gobackMixin],
   created() {
     this._getOthersInItinerary();
     this._getAirlineData();
@@ -73,11 +110,14 @@ export default {
   },
   data() {
     return {
+      list: ["a", "b", "c"],
+      result: [],
       telephone: 18675961249,
       airlineData: [],
       passengers: [],
       singlePrice: 0,
-      peopleNum: 1
+      peopleNum: 1,
+      showPeople: false,
     };
   },
   computed: {
@@ -86,35 +126,40 @@ export default {
     }
   },
   methods: {
+    toggle(index) {
+      this.$refs.checkboxes[index].toggle();
+    },
+    isShowPepole() {
+      this.showPeople = true;
+    },
     async submitOrder() {
       const orderData = this._handleOrderdata();
       const checkRule = await this._checkFlightRule(orderData);
       if (checkRule.success) {
         const orderResult = await this._planeBook(orderData);
-        
-        if(orderResult.success){
+
+        if (orderResult.success) {
           Dialog.alert({
-            title:'预订成功',
-            message:orderResult.msg,
-            className:'check-tips',
-            confirmButtonTexT:'查看订单',
+            title: "预订成功",
+            message: orderResult.msg,
+            className: "check-tips",
+            confirmButtonTexT: "查看订单"
           }).then(() => {
-            this.$router.push('/order')
-          })
-        }else{
+            this.$router.push("/order");
+          });
+        } else {
           Dialog.alert({
-            title:'预订失败',
-            message:orderResult.msg,
-            className:'check-tips'
-          }).then(() => {
-          })
+            title: "预订失败",
+            message: orderResult.msg,
+            className: "check-tips"
+          }).then(() => {});
         }
       } else {
       }
     },
     // 提交订单
     async _planeBook(orderData) {
-    return await planeBook(orderData);
+      return await planeBook(orderData);
     },
     // 校验规则
     async _checkFlightRule(orderData) {
@@ -155,6 +200,7 @@ export default {
             this.telephone = item.mobile;
           }
         });
+        console.log(this.passengers)
         this._handlePassengers();
       } else {
         Dialog.alert({
@@ -175,14 +221,14 @@ export default {
           continue;
         }
         passengers.push({
-          id: passenger.id && passenger.id,
+          id: passenger.id || '',
           name: passenger.uname,
           cardNo: passenger.unum,
           telephone: passenger.mobile || this.telephone,
-          staffNo: passenger.id && passenger.id,
-          orgCode: passenger.orgCode && passenger.orgCode,
+          staffNo: passenger.id || '',
+          orgCode: passenger.orgCode || '',
           psgType: "ADT",
-          departName: passenger.departName && passenger.departName
+          departName: passenger.departName || ''
         });
       }
       return passengers;
@@ -327,6 +373,19 @@ export default {
       padding: 0.2rem 0.3rem;
       color: #fff;
       background-color: $color-text-active;
+    }
+  }
+  .add-passenger >>> .van-cell__title{
+    color:$color-text;
+  }
+  .add-passenger {
+    .add-pepole >>> .van-cell__value{
+      color:$color-text-active;
+    }
+    .select {
+      .passenger-select >>> .van-cell__title{
+         flex:3;
+      }
     }
   }
 }

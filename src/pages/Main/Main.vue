@@ -2,12 +2,12 @@
     <div class="main">
         <router-view/>
         <div class="footer-tab">
-            <!-- <router-link tag="div" class="tab-item" to="/main/apply"  replace>
+            <router-link tag="div" class="tab-item" to="/main/apply"  replace>
                <div class="item">
                    <span class="icon apply"></span>
                    <div class="content">申请</div>
                </div>
-             </router-link> -->
+             </router-link>
             <router-link tag="div" class="tab-item" to="/main/book" replace>
                 <div class="item">
                     <span class="icon book"></span>
