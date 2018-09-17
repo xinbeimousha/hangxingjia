@@ -2,7 +2,7 @@ import Vue from 'vue';
 import Router from 'vue-router';
 
 import Login from 'pages/Login/Login';
-import Main from 'pages/Main/Main';
+const Main = (resolve) => { import('pages/Main/Main').then(module => resolve(module))};
 import Apply from 'pages/Apply/Apply';
 import Book from 'pages/Book/Book';
 import Trip from 'pages/Trip/Trip';
@@ -145,6 +145,7 @@ const router = new Router({
     },
     {
       path:'/error',
+      name:'error',
       component:NotFound
     },
     {
