@@ -1,6 +1,12 @@
 <template>
   <div class="search-result">
-    <HeaderTitle :title="title" :btnLeft="true" @back="back" />
+    <HeaderTitle 
+      :title="title" 
+      :btnLeft="true"
+      :btnRight="true"
+      :className="'fa-calendar'" 
+      @back="back" 
+    />
     <div class="choose-sort border-1px">
       <span class="sort time-sort" @click="sortbyTime()">时间排序</span>
       <span class="sort price-sort" @click="sortbyPrice()">价格排序</span>

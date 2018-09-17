@@ -7,7 +7,9 @@
     </div>
     <div class="title" v-html="title"></div>
     <div class="btn-right">
-      <div class="info" v-if="btnRight"></div>
+      <div class="info" v-if="btnRight" @click="show">
+        <i :class="['fa',className]"></i>
+      </div>
     </div>
   </div>
 </template>
@@ -28,12 +30,19 @@ export default {
     btnRight:{
       type:Boolean,
       default:false
+    },
+    className:{
+      type:String,
+      default:''
     }
   },
   methods:{
     goBack(){
       this.$router.go(-1);
       this.$emit('back');
+    },
+    show(){
+      this.$emit('show');
     }
   },
   components:{
@@ -66,6 +75,11 @@ export default {
     }
     .btn-right {
       flex:1;
+      
+      .info{
+        padding-right:0.1rem;
+        text-align :right;
+      }
     }
   }
 </style>

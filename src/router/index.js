@@ -23,6 +23,7 @@ import commonPage from 'pages/commonPage/commonPage'
 import airportCustomer from 'pages/airportCustomer/airportCustomer'
 import airportSearchResult from 'pages/airportSearchResult/airportSearchResult'
 import airportSearchDetail from 'pages/airportSearchDetail/airportSearchDetail'
+import NotFound from 'pages/NotFound/NotFound';
 Vue.use(Router)
 
 
@@ -142,6 +143,14 @@ const router = new Router({
       name: 'airportSearchDetail',
       component: airportSearchDetail
     },
+    {
+      path:'/error',
+      component:NotFound
+    },
+    {
+      path: '*',
+      redirect:'/error',
+    }
   ]
 })
 export default router;
