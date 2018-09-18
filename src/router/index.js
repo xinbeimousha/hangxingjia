@@ -131,7 +131,15 @@ const router = new Router({
     {
       path: '/TripOrderList',
       name: 'TripOrderList',
-      component: TripOrderList
+      component: TripOrderList,
+      children:[
+        {
+        path: 'orderDetailDome/:detailId',
+        name: 'orderDetailDome',
+        component: OrderDetailDome,
+        props: true
+        }
+      ]
     },
     {
       path:'/error',

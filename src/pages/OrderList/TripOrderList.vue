@@ -12,6 +12,7 @@
                 </PullRefresh>
             </ul>
         </div>
+        <router-view></router-view>
     </div>    
 </template>
 <script>
@@ -76,7 +77,7 @@ export default {
       }, 500);
     },
     orderDetail(detailId) {
-      this.$router.push(`/order/orderDetailDome/${detailId}`);
+      this.$router.push(`/TripOrderList/orderDetailDome/${detailId}`);
     }
   }
 };
