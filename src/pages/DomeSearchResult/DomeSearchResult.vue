@@ -67,7 +67,7 @@ export default {
         fromCity = this.record.stops[index][1].n;
         toCity = this.record.stops[index][0].n;
       }
-      title = fromCity + " —— —— " + toCity;
+      title = fromCity + ' -- ' + toCity;
       return title;
     }
   },
