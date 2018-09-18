@@ -2,7 +2,7 @@ import axios from 'axios';
 import { Toast } from 'vant';
 import { getLocal } from 'common/js/storage.js';
 
-const [baseURL, timeout] = ['api', 60*1000];
+const [baseURL, timeout] = ['api', 120*1000];
 const instance = axios.create({
   baseURL,
   timeout

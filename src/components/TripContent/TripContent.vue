@@ -20,7 +20,7 @@
                     </div>
                 </div>
                 <div class="foot" v-if="!isShow">
-                    <div class="footLeft">查看订单</div>
+                    <div class="footLeft" @click="TripOrderList">查看订单</div>
                     <div class="footRight" v-if="isdetail" @click="showDetail">查看详情</div>
                 </div>
                 <div class="trip-order" v-if="isShow">
@@ -101,6 +101,9 @@ export default {
     }
   },
   methods: {
+    TripOrderList(){
+        this.$router.push({path:'/TripOrderList',query:{itemId:this.item.exp.expId}});
+    },
     showDetail() {
       this.isShow = true;
     },

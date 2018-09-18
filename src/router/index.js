@@ -19,6 +19,7 @@ const commonPage = () => import('pages/commonPage/commonPage');
 const airportCustomer = () => import('pages/airportCustomer/airportCustomer');
 const airportSearchResult = () => import('pages/airportSearchResult/airportSearchResult');
 const airportSearchDetail = () => import('pages/airportSearchDetail/airportSearchDetail');
+const TripOrderList = () => import('pages/OrderList/TripOrderList');
 const NotFound = () => import('pages/NotFound/NotFound');
 Vue.use(Router)
 
@@ -121,6 +122,11 @@ const router = new Router({
       path: '/airportSearchDetail',
       name: 'airportSearchDetail',
       component: airportSearchDetail
+    },
+    {
+      path: '/TripOrderList',
+      name: 'TripOrderList',
+      component: TripOrderList
     },
     {
       path:'/error',

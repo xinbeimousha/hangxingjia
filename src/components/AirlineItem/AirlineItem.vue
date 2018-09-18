@@ -11,7 +11,7 @@
         <div class="to">{{flight.arrAirPortName}}</div>
       </div>
       <div class="air-info">
-        <img :src="require(`common/img/logo/${flight.airlineCode}.png`)" class="icon">
+        <!-- <img :src="require(`common/img/logo/${flight.airlineCode}.png`)" class="icon"> -->
         <span class="carrier">{{flight.flightName}}</span>
         <span class="date">{{departDate}}</span>
         <span class="share" v-if="flight.shareFlightNo">共享 {{flight.shareFlightNo}}</span>
