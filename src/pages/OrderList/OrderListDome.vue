@@ -55,13 +55,15 @@ export default {
         this.finished = false;
         this.hasNoMore = false;
       }
-      if (obj.length < 10) {
+      if (!obj || obj.length < 10) {
         this.finished = true;
         this.hasNoMore = true;
       }
-      obj.forEach(item => {
+      if(obj && obj.length > 0){
+        obj.forEach(item => {
         this.orderDatas.push(item);
       });
+      }
       this.page++;
     },
     onload() {

@@ -56,13 +56,15 @@ export default {
         this.finished = false;
         this.hasNoMore = false;
       }
-      if (obj.results.length < 10) {
+      if (!obj.results || obj.results.length < 10) {
         this.finished = true;
         this.hasNoMore = true;
       }
-      obj.results.forEach(item => {
+      if(obj.results && obj.results > 0){
+        obj.results.forEach(item => {
         this.orderDatas.push(item);
       });
+      }
       this.page++;
     },
     onload() {
