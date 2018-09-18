@@ -24,7 +24,7 @@ export default {
   data() {
     return {
       item: [],
-      isdetail: true,
+      isdetail: false,
       page: 1,
       isPull: false, // 新加是否下拉
       isLoading: false, //是否处于下拉刷新状态
@@ -93,7 +93,6 @@ export default {
   .PullRefresh {
     flex: 1;
     overflow-y: scroll;
-    overflow: hidden;
 
     .trip-plan {
       margin-bottom: 0.1rem;

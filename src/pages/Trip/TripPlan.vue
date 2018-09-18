@@ -94,7 +94,6 @@ export default {
   .PullRefresh {
     flex: 1;
     overflow-y: scroll;
-    overflow: hidden;
 
     .trip-plan {
       margin-bottom: 0.1rem;
