@@ -28,11 +28,6 @@ Vue.use(Router)
 const router = new Router({
   routes: [{
       path: '/',
-      name: 'index',
-      redirect: '/login'
-    },
-    {
-      path: '/login',
       name: 'login',
       component: Login,
     },
@@ -83,7 +78,7 @@ const router = new Router({
       children: [
         {
         path: 'orderDetailDome/:detailId',
-        name: 'orderDetailDome',
+        name: 'orderDetailDome1',
         component: OrderDetailDome,
         props: true
       },
@@ -135,7 +130,7 @@ const router = new Router({
       children:[
         {
         path: 'orderDetailDome/:detailId',
-        name: 'orderDetailDome',
+        name: 'orderDetailDome2',
         component: OrderDetailDome,
         props: true
         }
