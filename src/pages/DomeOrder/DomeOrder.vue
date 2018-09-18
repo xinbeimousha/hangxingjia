@@ -11,7 +11,10 @@
             乘机人
           </div>
           <div class="names">
-            <div class="name" v-for="(item,index) in passengers" v-if="item.select">
+            <div class="name" 
+              v-for="(item,index) in choosedPassengers"
+              :key="index"
+            >
               {{item.uname}}
             </div>
           </div>
@@ -46,27 +49,20 @@
     <Popup v-model="showPeople" position="bottom">
       <div class="add-passenger">
         <CellGroup class="add">
-          <Cell class="add-pepole" title="新增乘机人" value="添加" />
-          <Field label="姓名" placeholder="请与证件保持一致" />
-          <Field label="证件号码" placeholder="请与证件保持一致" />
+          <Cell class="add-pepole" title="新增乘机人" value="添加" @click="addPassenger"/>
+          <Field label="姓名" v-model="name" placeholder="请与证件保持一致" />
+          <Field label="证件号码" v-model="idCardNo" placeholder="请与证件保持一致" />
         </CellGroup>
-        <CheckboxGroup  v-model="result">
-          <CellGroup class="select">
-            <Cell title="选择乘机人" />
-            <Cell 
-              class="passenger-select"
-              v-for="(item,index) in passengers" 
-              clickable 
-              :key="index" 
-              :title="`${item.uname} (${item.unum})`" 
-              @click="toggle(index)"
-            >
-              <Checkbox 
-                ref="checkboxes" 
-                v-model="item.select"
-              />
-            </Cell>
-          </CellGroup>
+        <Cell title="选择乘机人" />
+        <CheckboxGroup class="select-pepole" v-model="choosedPassengers">
+          <Checkbox
+            v-for="(item,index) in passengers"
+            :key="index"
+            :name="item"
+            :disabled="choosedPassengers.length ===1 && choosedPassengers[0]===item"
+          >
+            {{item.uname}} ({{item.unum}})
+          </Checkbox>
         </CheckboxGroup>
       </div>
     </Popup>
@@ -78,9 +74,11 @@ import HeaderTitle from "components/HeaderTitle/HeaderTitle";
 import AirLine from "components/AirlineItem/AirlineItem";
 import { getLocal } from "common/js/storage.js";
 import { getDate2 } from "common/js/day.js";
+import { IDCARDNO } from 'common/js/reg.js';
 import { getOthersInItinerary } from "api/getOthersInItinerary.js";
 import { checkFlightRule, planeBook } from "api/planeOrder.js";
 import {
+  Toast,
   Dialog,
   Popup,
   Cell,
@@ -110,24 +108,41 @@ export default {
   },
   data() {
     return {
-      list: ["a", "b", "c"],
-      result: [],
       telephone: 18675961249,
       airlineData: [],
       passengers: [],
+      choosedPassengers:[],
       singlePrice: 0,
-      peopleNum: 1,
       showPeople: false,
+      name:'',
+      idCardNo:''
     };
   },
   computed: {
+    peopleNum(){
+      return this.choosedPassengers.length;
+    },
     totalPrice() {
       return this.singlePrice * this.peopleNum;
     }
   },
   methods: {
-    toggle(index) {
-      this.$refs.checkboxes[index].toggle();
+    addPassenger(){
+      if(!this.name || !this.idCardNo ){
+        Toast('请填写完整的乘客信息');
+        return;
+      }else if(!IDCARDNO.test(this.idCardNo)){
+        Toast('证件号码有误');
+        return;
+      }
+      const passenger = {
+        uname:this.name,
+        unum:this.idCardNo
+      }
+      this.passengers.push(passenger);
+      this.choosedPassengers.push(passenger);
+      this.name = '';
+      this.idCardNo = '';
     },
     isShowPepole() {
       this.showPeople = true;
@@ -194,13 +209,11 @@ export default {
       if (data.success) {
         this.passengers = data.obj;
         this.passengers.forEach(item => {
-          item.select = false;
           if (item.defaultUser) {
-            item.select = true;
+            this.choosedPassengers.push(item);
             this.telephone = item.mobile;
           }
         });
-        console.log(this.passengers)
         this._handlePassengers();
       } else {
         Dialog.alert({
@@ -215,9 +228,9 @@ export default {
     // 处理乘客信息
     _handlePassengers() {
       const passengers = [];
-      for (let i = 0; i < this.passengers.length; i++) {
-        let passenger = this.passengers[i];
-        if (!passenger.select || !passenger.unum) {
+      for (let i = 0; i < this.choosedPassengers.length; i++) {
+        let passenger = this.choosedPassengers[i];
+        if (!!passenger.unum) {
           continue;
         }
         passengers.push({
@@ -382,9 +395,13 @@ export default {
     .add-pepole >>> .van-cell__value{
       color:$color-text-active;
     }
-    .select {
-      .passenger-select >>> .van-cell__title{
-         flex:3;
+    .select-pepole >>> .van-checkbox__label{
+      color:$color-text;
+    }
+    .select-pepole{
+      padding-top:10px;
+      .van-checkbox{
+        padding:0 15px 10px;
       }
     }
   }

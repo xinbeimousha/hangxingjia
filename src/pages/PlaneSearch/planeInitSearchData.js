@@ -12,15 +12,18 @@ const data = {
   stops:{
     CAN:{
       c:'CAN',
-      n:'广州'
+      n:'广州',
+      region:0
     },
     SHA:{
       c:'SHA',
-      n:'上海'
+      n:'上海',
+      region:0
     },
     SZX:{
       c:'SZX',
-      name:'深圳'
+      name:'深圳',
+      region:0
     }
   },
   cabinRequire:'',

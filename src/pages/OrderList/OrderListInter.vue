@@ -60,7 +60,7 @@ export default {
         this.finished = true;
         this.hasNoMore = true;
       }
-      if(obj.results && obj.results > 0){
+      if(obj.results && obj.results.length > 0){
         obj.results.forEach(item => {
         this.orderDatas.push(item);
       });
