@@ -7,7 +7,7 @@
     </div>
     <div class="title" v-html="title"></div>
     <div class="btn-right">
-      <div class="info" v-if="btnRight" @click="show">
+      <div class="info" v-if="btnRight" @click="handleClick">
         <i :class="['fa',className]"></i>
       </div>
     </div>
@@ -40,8 +40,8 @@ export default {
     goBack(){
       this.$emit('back');
     },
-    show(){
-      this.$emit('show');
+    handleClick(){
+      this.$emit('click');
     }
   },
   components:{
