@@ -10,10 +10,10 @@
       <div class="apply">
         <div class="trip">
           <img src="./apply_index_one.png" alt="">
-          <div class="group">
+          <router-link tag="div" to="/tripApply" class="group">
             <p class="title">行程申请</p>
             <p class="text">新差旅从这里开始</p>
-          </div>
+          </router-link>
         </div>
         <div class="reim">
           <img src="./apply_index_two.png" alt="">

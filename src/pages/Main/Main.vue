@@ -33,9 +33,7 @@
 </template>
 
 <script>
-export default {
-  name:'mainPage'
-};
+export default {};
 </script>
 
 <style lang="stylus" scoped>

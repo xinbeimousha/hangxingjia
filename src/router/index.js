@@ -22,6 +22,7 @@ const airportSearchDetail = () => import('pages/airportSearchDetail/airportSearc
 const TripOrderList = () => import('pages/OrderList/TripOrderList');
 const NotFound = () => import('pages/NotFound/NotFound');
 const CityList = () => import('pages/CityList/CityList');
+const TripApply = () => import('pages/TripApply/TripApply');
 Vue.use(Router)
 
 
@@ -47,6 +48,9 @@ const router = new Router({
         },
         {
           path: 'trip',
+          meta:{
+            keepAlive:true
+          },
           component: Trip,
         },
         {
@@ -58,6 +62,9 @@ const router = new Router({
     {
       path: '/planeSearch',
       name: 'planeSearch',
+      meta:{
+        keepAlive:true
+      },
       component: PlaneSearch,
     },
     {
@@ -136,6 +143,11 @@ const router = new Router({
         props: true
         }
       ]
+    },
+    {
+      path:'/tripApply',
+      name:'tripApply',
+      component:TripApply
     },
     {
       path:'/error',
