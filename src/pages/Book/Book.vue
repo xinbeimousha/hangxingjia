@@ -29,12 +29,12 @@
                     </div>
                     <span style="color:#999;">专车服务</span>
                 </div>
-                <div class="item airport">
+                <router-link class="item airport" tag="div" to="/airportServer">
                     <div class="img">
                         <img src="./book_index_vip.png" alt="">
                     </div>
                     <span style="color:#999;">机场服务</span>
-                </div>
+                </router-link>
                 <router-link tag="div" to="/order" class="order">
                     <div class="logo">
                         <img src="./book_index_order.png" alt="">

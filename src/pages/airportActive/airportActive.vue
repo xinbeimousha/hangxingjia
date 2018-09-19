@@ -1,6 +1,6 @@
 <template>
     <div class="flight_search">
-        <HeaderTitle title="航班查询" :btnLeft="true"/>
+        <HeaderTitle title="航班查询" :btnLeft="true" @back="goback"/>
         <div class="swiper">
             <Tabs swipeable color="#5998FF" @change='change'>
                 <Tab>
@@ -170,9 +170,11 @@
 </template>
 <script>
 import HeaderTitle from "components/HeaderTitle/HeaderTitle.vue";
-import { Tab, Tabs, DatetimePicker, Popup } from "vant";
+import { Tab, Tabs, DatetimePicker, Popup,Toast  } from "vant";
 import { getDate2, getTime, getWeek } from "common/js/day.js";
+import { gobackMixin } from "common/js/mixins.js";
 export default {
+  mixins: [gobackMixin],
   data() {
     return {
       show: false,
@@ -211,20 +213,24 @@ export default {
           flightDate: this.searchDate.ymd,
           searchType: this.typeIndex
         };
+        if(!searchData.flightNo){
+            Toast('请填写航班号');
+            return
+        }
         this.$router.push({
-          name: "airportSearchResult",
-          params: { searchData: searchData }
+          path: "/airportSearchResult",
+          query: { searchData: searchData }
         });
       } else {
         searchData = {
           flightDate: this.searchDate.ymd,
           searchType: this.typeIndex,
-          depCode:'CAN',
-          arrCode:'PEK',
+          depCode: "CAN",
+          arrCode: "PEK"
         };
         this.$router.push({
-          name: "airportSearchResult",
-          params: { searchData: searchData }
+          path: "/airportSearchResult",
+          query: { searchData: searchData }
         });
       }
     }

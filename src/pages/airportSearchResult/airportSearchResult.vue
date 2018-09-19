@@ -1,12 +1,12 @@
 <template>
     <div class="airportSearchResult" >
-        <HeaderTitle title="查询结果" :btnLeft="true"/>
+        <HeaderTitle title="查询结果" :btnLeft="true" @back="goback"/>
         <div class="msgList">
-            <div class="section" @click="queryDetail">
+            <div class="section" v-for="(item,index) in items" :key="index" @click="queryDetail(item)">
                 <div class="top">
                     <div class="startdetail">
-                        <span class="starttime">09:45</span>
-                        <span class="startplace">白云机场</span>
+                        <span class="starttime">{{getTm(item.plandeptime)}}</span>
+                        <span class="startplace">{{item.fromsite}}</span>
                     </div>
                     <div class="hen">
                         <div class="yuan1"></div>
@@ -14,20 +14,19 @@
                         <div class="yuan2"></div>
                     </div>
                     <div class="enddetail">
-                        <span class="endtime">23:40</span>
-                        <span class="endplace">浦东机场T2</span>
+                        <span class="endtime">{{getTm(item.planarrtime)}}</span>
+                        <span class="endplace">{{item.tosite}}</span>
                     </div>
                 </div>
                 <div class="bottom">
-                    <!-- <img v-bind:src="item.signloc"/> -->
-                    <img src="./CA.png"/>
-                    <span >国航</span>
-                    <span>cz3103</span>
+                    <img v-bind:src="item.signloc"/>
+                    <span >{{item.comname}}</span>
+                    <span>{{item.fltno}}</span>
                     <span class="shu">|</span>
-                    <span>03-22</span>
-                    <span>周三</span>
+                    <span>{{getDt(item.lastday)}}</span>
+                    <span>{{getwk(item.lastweek)}}</span>
                     <span class="shu">|</span>
-                    <span>98%准点率</span>
+                    <!-- <span>98%准点率</span> -->
                 </div>
             </div>
         </div>
@@ -35,23 +34,55 @@
 </template>
 <script>
 import HeaderTitle from "components/HeaderTitle/HeaderTitle.vue";
+import { getFligtDetail } from "api/getFligtDetail";
+import { gobackMixin } from "common/js/mixins.js";
+import { getTime, getDate3, getWeek } from "common/js/day.js";
 export default {
+  mixins: [gobackMixin],
   data() {
     return {
       searchData: "",
-      testData: [{ name: 1 }, { sex: 1 }]
+      items: []
     };
   },
   created() {
-    this.searchData = this.$route.params.searchData;
-    console.log(this.searchData);
+    this.queryData();
   },
   methods: {
-    queryDetail() {
-      alert(1);
+    getTm(time){
+        return getTime(time);
+    },
+    getDt(time){
+        return getDate3(time)
+    },
+    getwk(time){
+        return getWeek(time)
+    },
+    queryData() {
+      this.searchData = this.$route.query.searchData;
+      let floatresult;
+      if (this.searchData.searchType == 1) {
+        floatresult = {
+          flightNo: this.searchData.flightNo,
+          flightDate: this.searchData.flightDate,
+          searchType: this.searchData.searchType
+        };
+      } else {
+        floatresult = {
+          flightDate: this.searchData.flightDate,
+          searchType: this.searchData.searchType,
+          depCode: this.searchData.depCode,
+          arrCode: this.searchData.arrCode
+        };
+      }
+      getFligtDetail(floatresult).then(res => {
+        this.items = res.obj;
+      });
+    },
+    queryDetail(item) {
       this.$router.push({
-        name: "airportSearchDetail",
-        params: { testData: this.testData }
+        path: "/airportSearchDetail",
+        query: { item: item }
       });
     }
   },
@@ -68,6 +99,9 @@ export default {
     y-view();
 
     .msgList {
+        flex 1;
+        overflow hidden;
+        overflow-y scroll
         .section {
             background-color: $color-white;
             font-size: 1em;

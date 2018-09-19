@@ -1,6 +1,6 @@
 <template>
     <div class="airportSearchDetail">
-        <HeaderTitle title="航班动态查询" :btnLeft="true"/>
+        <HeaderTitle title="航班动态查询" :btnLeft="true" @back="goback"/>
         <div class="content">
             <div class="top">
                 <div class="flightmessage">
@@ -104,9 +104,22 @@
 </template>
 <script>
 import HeaderTitle from "components/HeaderTitle/HeaderTitle.vue";
+import { gobackMixin } from "common/js/mixins.js";
 export default {
+  mixins: [gobackMixin],
+  created(){
+      this.getData();
+  },
   data() {
-    return {};
+    return {
+        item:[]
+    };
+  },
+  methods:{
+      getData(){
+          console.log(this.item)
+          this.item = this.$route.query.item;
+      }
   },
   components: {
     HeaderTitle
@@ -162,7 +175,7 @@ export default {
                     width: 1.375em;
                     height: 1.375em;
                     position: relative;
-                    bottom: .9em;
+                    bottom: 0.9em;
                     left: 0.5em;
 
                     img {
@@ -262,7 +275,7 @@ export default {
             }
         }
 
-        .start,.end  {
+        .start, .end {
             margin-top: 0.5em;
             background-color: $color-white;
             border-top: 1px solid $color-solid;
