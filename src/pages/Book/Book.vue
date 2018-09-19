@@ -15,26 +15,26 @@
                     <div class="img">
                         <img src="./book_index_hotel.png" alt="">
                     </div>
-                    <span>酒店预订</span>
+                    <span style="color:#999;">酒店预订</span>
                 </div>
                 <div class="item train">
                     <div class="img">
                         <img src="./book_index_train.png" alt="">
                     </div>
-                    <span>火车预订</span>
+                    <span style="color:#999;">火车预订</span>
                 </div>
                 <div class="item car">
                     <div class="img">
                         <img src="./book_index_car.png" alt="">
                     </div>
-                    <span>专车服务</span>
+                    <span style="color:#999;">专车服务</span>
                 </div>
-                <router-link tag="div" class="item airport" to="/airportServer">
+                <div class="item airport">
                     <div class="img">
                         <img src="./book_index_vip.png" alt="">
                     </div>
-                    <span>机场服务</span>
-                </router-link>
+                    <span style="color:#999;">机场服务</span>
+                </div>
                 <router-link tag="div" to="/order" class="order">
                     <div class="logo">
                         <img src="./book_index_order.png" alt="">

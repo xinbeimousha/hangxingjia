@@ -119,9 +119,10 @@ const router = new Router({
       name: 'airportSearchDetail',
       component: airportSearchDetail
     },{
-      path: '/cityList',
+      path: '/cityList/:id',
       name:'cityList',
-      component:CityList
+      component:CityList,
+      props: true
     },
     {
       path: '/TripOrderList',

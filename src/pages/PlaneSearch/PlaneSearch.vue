@@ -24,7 +24,7 @@
             <div class="flight-content">
               <div class="one-way" v-if="tripType === 0">
                 <div class="city border-1px">
-                  <div class="from">
+                  <div class="from" @click="chooseCity(0)">
                     {{ fromCity }}
                   </div>
                   <div class="icon">
@@ -32,7 +32,7 @@
                       <img src="./return.png" alt="">
                     </div>
                   </div>
-                  <div class="to">
+                  <div class="to" @click="chooseCity(1)">
                     {{ toCity }}
                   </div>
                 </div>
@@ -42,7 +42,7 @@
               </div>
               <div class="two-way" v-else-if="tripType === 1">
                 <div class="city border-1px">
-                  <div class="from">
+                  <div class="from" @click="chooseCity(0)">
                     {{ fromCity }}
                   </div>
                   <div class="icon">
@@ -50,7 +50,7 @@
                       <img src="./return.png" alt="">
                     </div>
                   </div>
-                  <div class="to">
+                  <div class="to" @click="chooseCity(1)">
                     {{ toCity }}
                   </div>
                 </div>
@@ -111,6 +111,7 @@ import { setLocal } from "common/js/storage.js";
 import planeInitSearchData from './planeInitSearchData.js';
 import { mapGetters, mapMutations } from "vuex";
 import { gobackMixin } from 'common/js/mixins.js';
+import bus from 'common/js/bus.js';
 export default {
   components: {
     HeaderTitle,
@@ -124,11 +125,6 @@ export default {
   },
   mixins:[gobackMixin],
   name: "search",
-  created() {
-    this._getBudgetSpaceType();
-    this._getItineraryList();
-  },
-
   data() {
     return {
       showTrip: false,
@@ -166,7 +162,6 @@ export default {
   },
 
   computed: {
-    // ...mapGetters(["planeSearchData"]),
     fromCity() {
       const stopId = this.planeSearchData.stopsIds[0];
       const stopN = this.planeSearchData.stops[stopId].n;
@@ -183,6 +178,18 @@ export default {
     arrivalDate() {
       return this.planeSearchData.date[1];
     }
+  },
+  created() {
+    this._getBudgetSpaceType();
+    this._getItineraryList();
+    bus.$on('city',(item,index) => {
+      let {n,c} = item;
+      let data = this.planeSearchData;
+      if(data.stopsIds.indexOf(c) < 0){
+        data.stops[c] = item;
+      }
+      data.stopsIds.splice(index,1,c);
+    })
   },
   methods: {
     chooseTrip(item) {
@@ -223,7 +230,11 @@ export default {
         this.airlines = new Array();
       }
     },
-
+    chooseCity(index){
+      this.$router.push({
+        path:`/cityList/${index}`
+      })
+    },
     showDatePicker(index) {
       this.showDate = true;
       this.currentSearchDateIndex = index;
@@ -233,7 +244,7 @@ export default {
     hideDatePicker() {
       this.showDate = false;
     },
-
+    
     chooseDate(val) {
       const index = this.currentSearchDateIndex;
       const newDate = getDate2(val);
