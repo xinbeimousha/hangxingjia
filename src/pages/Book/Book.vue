@@ -33,7 +33,7 @@
                     <div class="img">
                         <img src="./book_index_vip.png" alt="">
                     </div>
-                    <span style="color:#999;">机场服务</span>
+                    <span>机场服务</span>
                 </router-link>
                 <router-link tag="div" to="/order" class="order">
                     <div class="logo">

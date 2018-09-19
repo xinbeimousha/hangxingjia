@@ -1,6 +1,6 @@
 <template>
     <div class="airport">
-        <HeaderTitle title="机场服务" :btnLeft='true' />
+        <HeaderTitle title="机场服务" :btnLeft='true' @back="goBack"/>
         <div class="server_body">
             <div class="imgbox">
                 <van-swipe :autoplay="3000">
@@ -194,6 +194,9 @@ export default {
     return {};
   },
   methods: {
+    goBack(){
+        this.$router.go(-1);
+    },
     routerTo(name, type) {
       this.$router.push({
         name: `commonPage`,

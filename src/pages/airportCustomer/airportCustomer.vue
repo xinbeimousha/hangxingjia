@@ -1,6 +1,6 @@
 <template>
     <div class="airportCustomer">
-        <HeaderTitle title="在线客服" :btnLeft="true"/>
+        <HeaderTitle title="在线客服" :btnLeft="true" @back="goBack"/>
         <div class="phoneList">
             <ul class="myul border-1px">
                 <li class="myli">
@@ -57,6 +57,11 @@ import HeaderTitle from "components/HeaderTitle/HeaderTitle.vue";
 export default {
   components: {
     HeaderTitle
+  },
+  methods:{
+      goBack(){
+        this.$router.go(-1);
+      }
   }
 };
 </script>

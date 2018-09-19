@@ -1,10 +1,7 @@
 <template>
     <div class="common">
-        <HeaderTitle :title="name" :btnLeft="true"/>
+        <HeaderTitle :title="name" :btnLeft="true" @back="goBack"/>
         <div class="pageconent">
-            <!-- <router-link  to="http://baiyun.dragonpass.com.cn/gbiamu.html">11</router-link> -->
-            <!-- <a href="http://baiyun.dragonpass.com.cn/gbiamu.html" >22</a> -->
-            <!-- <router-view></router-view> -->
             <iframe id="show-iframe" src="" frameborder="0"></iframe>
         </div>
     </div>
@@ -25,7 +22,7 @@ export default {
     const oIframe = document.getElementById("show-iframe");
     switch (this.type) {
       case 1:
-        oIframe.src = "http://baiyun.dragonpass.com.cn/gbiamu.html";
+        oIframe.src = "http://www.gbiac.net/gbiamu/html/checkIn/checkInLogin.jsp";
         break;
       case 2:
         oIframe.src =
@@ -59,6 +56,9 @@ export default {
     }
   },
   methods: {
+    goBack(){
+      this.$router.go(-1);
+    },
     getRouterData() {
       this.name = this.$route.query.name;
       this.type = Number(this.$route.query.type);
