@@ -1,7 +1,6 @@
 import axios from 'axios';
 import { Toast } from 'vant';
 import { getLocal } from 'common/js/storage.js';
-
 const [baseURL, timeout] = ['api', 60*1000];
 const instance = axios.create({
   baseURL,
@@ -45,6 +44,8 @@ instance.interceptors.response.use(response => {
   }else{
     if(error.message.indexOf('timeout') > -1){
       Toast('连接超时');
+    }else if(error.message==='Network Error'){
+      Toast('请检查网络');
     }
   }
   return Promise.reject(error)

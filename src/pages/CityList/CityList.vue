@@ -31,11 +31,11 @@
             </ul>
           </div>
         </div>
-        <div class="list-shortcut">
-          <ul v-for="(item,index) in shortcutList" :key="index">
-            <li class="list-item">{{item}}</li>
-          </ul>
-        </div>
+      </div>
+      <div class="list-shortcut">
+        <ul v-for="(item,index) in shortcutList" :key="index">
+          <li class="list-item">{{item}}</li>
+        </ul>
       </div>
     </div>
   </div>
@@ -169,10 +169,10 @@ export default {
           }
         }
       }
-
-      .list-shortcut {
+    }
+    .list-shortcut {
         position: absolute;
-        top: 20%;
+        top: 10%;
         right: 0;
         z-index: 30;
 
@@ -185,7 +185,6 @@ export default {
           text-align: center;
         }
       }
-    }
   }
 }
 </style>
