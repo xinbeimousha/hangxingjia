@@ -30,7 +30,7 @@ export function cancelFlight(detailId){
   return request({
     url,
     method,
-    data:obj
+    data:qs.stringify(obj)
   }).then(res => {
     return Promise.resolve(res.data);
   })

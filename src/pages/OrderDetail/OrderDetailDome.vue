@@ -42,8 +42,14 @@ export default {
     };
   },
   methods: {
-    cancelFlight() {
-      cancelFlight(this.detailId)
+    async cancelFlight() {
+     const reuslt =  cancelFlight(this.detailId);
+     if(reuslt.success){
+       this.orderDetails.forEach(item => {
+         item.status = 4;
+       })
+       console.log(this.orderDetails)
+     }
     },
     async _getDomeFlightorderDetail() {
       const orderObj = await getDomeFlightorderDetail(this.detailId);
