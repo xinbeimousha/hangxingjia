@@ -24,6 +24,7 @@ const NotFound = () => import('pages/NotFound/NotFound');
 const CityList = () => import('pages/CityList/CityList');
 const TripApply = () => import('pages/TripApply/TripApply');
 const AddApply = () => import('pages/AddApply/AddApply');
+const TripApproval = () => import('pages/TripApproval/TripApproval');
 Vue.use(Router)
 
 
@@ -157,6 +158,11 @@ const router = new Router({
       path:'/addApply',
       name:'addApply',
       component:AddApply
+    },
+    {
+      path:'/tripapproval',
+      name:'tripApproval',
+      component:TripApproval
     },
     {
       path:'/error',

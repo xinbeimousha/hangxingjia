@@ -24,13 +24,13 @@
         </div>
       </div>
       <div class="approval">
-        <div class="trip">
+        <router-link class="trip" to="/tripapproval">
           <img src="./apply_index_three.png" alt="">
           <div class="group">
-            <p class="title">行程申请</p>
-            <p class="text">新差旅从这里开始</p>
+            <p class="title">行程审批</p>
+            <p class="text">高效管理差旅行程</p>
           </div>
-        </div>
+        </router-link>
         <div class="reim">
           <img src="./apply_index_four.png" alt="">
           <div class="group">

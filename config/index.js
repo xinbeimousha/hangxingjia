@@ -13,10 +13,10 @@ module.exports = {
     proxyTable: {
       '/api': {
        // target: 'http://120.77.4.10:8082/',
-        // target: 'http://10.10.12.76:8082/', //测试环境
+        target: 'http://10.10.12.76:8082/', //测试环境
         // target: 'http://10.10.11.122:8888/',//本地力泉
         // target: 'http://192.168.2.19:8888/',//本地力泉无线
-        target: 'http://10.10.11.56:8888/tmc/', //本地嘉朗
+        // target: 'http://10.10.11.56:8888/tmc/', //本地嘉朗
         pathRewrite:{
             '^/api':''
         }
