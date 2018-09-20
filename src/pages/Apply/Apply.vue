@@ -71,7 +71,7 @@ export default {
       }
       .apply,.approval{
         x-middle();
-        margin-bottom:0.1rem;
+        margin-bottom:0.2rem;
         .trip,.reim{
           flex:1;
           x-middle();

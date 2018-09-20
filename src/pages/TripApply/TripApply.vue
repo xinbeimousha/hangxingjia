@@ -46,19 +46,7 @@ export default {
     addApply(){
       this.$router.push('/addApply');
     }
-  },
-  beforeRouteLeave(to,from,next){
-    if(to.path === '/main/apply'){
-      from.meta.keepAlive = false;
-    }
-    
-    next();
-  },
-  // beforeRouteEnter(to,from,next){
-  //   console.log(to)
-  //   to.meta.keepAlive = true;
-  //   next();
-  // }
+  }
 }
 </script>
 

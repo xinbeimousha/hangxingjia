@@ -94,7 +94,7 @@ export default {
     flex: 1;
     y-view();
     overflow: hidden;
-    overflow-y: scroll;
+    scrolling();
 
     li {
       border-top: 1px solid #EBECED;
