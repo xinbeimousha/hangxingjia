@@ -230,7 +230,7 @@ export default {
       const passengers = [];
       for (let i = 0; i < this.choosedPassengers.length; i++) {
         let passenger = this.choosedPassengers[i];
-        if (!!passenger.unum) {
+        if (!passenger.unum) {
           continue;
         }
         passengers.push({
